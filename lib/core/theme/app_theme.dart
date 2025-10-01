@@ -9,24 +9,22 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      
+
       // Color Scheme
       colorScheme: const ColorScheme.dark(
         primary: AppColors.accentGold,
         secondary: AppColors.accentGoldSecondary,
         surface: AppColors.cardBackground,
-        background: AppColors.backgroundPrimary,
         onPrimary: AppColors.textBlack,
         onSecondary: AppColors.textBlack,
         onSurface: AppColors.textWhite,
-        onBackground: AppColors.textWhite,
         error: AppColors.error,
         onError: AppColors.textWhite,
       ),
-      
+
       // Scaffold
       scaffoldBackgroundColor: AppColors.backgroundPrimary,
-      
+
       // App Bar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.backgroundPrimary,
@@ -35,9 +33,9 @@ class AppTheme {
         titleTextStyle: AppTypography.appBarTitle,
         iconTheme: IconThemeData(color: AppColors.textWhite),
       ),
-      
+
       // Card Theme
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.cardBackground,
         elevation: 4,
         shadowColor: AppColors.shadowColor,
@@ -45,7 +43,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppDimensions.radiusLg),
         ),
       ),
-      
+
       // Button Themes
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -59,7 +57,7 @@ class AppTheme {
           elevation: 2,
         ),
       ),
-      
+
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           backgroundColor: AppColors.cardBackground,
@@ -72,7 +70,7 @@ class AppTheme {
           ),
         ),
       ),
-      
+
       // Input Decoration Theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -101,7 +99,7 @@ class AppTheme {
           borderSide: const BorderSide(color: AppColors.error),
         ),
       ),
-      
+
       // Text Theme
       textTheme: const TextTheme(
         displayLarge: AppTypography.h1,
@@ -113,13 +111,13 @@ class AppTheme {
         labelLarge: AppTypography.buttonText,
         labelMedium: AppTypography.caption,
       ),
-      
+
       // Icon Theme
       iconTheme: const IconThemeData(
         color: AppColors.textWhite,
         size: AppDimensions.iconSizeMedium,
       ),
-      
+
       // Bottom Navigation Bar Theme
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.cardBackground,
@@ -128,9 +126,9 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
-      
+
       // Dialog Theme
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: AppColors.cardBackground,
         titleTextStyle: AppTypography.h2,
         contentTextStyle: AppTypography.bodyMedium,
@@ -138,42 +136,40 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppDimensions.radiusLg),
         ),
       ),
-      
+
       // Divider Theme
       dividerTheme: const DividerThemeData(
         color: AppColors.borderSubtle,
         thickness: 1,
       ),
-      
+
       // Progress Indicator Theme
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: AppColors.accentGold,
       ),
     );
   }
-  
+
   // Custom Shadow
   static List<BoxShadow> get cardShadow => [
-    const BoxShadow(
-      color: AppColors.shadowColor,
-      blurRadius: AppDimensions.shadowBlurRadius,
-      offset: Offset(
-        AppDimensions.shadowOffsetX,
-        AppDimensions.shadowOffsetY,
-      ),
-    ),
-  ];
-  
+        const BoxShadow(
+          color: AppColors.shadowColor,
+          blurRadius: AppDimensions.shadowBlurRadius,
+          offset: Offset(
+            AppDimensions.shadowOffsetX,
+            AppDimensions.shadowOffsetY,
+          ),
+        ),
+      ];
+
   // Custom Gradients
   static BoxDecoration get heroDecoration => const BoxDecoration(
-    gradient: AppColors.heroGradient,
-  );
-  
+        gradient: AppColors.heroGradient,
+      );
+
   static BoxDecoration get cardDecoration => BoxDecoration(
-    gradient: AppColors.cardGradient,
-    borderRadius: BorderRadius.circular(AppDimensions.radiusLg),
-    boxShadow: cardShadow,
-  );
+        gradient: AppColors.cardGradient,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusLg),
+        boxShadow: cardShadow,
+      );
 }
-
-

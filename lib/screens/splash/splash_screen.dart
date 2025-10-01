@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/routes/app_routes.dart';
-import '../../providers/auth_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -49,14 +47,14 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController.forward();
   }
 
-      Future<void> _navigateToNextScreen() async {
-        await Future.delayed(AppConstants.splashDuration);
+  Future<void> _navigateToNextScreen() async {
+    await Future.delayed(AppConstants.splashDuration);
 
-        if (mounted) {
-          // For MVP - go to auth screen first
-          Navigator.pushReplacementNamed(context, AppRoutes.login);
-        }
-      }
+    if (mounted) {
+      // For MVP - go to auth screen first
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
+    }
+  }
 
   @override
   void dispose() {
@@ -100,33 +98,34 @@ class _SplashScreenState extends State<SplashScreen>
                         color: Colors.blue,
                       ),
                     ),
-                    
+
                     const SizedBox(height: 30),
-                    
+
                     // App Name
                     Text(
                       AppConstants.appName,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 32,
+                              ),
                     ),
-                    
+
                     const SizedBox(height: 10),
-                    
+
                     // App Subtitle
                     Text(
                       AppConstants.appSubtitle,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.white.withOpacity(0.8),
-                        fontSize: 16,
-                      ),
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: 16,
+                          ),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     const SizedBox(height: 50),
-                    
+
                     // Loading Indicator
                     const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

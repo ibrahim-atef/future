@@ -37,35 +37,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  Future<void> _handleRegister() async {
-    if (!_formKey.currentState!.validate()) return;
+  // Future<void> _handleRegister() async {
+  //   if (!_formKey.currentState!.validate()) return;
 
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final success = await authProvider.registerStep1(
-      _fullNameController.text.trim(),
-      _emailController.text.trim(),
-      _mobileController.text.trim(),
-      _passwordController.text,
-    );
+  //   final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  //   final success = await authProvider.registerStep1(
+  //     _fullNameController.text.trim(),
+  //     _emailController.text.trim(),
+  //     _mobileController.text.trim(),
+  //     _passwordController.text,
+  //   );
 
-    if (success && mounted) {
-      Navigator.pushNamed(
-        context,
-        AppRoutes.verifyCode,
-        arguments: {
-          'email': _emailController.text.trim(),
-          'type': 'register',
-        },
-      );
-    } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(authProvider.error ?? 'فشل في إنشاء الحساب'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
+  //   if (success && mounted) {
+  //     Navigator.pushNamed(
+  //       context,
+  //       AppRoutes.verifyCode,
+  //       arguments: {
+  //         'email': _emailController.text.trim(),
+  //         'type': 'register',
+  //       },
+  //     );
+  //   } else if (mounted) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(authProvider.error ?? 'فشل في إنشاء الحساب'),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -96,28 +96,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 20),
-                
+
                 // Title
                 Text(
                   'إنشاء حساب جديد',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 Text(
                   'املأ البيانات التالية لإنشاء حسابك',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey[600],
-                  ),
+                        color: Colors.grey[600],
+                      ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 // Full Name Field
                 TextFormField(
                   controller: _fullNameController,
@@ -134,7 +134,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -147,9 +148,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Email Field
                 TextFormField(
                   controller: _emailController,
@@ -167,7 +168,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -180,9 +182,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Mobile Field
                 TextFormField(
                   controller: _mobileController,
@@ -200,7 +202,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -213,9 +216,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Grade/Class Field (الفرقة)
                 DropdownButtonFormField<String>(
                   value: _selectedGrade,
@@ -231,14 +234,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   items: const [
-                    DropdownMenuItem(value: 'الفرقة الأولى', child: Text('الفرقة الأولى')),
-                    DropdownMenuItem(value: 'الفرقة الثانية', child: Text('الفرقة الثانية')),
-                    DropdownMenuItem(value: 'الفرقة الثالثة', child: Text('الفرقة الثالثة')),
-                    DropdownMenuItem(value: 'الفرقة الرابعة', child: Text('الفرقة الرابعة')),
+                    DropdownMenuItem(
+                        value: 'الفرقة الأولى', child: Text('الفرقة الأولى')),
+                    DropdownMenuItem(
+                        value: 'الفرقة الثانية', child: Text('الفرقة الثانية')),
+                    DropdownMenuItem(
+                        value: 'الفرقة الثالثة', child: Text('الفرقة الثالثة')),
+                    DropdownMenuItem(
+                        value: 'الفرقة الرابعة', child: Text('الفرقة الرابعة')),
                     DropdownMenuItem(value: 'خريج', child: Text('خريج')),
                   ],
                   onChanged: (value) {
@@ -253,9 +261,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // University Field (الجامعة)
                 TextFormField(
                   controller: _universityController,
@@ -272,7 +280,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -282,9 +291,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Major Field (التخصص)
                 TextFormField(
                   controller: _majorController,
@@ -301,7 +310,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -311,9 +321,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Password Field
                 TextFormField(
                   controller: _passwordController,
@@ -324,7 +334,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -341,7 +353,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -354,21 +367,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Confirm Password Field
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: _obscureConfirmPassword,
                   textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) => _handleRegister(),
+                  // onFieldSubmitted: (_) => _handleRegister(),
                   decoration: InputDecoration(
                     labelText: AppStrings.confirmPassword,
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                        _obscureConfirmPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -385,7 +400,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -398,22 +414,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 // Register Button
-                Consumer<AuthProvider>(
-                  builder: (context, authProvider, child) {
-                    return CustomButton(
-                      text: AppStrings.signup,
-                      onPressed: authProvider.isLoading ? null : _handleRegister,
-                      isLoading: authProvider.isLoading,
-                    );
-                  },
-                ),
-                
+                // Consumer<AuthProvider>(
+                //   builder: (context, authProvider, child) {
+                //     return CustomButton(
+                //       text: AppStrings.signup,
+                //       // onPressed:
+                //       //     authProvider.isLoading ? null : _handleRegister,
+                //       isLoading: authProvider.isLoading,
+                //     );
+                //   },
+                // ),
+
                 const SizedBox(height: 30),
-                
+
                 // Login Link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

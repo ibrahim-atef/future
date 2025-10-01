@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:future_app/core/helper/shared_pref_helper.dart';
+import 'package:future_app/core/routes/app_routes.dart';
+import 'package:future_app/features/auth/presentation/screens/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -41,7 +44,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false);
+            SharedPrefHelper.clearAllSecuredData();
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -233,15 +242,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 1,
                 ),
               ),
-              child: Row(
+              child: const Row(
                 children: [
                   Icon(
                     Icons.info_outline,
                     color: Colors.orange,
                     size: 24,
                   ),
-                  const SizedBox(width: 12),
-                  const Expanded(
+                  SizedBox(width: 12),
+                  Expanded(
                     child: Text(
                       'مراقبة الجودة: التحميل متاح فقط للطلاب المسجلين',
                       style: TextStyle(
@@ -377,5 +386,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
 }
