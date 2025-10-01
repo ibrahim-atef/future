@@ -22,6 +22,9 @@ mixin _$AuthState {
     required TResult Function() loadingLogin,
     required TResult Function(LoginResponseModel data) successLogin,
     required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,6 +33,9 @@ mixin _$AuthState {
     TResult? Function()? loadingLogin,
     TResult? Function(LoginResponseModel data)? successLogin,
     TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +44,9 @@ mixin _$AuthState {
     TResult Function()? loadingLogin,
     TResult Function(LoginResponseModel data)? successLogin,
     TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -47,6 +56,9 @@ mixin _$AuthState {
     required TResult Function(LoadingLogin value) loadingLogin,
     required TResult Function(SuccessLogin value) successLogin,
     required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +67,9 @@ mixin _$AuthState {
     TResult? Function(LoadingLogin value)? loadingLogin,
     TResult? Function(SuccessLogin value)? successLogin,
     TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,6 +78,9 @@ mixin _$AuthState {
     TResult Function(LoadingLogin value)? loadingLogin,
     TResult Function(SuccessLogin value)? successLogin,
     TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -133,6 +151,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     required TResult Function() loadingLogin,
     required TResult Function(LoginResponseModel data) successLogin,
     required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
   }) {
     return initialAuth();
   }
@@ -144,6 +165,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     TResult? Function()? loadingLogin,
     TResult? Function(LoginResponseModel data)? successLogin,
     TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
   }) {
     return initialAuth?.call();
   }
@@ -155,6 +179,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     TResult Function()? loadingLogin,
     TResult Function(LoginResponseModel data)? successLogin,
     TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
     required TResult orElse(),
   }) {
     if (initialAuth != null) {
@@ -170,6 +197,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     required TResult Function(LoadingLogin value) loadingLogin,
     required TResult Function(SuccessLogin value) successLogin,
     required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
   }) {
     return initialAuth(this);
   }
@@ -181,6 +211,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     TResult? Function(LoadingLogin value)? loadingLogin,
     TResult? Function(SuccessLogin value)? successLogin,
     TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
   }) {
     return initialAuth?.call(this);
   }
@@ -192,6 +225,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     TResult Function(LoadingLogin value)? loadingLogin,
     TResult Function(SuccessLogin value)? successLogin,
     TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
     required TResult orElse(),
   }) {
     if (initialAuth != null) {
@@ -250,6 +286,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     required TResult Function() loadingLogin,
     required TResult Function(LoginResponseModel data) successLogin,
     required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
   }) {
     return loadingLogin();
   }
@@ -261,6 +300,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     TResult? Function()? loadingLogin,
     TResult? Function(LoginResponseModel data)? successLogin,
     TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
   }) {
     return loadingLogin?.call();
   }
@@ -272,6 +314,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     TResult Function()? loadingLogin,
     TResult Function(LoginResponseModel data)? successLogin,
     TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
     required TResult orElse(),
   }) {
     if (loadingLogin != null) {
@@ -287,6 +332,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     required TResult Function(LoadingLogin value) loadingLogin,
     required TResult Function(SuccessLogin value) successLogin,
     required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
   }) {
     return loadingLogin(this);
   }
@@ -298,6 +346,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     TResult? Function(LoadingLogin value)? loadingLogin,
     TResult? Function(SuccessLogin value)? successLogin,
     TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
   }) {
     return loadingLogin?.call(this);
   }
@@ -309,6 +360,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     TResult Function(LoadingLogin value)? loadingLogin,
     TResult Function(SuccessLogin value)? successLogin,
     TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
     required TResult orElse(),
   }) {
     if (loadingLogin != null) {
@@ -394,6 +448,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     required TResult Function() loadingLogin,
     required TResult Function(LoginResponseModel data) successLogin,
     required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
   }) {
     return successLogin(data);
   }
@@ -405,6 +462,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     TResult? Function()? loadingLogin,
     TResult? Function(LoginResponseModel data)? successLogin,
     TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
   }) {
     return successLogin?.call(data);
   }
@@ -416,6 +476,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     TResult Function()? loadingLogin,
     TResult Function(LoginResponseModel data)? successLogin,
     TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
     required TResult orElse(),
   }) {
     if (successLogin != null) {
@@ -431,6 +494,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     required TResult Function(LoadingLogin value) loadingLogin,
     required TResult Function(SuccessLogin value) successLogin,
     required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
   }) {
     return successLogin(this);
   }
@@ -442,6 +508,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     TResult? Function(LoadingLogin value)? loadingLogin,
     TResult? Function(SuccessLogin value)? successLogin,
     TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
   }) {
     return successLogin?.call(this);
   }
@@ -453,6 +522,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     TResult Function(LoadingLogin value)? loadingLogin,
     TResult Function(SuccessLogin value)? successLogin,
     TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
     required TResult orElse(),
   }) {
     if (successLogin != null) {
@@ -548,6 +620,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     required TResult Function() loadingLogin,
     required TResult Function(LoginResponseModel data) successLogin,
     required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
   }) {
     return errorLogin(apiErrorModel);
   }
@@ -559,6 +634,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     TResult? Function()? loadingLogin,
     TResult? Function(LoginResponseModel data)? successLogin,
     TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
   }) {
     return errorLogin?.call(apiErrorModel);
   }
@@ -570,6 +648,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     TResult Function()? loadingLogin,
     TResult Function(LoginResponseModel data)? successLogin,
     TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
     required TResult orElse(),
   }) {
     if (errorLogin != null) {
@@ -585,6 +666,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     required TResult Function(LoadingLogin value) loadingLogin,
     required TResult Function(SuccessLogin value) successLogin,
     required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
   }) {
     return errorLogin(this);
   }
@@ -596,6 +680,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     TResult? Function(LoadingLogin value)? loadingLogin,
     TResult? Function(SuccessLogin value)? successLogin,
     TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
   }) {
     return errorLogin?.call(this);
   }
@@ -607,6 +694,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     TResult Function(LoadingLogin value)? loadingLogin,
     TResult Function(SuccessLogin value)? successLogin,
     TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
     required TResult orElse(),
   }) {
     if (errorLogin != null) {
@@ -626,5 +716,447 @@ abstract class ErrorLogin implements AuthState {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorLoginImplCopyWith<_$ErrorLoginImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$LoadingLogoutImplCopyWith<$Res> {
+  factory _$$LoadingLogoutImplCopyWith(
+          _$LoadingLogoutImpl value, $Res Function(_$LoadingLogoutImpl) then) =
+      __$$LoadingLogoutImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadingLogoutImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$LoadingLogoutImpl>
+    implements _$$LoadingLogoutImplCopyWith<$Res> {
+  __$$LoadingLogoutImplCopyWithImpl(
+      _$LoadingLogoutImpl _value, $Res Function(_$LoadingLogoutImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$LoadingLogoutImpl implements LoadingLogout {
+  const _$LoadingLogoutImpl();
+
+  @override
+  String toString() {
+    return 'AuthState.loadingLogout()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LoadingLogoutImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initialAuth,
+    required TResult Function() loadingLogin,
+    required TResult Function(LoginResponseModel data) successLogin,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
+  }) {
+    return loadingLogout();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initialAuth,
+    TResult? Function()? loadingLogin,
+    TResult? Function(LoginResponseModel data)? successLogin,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
+  }) {
+    return loadingLogout?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initialAuth,
+    TResult Function()? loadingLogin,
+    TResult Function(LoginResponseModel data)? successLogin,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
+    required TResult orElse(),
+  }) {
+    if (loadingLogout != null) {
+      return loadingLogout();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_InitialAuth value) initialAuth,
+    required TResult Function(LoadingLogin value) loadingLogin,
+    required TResult Function(SuccessLogin value) successLogin,
+    required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
+  }) {
+    return loadingLogout(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_InitialAuth value)? initialAuth,
+    TResult? Function(LoadingLogin value)? loadingLogin,
+    TResult? Function(SuccessLogin value)? successLogin,
+    TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
+  }) {
+    return loadingLogout?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_InitialAuth value)? initialAuth,
+    TResult Function(LoadingLogin value)? loadingLogin,
+    TResult Function(SuccessLogin value)? successLogin,
+    TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
+    required TResult orElse(),
+  }) {
+    if (loadingLogout != null) {
+      return loadingLogout(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LoadingLogout implements AuthState {
+  const factory LoadingLogout() = _$LoadingLogoutImpl;
+}
+
+/// @nodoc
+abstract class _$$SuccessLogoutImplCopyWith<$Res> {
+  factory _$$SuccessLogoutImplCopyWith(
+          _$SuccessLogoutImpl value, $Res Function(_$SuccessLogoutImpl) then) =
+      __$$SuccessLogoutImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SuccessLogoutImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$SuccessLogoutImpl>
+    implements _$$SuccessLogoutImplCopyWith<$Res> {
+  __$$SuccessLogoutImplCopyWithImpl(
+      _$SuccessLogoutImpl _value, $Res Function(_$SuccessLogoutImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$SuccessLogoutImpl implements SuccessLogout {
+  const _$SuccessLogoutImpl();
+
+  @override
+  String toString() {
+    return 'AuthState.successLogout()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SuccessLogoutImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initialAuth,
+    required TResult Function() loadingLogin,
+    required TResult Function(LoginResponseModel data) successLogin,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
+  }) {
+    return successLogout();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initialAuth,
+    TResult? Function()? loadingLogin,
+    TResult? Function(LoginResponseModel data)? successLogin,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
+  }) {
+    return successLogout?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initialAuth,
+    TResult Function()? loadingLogin,
+    TResult Function(LoginResponseModel data)? successLogin,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
+    required TResult orElse(),
+  }) {
+    if (successLogout != null) {
+      return successLogout();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_InitialAuth value) initialAuth,
+    required TResult Function(LoadingLogin value) loadingLogin,
+    required TResult Function(SuccessLogin value) successLogin,
+    required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
+  }) {
+    return successLogout(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_InitialAuth value)? initialAuth,
+    TResult? Function(LoadingLogin value)? loadingLogin,
+    TResult? Function(SuccessLogin value)? successLogin,
+    TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
+  }) {
+    return successLogout?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_InitialAuth value)? initialAuth,
+    TResult Function(LoadingLogin value)? loadingLogin,
+    TResult Function(SuccessLogin value)? successLogin,
+    TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
+    required TResult orElse(),
+  }) {
+    if (successLogout != null) {
+      return successLogout(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SuccessLogout implements AuthState {
+  const factory SuccessLogout() = _$SuccessLogoutImpl;
+}
+
+/// @nodoc
+abstract class _$$ErrorLogoutImplCopyWith<$Res> {
+  factory _$$ErrorLogoutImplCopyWith(
+          _$ErrorLogoutImpl value, $Res Function(_$ErrorLogoutImpl) then) =
+      __$$ErrorLogoutImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ApiErrorModel apiErrorModel});
+}
+
+/// @nodoc
+class __$$ErrorLogoutImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$ErrorLogoutImpl>
+    implements _$$ErrorLogoutImplCopyWith<$Res> {
+  __$$ErrorLogoutImplCopyWithImpl(
+      _$ErrorLogoutImpl _value, $Res Function(_$ErrorLogoutImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? apiErrorModel = null,
+  }) {
+    return _then(_$ErrorLogoutImpl(
+      null == apiErrorModel
+          ? _value.apiErrorModel
+          : apiErrorModel // ignore: cast_nullable_to_non_nullable
+              as ApiErrorModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ErrorLogoutImpl implements ErrorLogout {
+  const _$ErrorLogoutImpl(this.apiErrorModel);
+
+  @override
+  final ApiErrorModel apiErrorModel;
+
+  @override
+  String toString() {
+    return 'AuthState.errorLogout(apiErrorModel: $apiErrorModel)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ErrorLogoutImpl &&
+            (identical(other.apiErrorModel, apiErrorModel) ||
+                other.apiErrorModel == apiErrorModel));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, apiErrorModel);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ErrorLogoutImplCopyWith<_$ErrorLogoutImpl> get copyWith =>
+      __$$ErrorLogoutImplCopyWithImpl<_$ErrorLogoutImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initialAuth,
+    required TResult Function() loadingLogin,
+    required TResult Function(LoginResponseModel data) successLogin,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
+  }) {
+    return errorLogout(apiErrorModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initialAuth,
+    TResult? Function()? loadingLogin,
+    TResult? Function(LoginResponseModel data)? successLogin,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
+  }) {
+    return errorLogout?.call(apiErrorModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initialAuth,
+    TResult Function()? loadingLogin,
+    TResult Function(LoginResponseModel data)? successLogin,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
+    required TResult orElse(),
+  }) {
+    if (errorLogout != null) {
+      return errorLogout(apiErrorModel);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_InitialAuth value) initialAuth,
+    required TResult Function(LoadingLogin value) loadingLogin,
+    required TResult Function(SuccessLogin value) successLogin,
+    required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
+  }) {
+    return errorLogout(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_InitialAuth value)? initialAuth,
+    TResult? Function(LoadingLogin value)? loadingLogin,
+    TResult? Function(SuccessLogin value)? successLogin,
+    TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
+  }) {
+    return errorLogout?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_InitialAuth value)? initialAuth,
+    TResult Function(LoadingLogin value)? loadingLogin,
+    TResult Function(SuccessLogin value)? successLogin,
+    TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
+    required TResult orElse(),
+  }) {
+    if (errorLogout != null) {
+      return errorLogout(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ErrorLogout implements AuthState {
+  const factory ErrorLogout(final ApiErrorModel apiErrorModel) =
+      _$ErrorLogoutImpl;
+
+  ApiErrorModel get apiErrorModel;
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ErrorLogoutImplCopyWith<_$ErrorLogoutImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

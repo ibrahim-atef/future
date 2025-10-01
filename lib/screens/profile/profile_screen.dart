@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/core/helper/shared_pref_helper.dart';
 import 'package:future_app/core/routes/app_routes.dart';
+import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
+import 'package:future_app/features/auth/logic/cubit/auth_state.dart';
 import 'package:future_app/features/auth/presentation/screens/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -45,11 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-                (route) => false);
-            SharedPrefHelper.clearAllSecuredData();
+            context.read<AuthCubit>().logout();
           },
         ),
       ),
@@ -262,6 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
+            const LogoutListener()
           ],
         ),
       ),
@@ -384,6 +384,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class LogoutListener extends StatelessWidget {
+  const LogoutListener({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (previous, current) =>
+          current is SuccessLogout ||
+          current is LoadingLogout ||
+          current is ErrorLogout,
+      listener: (context, state) {
+        state.whenOrNull(
+          errorLogout: (error) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(error.message ?? 'فشل في تسجيل الخروج'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          loadingLogout: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return const Center(
+                    child: CircularProgressIndicator(color: Color(0xFFd4af37)));
+              },
+            );
+          },
+          successLogout: () {
+            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false);
+          },
+        );
+      },
+      child: const SizedBox(),
     );
   }
 }

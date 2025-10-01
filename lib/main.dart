@@ -5,21 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:future_app/core/di/di.dart';
 import 'package:future_app/core/helper/bloc_observer.dart';
+import 'package:future_app/core/helper/device_info_helper.dart';
 import 'package:future_app/core/helper/shared_pref_helper.dart';
 import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:future_app/screens/main/main_navigation_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
 import 'core/routes/app_routes.dart';
 import 'core/services/storage_service.dart';
-import 'providers/auth_provider.dart';
-import 'providers/course_provider.dart';
-import 'providers/download_provider.dart';
-import 'providers/settings_provider.dart';
 import 'screens/splash/splash_screen.dart';
 
 void main() async {
@@ -33,6 +28,9 @@ void main() async {
   // ApiService().init(); // Commented out for MVP - no API calls
 
   await checkIfLoggedInUser();
+
+  // device id
+  UserConstant.deviceId = await DeviceInfoHelper.getDeviceId();
   // Initialize Dependency Injection
   setupGetIt();
   MyBlocObserver();

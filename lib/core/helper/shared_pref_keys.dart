@@ -4,4 +4,5 @@ class SharedPrefKeys {
 
 class UserConstant {
   static bool isLoggedInUser = false;
+  static String? deviceId;
 }

@@ -31,4 +31,17 @@ class AuthCubit extends Cubit<AuthState> {
     );
     DioFactory.setTokenIntoHeaderAfterLogin(userToken);
   }
+
+  // logout
+  Future<void> logout() async {
+    emit(const AuthState.loadingLogout());
+    final response = await _authRepo.logout();
+    response.when(success: (_) {
+      SharedPrefHelper.clearAllData();
+      SharedPrefHelper.clearAllSecuredData();
+      emit(const AuthState.successLogout());
+    }, failure: (apiErrorModel) {
+      emit(AuthState.errorLogout(apiErrorModel));
+    });
+  }
 }

@@ -13,4 +13,8 @@ abstract class ApiService {
   // login
   @POST(ApiConstants.login)
   Future<LoginResponseModel> login(@Body() LoginRequestModel request);
+
+  // logout
+  @POST(ApiConstants.logout)
+  Future<void> logout();
 }

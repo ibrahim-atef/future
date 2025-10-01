@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:future_app/core/helper/device_info_helper.dart';
+import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_state.dart';
@@ -257,9 +259,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         context.read<AuthCubit>().login(LoginRequestModel(
-                            username: _emailController.text,
-                            password: _passwordController.text,
-                            deviceId: '00000000'));
+                              username: _emailController.text,
+                              password: _passwordController.text,
+                              deviceId: UserConstant.deviceId!,
+                            ));
                       }
                     },
                   ),

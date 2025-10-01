@@ -11,4 +11,10 @@ class AuthState with _$AuthState {
   const factory AuthState.loadingLogin() = LoadingLogin;
   const factory AuthState.successLogin(LoginResponseModel data) = SuccessLogin;
   const factory AuthState.errorLogin(ApiErrorModel apiErrorModel) = ErrorLogin;
+
+  // logout
+  const factory AuthState.loadingLogout() = LoadingLogout;
+  const factory AuthState.successLogout() = SuccessLogout;
+  const factory AuthState.errorLogout(ApiErrorModel apiErrorModel) =
+      ErrorLogout;
 }

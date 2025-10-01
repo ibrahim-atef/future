@@ -18,4 +18,14 @@ class AuthRepo {
       return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
+
+  // logout
+  Future<ApiResult<void>> logout() async {
+    try {
+      final response = await _apiService.logout();
+      return ApiResult.success(response);
+    } catch (e) {
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
 }
