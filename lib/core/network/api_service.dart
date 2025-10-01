@@ -4,6 +4,8 @@ import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/data/models/login_response_model.dart';
 import 'package:future_app/features/auth/data/models/register_request_model.dart';
 import 'package:future_app/features/auth/data/models/register_response_model.dart';
+import 'package:future_app/features/auth/data/models/register_step2_request_model.dart';
+import 'package:future_app/features/auth/data/models/register_step2_response_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
@@ -24,4 +26,10 @@ abstract class ApiService {
   @POST(ApiConstants.registerStep1)
   Future<RegisterResponseModel> registerStep1(
       @Body() RegisterRequestModel request);
+
+  // register step 2
+  @POST(ApiConstants.registerStep2)
+  Future<RegisterStep2ResponseModel> registerStep2(
+    @Body() RegisterStep2RequestModel request,
+  );
 }

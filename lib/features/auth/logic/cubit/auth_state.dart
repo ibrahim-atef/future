@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:future_app/core/network/api_error_model.dart';
 import 'package:future_app/features/auth/data/models/login_response_model.dart';
 import 'package:future_app/features/auth/data/models/register_response_model.dart';
+import 'package:future_app/features/auth/data/models/register_step2_response_model.dart';
 part 'auth_state.freezed.dart';
 
 @freezed
@@ -25,4 +26,11 @@ class AuthState with _$AuthState {
       SuccessRegisterStep1;
   const factory AuthState.errorRegisterStep1(ApiErrorModel apiErrorModel) =
       ErrorRegisterStep1;
+
+  // register step 2
+  const factory AuthState.loadingRegisterStep2() = LoadingRegisterStep2;
+  const factory AuthState.successRegisterStep2(
+      RegisterStep2ResponseModel data) = SuccessRegisterStep2;
+  const factory AuthState.errorRegisterStep2(ApiErrorModel apiErrorModel) =
+      ErrorRegisterStep2;
 }

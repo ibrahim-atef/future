@@ -26,14 +26,10 @@ LoginResponseData _$LoginResponseDataFromJson(Map<String, dynamic> json) =>
     LoginResponseData(
       token: json['token'] as String,
       userId: (json['user_id'] as num).toInt(),
-      profileCompletion: (json['profile_completion'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
     );
 
 Map<String, dynamic> _$LoginResponseDataToJson(LoginResponseData instance) =>
     <String, dynamic>{
       'token': instance.token,
       'user_id': instance.userId,
-      'profile_completion': instance.profileCompletion,
     };

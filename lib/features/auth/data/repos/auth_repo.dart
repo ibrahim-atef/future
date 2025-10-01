@@ -4,8 +4,11 @@ import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/data/models/login_response_model.dart';
 import 'package:future_app/features/auth/data/models/register_request_model.dart';
 import 'package:future_app/features/auth/data/models/register_response_model.dart';
+import 'package:future_app/features/auth/data/models/register_step2_request_model.dart';
+import 'package:future_app/features/auth/data/models/register_step2_response_model.dart';
 
 import '../../../../core/network/api_service.dart';
+import 'dart:developer';
 
 class AuthRepo {
   final ApiService _apiService;
@@ -17,6 +20,7 @@ class AuthRepo {
       final response = await _apiService.login(request);
       return ApiResult.success(response);
     } catch (e) {
+      log(e.toString());
       return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
@@ -36,6 +40,17 @@ class AuthRepo {
       RegisterRequestModel request) async {
     try {
       final response = await _apiService.registerStep1(request);
+      return ApiResult.success(response);
+    } catch (e) {
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
+
+  // register step 2
+  Future<ApiResult<RegisterStep2ResponseModel>> registerStep2(
+      RegisterStep2RequestModel request) async {
+    try {
+      final response = await _apiService.registerStep2(request);
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));

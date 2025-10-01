@@ -28,6 +28,10 @@ mixin _$AuthState {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -42,6 +46,9 @@ mixin _$AuthState {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -56,6 +63,9 @@ mixin _$AuthState {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -71,6 +81,9 @@ mixin _$AuthState {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -85,6 +98,9 @@ mixin _$AuthState {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -99,6 +115,9 @@ mixin _$AuthState {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -175,6 +194,10 @@ class _$InitialAuthImpl implements _InitialAuth {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return initialAuth();
   }
@@ -192,6 +215,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return initialAuth?.call();
   }
@@ -209,6 +235,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (initialAuth != null) {
@@ -230,6 +259,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return initialAuth(this);
   }
@@ -247,6 +279,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return initialAuth?.call(this);
   }
@@ -264,6 +299,9 @@ class _$InitialAuthImpl implements _InitialAuth {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (initialAuth != null) {
@@ -328,6 +366,10 @@ class _$LoadingLoginImpl implements LoadingLogin {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return loadingLogin();
   }
@@ -345,6 +387,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return loadingLogin?.call();
   }
@@ -362,6 +407,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (loadingLogin != null) {
@@ -383,6 +431,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return loadingLogin(this);
   }
@@ -400,6 +451,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return loadingLogin?.call(this);
   }
@@ -417,6 +471,9 @@ class _$LoadingLoginImpl implements LoadingLogin {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (loadingLogin != null) {
@@ -508,6 +565,10 @@ class _$SuccessLoginImpl implements SuccessLogin {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return successLogin(data);
   }
@@ -525,6 +586,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return successLogin?.call(data);
   }
@@ -542,6 +606,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (successLogin != null) {
@@ -563,6 +630,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return successLogin(this);
   }
@@ -580,6 +650,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return successLogin?.call(this);
   }
@@ -597,6 +670,9 @@ class _$SuccessLoginImpl implements SuccessLogin {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (successLogin != null) {
@@ -698,6 +774,10 @@ class _$ErrorLoginImpl implements ErrorLogin {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return errorLogin(apiErrorModel);
   }
@@ -715,6 +795,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return errorLogin?.call(apiErrorModel);
   }
@@ -732,6 +815,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (errorLogin != null) {
@@ -753,6 +839,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return errorLogin(this);
   }
@@ -770,6 +859,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return errorLogin?.call(this);
   }
@@ -787,6 +879,9 @@ class _$ErrorLoginImpl implements ErrorLogin {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (errorLogin != null) {
@@ -860,6 +955,10 @@ class _$LoadingLogoutImpl implements LoadingLogout {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return loadingLogout();
   }
@@ -877,6 +976,9 @@ class _$LoadingLogoutImpl implements LoadingLogout {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return loadingLogout?.call();
   }
@@ -894,6 +996,9 @@ class _$LoadingLogoutImpl implements LoadingLogout {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (loadingLogout != null) {
@@ -915,6 +1020,9 @@ class _$LoadingLogoutImpl implements LoadingLogout {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return loadingLogout(this);
   }
@@ -932,6 +1040,9 @@ class _$LoadingLogoutImpl implements LoadingLogout {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return loadingLogout?.call(this);
   }
@@ -949,6 +1060,9 @@ class _$LoadingLogoutImpl implements LoadingLogout {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (loadingLogout != null) {
@@ -1013,6 +1127,10 @@ class _$SuccessLogoutImpl implements SuccessLogout {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return successLogout();
   }
@@ -1030,6 +1148,9 @@ class _$SuccessLogoutImpl implements SuccessLogout {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return successLogout?.call();
   }
@@ -1047,6 +1168,9 @@ class _$SuccessLogoutImpl implements SuccessLogout {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (successLogout != null) {
@@ -1068,6 +1192,9 @@ class _$SuccessLogoutImpl implements SuccessLogout {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return successLogout(this);
   }
@@ -1085,6 +1212,9 @@ class _$SuccessLogoutImpl implements SuccessLogout {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return successLogout?.call(this);
   }
@@ -1102,6 +1232,9 @@ class _$SuccessLogoutImpl implements SuccessLogout {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (successLogout != null) {
@@ -1194,6 +1327,10 @@ class _$ErrorLogoutImpl implements ErrorLogout {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return errorLogout(apiErrorModel);
   }
@@ -1211,6 +1348,9 @@ class _$ErrorLogoutImpl implements ErrorLogout {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return errorLogout?.call(apiErrorModel);
   }
@@ -1228,6 +1368,9 @@ class _$ErrorLogoutImpl implements ErrorLogout {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (errorLogout != null) {
@@ -1249,6 +1392,9 @@ class _$ErrorLogoutImpl implements ErrorLogout {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return errorLogout(this);
   }
@@ -1266,6 +1412,9 @@ class _$ErrorLogoutImpl implements ErrorLogout {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return errorLogout?.call(this);
   }
@@ -1283,6 +1432,9 @@ class _$ErrorLogoutImpl implements ErrorLogout {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (errorLogout != null) {
@@ -1357,6 +1509,10 @@ class _$LoadingRegisterStep1Impl implements LoadingRegisterStep1 {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return loadingRegisterStep1();
   }
@@ -1374,6 +1530,9 @@ class _$LoadingRegisterStep1Impl implements LoadingRegisterStep1 {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return loadingRegisterStep1?.call();
   }
@@ -1391,6 +1550,9 @@ class _$LoadingRegisterStep1Impl implements LoadingRegisterStep1 {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (loadingRegisterStep1 != null) {
@@ -1412,6 +1574,9 @@ class _$LoadingRegisterStep1Impl implements LoadingRegisterStep1 {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return loadingRegisterStep1(this);
   }
@@ -1429,6 +1594,9 @@ class _$LoadingRegisterStep1Impl implements LoadingRegisterStep1 {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return loadingRegisterStep1?.call(this);
   }
@@ -1446,6 +1614,9 @@ class _$LoadingRegisterStep1Impl implements LoadingRegisterStep1 {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (loadingRegisterStep1 != null) {
@@ -1539,6 +1710,10 @@ class _$SuccessRegisterStep1Impl implements SuccessRegisterStep1 {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return successRegisterStep1(data);
   }
@@ -1556,6 +1731,9 @@ class _$SuccessRegisterStep1Impl implements SuccessRegisterStep1 {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return successRegisterStep1?.call(data);
   }
@@ -1573,6 +1751,9 @@ class _$SuccessRegisterStep1Impl implements SuccessRegisterStep1 {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (successRegisterStep1 != null) {
@@ -1594,6 +1775,9 @@ class _$SuccessRegisterStep1Impl implements SuccessRegisterStep1 {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return successRegisterStep1(this);
   }
@@ -1611,6 +1795,9 @@ class _$SuccessRegisterStep1Impl implements SuccessRegisterStep1 {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return successRegisterStep1?.call(this);
   }
@@ -1628,6 +1815,9 @@ class _$SuccessRegisterStep1Impl implements SuccessRegisterStep1 {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (successRegisterStep1 != null) {
@@ -1730,6 +1920,10 @@ class _$ErrorRegisterStep1Impl implements ErrorRegisterStep1 {
     required TResult Function() loadingRegisterStep1,
     required TResult Function(RegisterResponseModel data) successRegisterStep1,
     required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
   }) {
     return errorRegisterStep1(apiErrorModel);
   }
@@ -1747,6 +1941,9 @@ class _$ErrorRegisterStep1Impl implements ErrorRegisterStep1 {
     TResult? Function()? loadingRegisterStep1,
     TResult? Function(RegisterResponseModel data)? successRegisterStep1,
     TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
   }) {
     return errorRegisterStep1?.call(apiErrorModel);
   }
@@ -1764,6 +1961,9 @@ class _$ErrorRegisterStep1Impl implements ErrorRegisterStep1 {
     TResult Function()? loadingRegisterStep1,
     TResult Function(RegisterResponseModel data)? successRegisterStep1,
     TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (errorRegisterStep1 != null) {
@@ -1785,6 +1985,9 @@ class _$ErrorRegisterStep1Impl implements ErrorRegisterStep1 {
     required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
     required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
     required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
   }) {
     return errorRegisterStep1(this);
   }
@@ -1802,6 +2005,9 @@ class _$ErrorRegisterStep1Impl implements ErrorRegisterStep1 {
     TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
   }) {
     return errorRegisterStep1?.call(this);
   }
@@ -1819,6 +2025,9 @@ class _$ErrorRegisterStep1Impl implements ErrorRegisterStep1 {
     TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
     TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
     TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
     required TResult orElse(),
   }) {
     if (errorRegisterStep1 != null) {
@@ -1838,5 +2047,598 @@ abstract class ErrorRegisterStep1 implements AuthState {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorRegisterStep1ImplCopyWith<_$ErrorRegisterStep1Impl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$LoadingRegisterStep2ImplCopyWith<$Res> {
+  factory _$$LoadingRegisterStep2ImplCopyWith(_$LoadingRegisterStep2Impl value,
+          $Res Function(_$LoadingRegisterStep2Impl) then) =
+      __$$LoadingRegisterStep2ImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadingRegisterStep2ImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$LoadingRegisterStep2Impl>
+    implements _$$LoadingRegisterStep2ImplCopyWith<$Res> {
+  __$$LoadingRegisterStep2ImplCopyWithImpl(_$LoadingRegisterStep2Impl _value,
+      $Res Function(_$LoadingRegisterStep2Impl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$LoadingRegisterStep2Impl implements LoadingRegisterStep2 {
+  const _$LoadingRegisterStep2Impl();
+
+  @override
+  String toString() {
+    return 'AuthState.loadingRegisterStep2()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LoadingRegisterStep2Impl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initialAuth,
+    required TResult Function() loadingLogin,
+    required TResult Function(LoginResponseModel data) successLogin,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
+    required TResult Function() loadingRegisterStep1,
+    required TResult Function(RegisterResponseModel data) successRegisterStep1,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
+  }) {
+    return loadingRegisterStep2();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initialAuth,
+    TResult? Function()? loadingLogin,
+    TResult? Function(LoginResponseModel data)? successLogin,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
+    TResult? Function()? loadingRegisterStep1,
+    TResult? Function(RegisterResponseModel data)? successRegisterStep1,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
+  }) {
+    return loadingRegisterStep2?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initialAuth,
+    TResult Function()? loadingLogin,
+    TResult Function(LoginResponseModel data)? successLogin,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
+    TResult Function()? loadingRegisterStep1,
+    TResult Function(RegisterResponseModel data)? successRegisterStep1,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
+    required TResult orElse(),
+  }) {
+    if (loadingRegisterStep2 != null) {
+      return loadingRegisterStep2();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_InitialAuth value) initialAuth,
+    required TResult Function(LoadingLogin value) loadingLogin,
+    required TResult Function(SuccessLogin value) successLogin,
+    required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
+    required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
+    required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
+    required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
+  }) {
+    return loadingRegisterStep2(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_InitialAuth value)? initialAuth,
+    TResult? Function(LoadingLogin value)? loadingLogin,
+    TResult? Function(SuccessLogin value)? successLogin,
+    TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
+    TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
+    TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
+    TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
+  }) {
+    return loadingRegisterStep2?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_InitialAuth value)? initialAuth,
+    TResult Function(LoadingLogin value)? loadingLogin,
+    TResult Function(SuccessLogin value)? successLogin,
+    TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
+    TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
+    TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
+    TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
+    required TResult orElse(),
+  }) {
+    if (loadingRegisterStep2 != null) {
+      return loadingRegisterStep2(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LoadingRegisterStep2 implements AuthState {
+  const factory LoadingRegisterStep2() = _$LoadingRegisterStep2Impl;
+}
+
+/// @nodoc
+abstract class _$$SuccessRegisterStep2ImplCopyWith<$Res> {
+  factory _$$SuccessRegisterStep2ImplCopyWith(_$SuccessRegisterStep2Impl value,
+          $Res Function(_$SuccessRegisterStep2Impl) then) =
+      __$$SuccessRegisterStep2ImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({RegisterStep2ResponseModel data});
+}
+
+/// @nodoc
+class __$$SuccessRegisterStep2ImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$SuccessRegisterStep2Impl>
+    implements _$$SuccessRegisterStep2ImplCopyWith<$Res> {
+  __$$SuccessRegisterStep2ImplCopyWithImpl(_$SuccessRegisterStep2Impl _value,
+      $Res Function(_$SuccessRegisterStep2Impl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? data = null,
+  }) {
+    return _then(_$SuccessRegisterStep2Impl(
+      null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as RegisterStep2ResponseModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SuccessRegisterStep2Impl implements SuccessRegisterStep2 {
+  const _$SuccessRegisterStep2Impl(this.data);
+
+  @override
+  final RegisterStep2ResponseModel data;
+
+  @override
+  String toString() {
+    return 'AuthState.successRegisterStep2(data: $data)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SuccessRegisterStep2Impl &&
+            (identical(other.data, data) || other.data == data));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, data);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SuccessRegisterStep2ImplCopyWith<_$SuccessRegisterStep2Impl>
+      get copyWith =>
+          __$$SuccessRegisterStep2ImplCopyWithImpl<_$SuccessRegisterStep2Impl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initialAuth,
+    required TResult Function() loadingLogin,
+    required TResult Function(LoginResponseModel data) successLogin,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
+    required TResult Function() loadingRegisterStep1,
+    required TResult Function(RegisterResponseModel data) successRegisterStep1,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
+  }) {
+    return successRegisterStep2(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initialAuth,
+    TResult? Function()? loadingLogin,
+    TResult? Function(LoginResponseModel data)? successLogin,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
+    TResult? Function()? loadingRegisterStep1,
+    TResult? Function(RegisterResponseModel data)? successRegisterStep1,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
+  }) {
+    return successRegisterStep2?.call(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initialAuth,
+    TResult Function()? loadingLogin,
+    TResult Function(LoginResponseModel data)? successLogin,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
+    TResult Function()? loadingRegisterStep1,
+    TResult Function(RegisterResponseModel data)? successRegisterStep1,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
+    required TResult orElse(),
+  }) {
+    if (successRegisterStep2 != null) {
+      return successRegisterStep2(data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_InitialAuth value) initialAuth,
+    required TResult Function(LoadingLogin value) loadingLogin,
+    required TResult Function(SuccessLogin value) successLogin,
+    required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
+    required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
+    required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
+    required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
+  }) {
+    return successRegisterStep2(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_InitialAuth value)? initialAuth,
+    TResult? Function(LoadingLogin value)? loadingLogin,
+    TResult? Function(SuccessLogin value)? successLogin,
+    TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
+    TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
+    TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
+    TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
+  }) {
+    return successRegisterStep2?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_InitialAuth value)? initialAuth,
+    TResult Function(LoadingLogin value)? loadingLogin,
+    TResult Function(SuccessLogin value)? successLogin,
+    TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
+    TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
+    TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
+    TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
+    required TResult orElse(),
+  }) {
+    if (successRegisterStep2 != null) {
+      return successRegisterStep2(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SuccessRegisterStep2 implements AuthState {
+  const factory SuccessRegisterStep2(final RegisterStep2ResponseModel data) =
+      _$SuccessRegisterStep2Impl;
+
+  RegisterStep2ResponseModel get data;
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SuccessRegisterStep2ImplCopyWith<_$SuccessRegisterStep2Impl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ErrorRegisterStep2ImplCopyWith<$Res> {
+  factory _$$ErrorRegisterStep2ImplCopyWith(_$ErrorRegisterStep2Impl value,
+          $Res Function(_$ErrorRegisterStep2Impl) then) =
+      __$$ErrorRegisterStep2ImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ApiErrorModel apiErrorModel});
+}
+
+/// @nodoc
+class __$$ErrorRegisterStep2ImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$ErrorRegisterStep2Impl>
+    implements _$$ErrorRegisterStep2ImplCopyWith<$Res> {
+  __$$ErrorRegisterStep2ImplCopyWithImpl(_$ErrorRegisterStep2Impl _value,
+      $Res Function(_$ErrorRegisterStep2Impl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? apiErrorModel = null,
+  }) {
+    return _then(_$ErrorRegisterStep2Impl(
+      null == apiErrorModel
+          ? _value.apiErrorModel
+          : apiErrorModel // ignore: cast_nullable_to_non_nullable
+              as ApiErrorModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ErrorRegisterStep2Impl implements ErrorRegisterStep2 {
+  const _$ErrorRegisterStep2Impl(this.apiErrorModel);
+
+  @override
+  final ApiErrorModel apiErrorModel;
+
+  @override
+  String toString() {
+    return 'AuthState.errorRegisterStep2(apiErrorModel: $apiErrorModel)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ErrorRegisterStep2Impl &&
+            (identical(other.apiErrorModel, apiErrorModel) ||
+                other.apiErrorModel == apiErrorModel));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, apiErrorModel);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ErrorRegisterStep2ImplCopyWith<_$ErrorRegisterStep2Impl> get copyWith =>
+      __$$ErrorRegisterStep2ImplCopyWithImpl<_$ErrorRegisterStep2Impl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initialAuth,
+    required TResult Function() loadingLogin,
+    required TResult Function(LoginResponseModel data) successLogin,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogin,
+    required TResult Function() loadingLogout,
+    required TResult Function() successLogout,
+    required TResult Function(ApiErrorModel apiErrorModel) errorLogout,
+    required TResult Function() loadingRegisterStep1,
+    required TResult Function(RegisterResponseModel data) successRegisterStep1,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep1,
+    required TResult Function() loadingRegisterStep2,
+    required TResult Function(RegisterStep2ResponseModel data)
+        successRegisterStep2,
+    required TResult Function(ApiErrorModel apiErrorModel) errorRegisterStep2,
+  }) {
+    return errorRegisterStep2(apiErrorModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initialAuth,
+    TResult? Function()? loadingLogin,
+    TResult? Function(LoginResponseModel data)? successLogin,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult? Function()? loadingLogout,
+    TResult? Function()? successLogout,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorLogout,
+    TResult? Function()? loadingRegisterStep1,
+    TResult? Function(RegisterResponseModel data)? successRegisterStep1,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult? Function()? loadingRegisterStep2,
+    TResult? Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult? Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
+  }) {
+    return errorRegisterStep2?.call(apiErrorModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initialAuth,
+    TResult Function()? loadingLogin,
+    TResult Function(LoginResponseModel data)? successLogin,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogin,
+    TResult Function()? loadingLogout,
+    TResult Function()? successLogout,
+    TResult Function(ApiErrorModel apiErrorModel)? errorLogout,
+    TResult Function()? loadingRegisterStep1,
+    TResult Function(RegisterResponseModel data)? successRegisterStep1,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep1,
+    TResult Function()? loadingRegisterStep2,
+    TResult Function(RegisterStep2ResponseModel data)? successRegisterStep2,
+    TResult Function(ApiErrorModel apiErrorModel)? errorRegisterStep2,
+    required TResult orElse(),
+  }) {
+    if (errorRegisterStep2 != null) {
+      return errorRegisterStep2(apiErrorModel);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_InitialAuth value) initialAuth,
+    required TResult Function(LoadingLogin value) loadingLogin,
+    required TResult Function(SuccessLogin value) successLogin,
+    required TResult Function(ErrorLogin value) errorLogin,
+    required TResult Function(LoadingLogout value) loadingLogout,
+    required TResult Function(SuccessLogout value) successLogout,
+    required TResult Function(ErrorLogout value) errorLogout,
+    required TResult Function(LoadingRegisterStep1 value) loadingRegisterStep1,
+    required TResult Function(SuccessRegisterStep1 value) successRegisterStep1,
+    required TResult Function(ErrorRegisterStep1 value) errorRegisterStep1,
+    required TResult Function(LoadingRegisterStep2 value) loadingRegisterStep2,
+    required TResult Function(SuccessRegisterStep2 value) successRegisterStep2,
+    required TResult Function(ErrorRegisterStep2 value) errorRegisterStep2,
+  }) {
+    return errorRegisterStep2(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_InitialAuth value)? initialAuth,
+    TResult? Function(LoadingLogin value)? loadingLogin,
+    TResult? Function(SuccessLogin value)? successLogin,
+    TResult? Function(ErrorLogin value)? errorLogin,
+    TResult? Function(LoadingLogout value)? loadingLogout,
+    TResult? Function(SuccessLogout value)? successLogout,
+    TResult? Function(ErrorLogout value)? errorLogout,
+    TResult? Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
+    TResult? Function(SuccessRegisterStep1 value)? successRegisterStep1,
+    TResult? Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult? Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult? Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult? Function(ErrorRegisterStep2 value)? errorRegisterStep2,
+  }) {
+    return errorRegisterStep2?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_InitialAuth value)? initialAuth,
+    TResult Function(LoadingLogin value)? loadingLogin,
+    TResult Function(SuccessLogin value)? successLogin,
+    TResult Function(ErrorLogin value)? errorLogin,
+    TResult Function(LoadingLogout value)? loadingLogout,
+    TResult Function(SuccessLogout value)? successLogout,
+    TResult Function(ErrorLogout value)? errorLogout,
+    TResult Function(LoadingRegisterStep1 value)? loadingRegisterStep1,
+    TResult Function(SuccessRegisterStep1 value)? successRegisterStep1,
+    TResult Function(ErrorRegisterStep1 value)? errorRegisterStep1,
+    TResult Function(LoadingRegisterStep2 value)? loadingRegisterStep2,
+    TResult Function(SuccessRegisterStep2 value)? successRegisterStep2,
+    TResult Function(ErrorRegisterStep2 value)? errorRegisterStep2,
+    required TResult orElse(),
+  }) {
+    if (errorRegisterStep2 != null) {
+      return errorRegisterStep2(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ErrorRegisterStep2 implements AuthState {
+  const factory ErrorRegisterStep2(final ApiErrorModel apiErrorModel) =
+      _$ErrorRegisterStep2Impl;
+
+  ApiErrorModel get apiErrorModel;
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ErrorRegisterStep2ImplCopyWith<_$ErrorRegisterStep2Impl> get copyWith =>
       throw _privateConstructorUsedError;
 }

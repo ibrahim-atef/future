@@ -29,27 +29,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  // Future<void> _handleLogin() async {
-  //   if (!_formKey.currentState!.validate()) return;
-
-  //   final authProvider = Provider.of<AuthProvider>(context, listen: false);
-  //   final success = await authProvider.login(
-  //     _emailController.text.trim(),
-  //     _passwordController.text,
-  //   );
-
-  //   if (success && mounted) {
-  //     Navigator.pushReplacementNamed(context, AppRoutes.home);
-  //   } else if (mounted) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(authProvider.error ?? 'فشل في تسجيل الدخول'),
-  //         backgroundColor: Colors.red,
-  //       ),
-  //     );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
@@ -80,7 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           successLogin: (success) {
             Navigator.pop(context);
-            Navigator.pushReplacementNamed(context, AppRoutes.home);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRoutes.home,
+              (route) => false,
+            );
           },
         );
       },

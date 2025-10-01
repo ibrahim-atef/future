@@ -34,13 +34,14 @@ class LoginResponseData {
   @JsonKey(name: 'user_id')
   final int userId;
 
-  @JsonKey(name: 'profile_completion')
-  final List<String> profileCompletion;
+  // @JsonKey(name: 'profile_completion')
+  // final List<String> profileCompletion;
 
-  LoginResponseData(
-      {required this.token,
-      required this.userId,
-      required this.profileCompletion});
+  LoginResponseData({
+    required this.token,
+    required this.userId,
+    // required this.profileCompletion
+  });
 
   factory LoginResponseData.fromJson(Map<String, dynamic> json) =>
       _$LoginResponseDataFromJson(json);
