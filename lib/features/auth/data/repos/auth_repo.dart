@@ -2,6 +2,8 @@ import 'package:future_app/core/network/api_error_handel.dart';
 import 'package:future_app/core/network/api_result.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/data/models/login_response_model.dart';
+import 'package:future_app/features/auth/data/models/register_request_model.dart';
+import 'package:future_app/features/auth/data/models/register_response_model.dart';
 
 import '../../../../core/network/api_service.dart';
 
@@ -23,6 +25,17 @@ class AuthRepo {
   Future<ApiResult<void>> logout() async {
     try {
       final response = await _apiService.logout();
+      return ApiResult.success(response);
+    } catch (e) {
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
+
+  // register step 1
+  Future<ApiResult<RegisterResponseModel>> registerStep1(
+      RegisterRequestModel request) async {
+    try {
+      final response = await _apiService.registerStep1(request);
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));

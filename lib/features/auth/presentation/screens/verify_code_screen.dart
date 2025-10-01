@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/routes/app_routes.dart';
-import '../../providers/auth_provider.dart';
-import '../../widgets/common/custom_button.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../../providers/auth_provider.dart';
+import '../../../../widgets/common/custom_button.dart';
 
 class VerifyCodeScreen extends StatefulWidget {
   final String email;
   final String type; // 'register' or 'reset'
+  final int userId;
+  final String fullName;
 
   const VerifyCodeScreen({
     super.key,
     required this.email,
     required this.type,
+    required this.userId,
+    required this.fullName,
   });
 
   @override
@@ -28,41 +32,6 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
     _codeController.dispose();
     super.dispose();
   }
-
-  // Future<void> _handleVerifyCode() async {
-  //   if (!_formKey.currentState!.validate()) return;
-
-  //   final authProvider = Provider.of<AuthProvider>(context, listen: false);
-  //   bool success = false;
-
-  //   if (widget.type == 'register') {
-  //     success = await authProvider.registerStep2(_codeController.text.trim());
-  //   } else {
-  //     success = await authProvider.verifyCode(_codeController.text.trim());
-  //   }
-
-  //   if (success && mounted) {
-  //     if (widget.type == 'register') {
-  //       Navigator.pushReplacementNamed(context, AppRoutes.home);
-  //     } else {
-  //       // Navigate to reset password screen
-  //       Navigator.pushNamed(
-  //         context,
-  //         '/reset-password',
-  //         arguments: {
-  //           'token': _codeController.text.trim(),
-  //         },
-  //       );
-  //     }
-  //   } else if (mounted) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(authProvider.error ?? 'فشل في التحقق من الكود'),
-  //         backgroundColor: Colors.red,
-  //       ),
-  //     );
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,8 @@ import 'package:future_app/core/helper/shared_pref_helper.dart';
 import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/core/network/dio_factory.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
+import 'package:future_app/features/auth/data/models/register_request_model.dart';
+import 'package:future_app/features/auth/data/models/register_response_model.dart';
 import 'package:future_app/features/auth/data/repos/auth_repo.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_state.dart';
 
@@ -42,6 +44,17 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthState.successLogout());
     }, failure: (apiErrorModel) {
       emit(AuthState.errorLogout(apiErrorModel));
+    });
+  }
+
+  // register step 1
+  Future registerStep1(RegisterRequestModel request) async {
+    emit(const AuthState.loadingRegisterStep1());
+    final response = await _authRepo.registerStep1(request);
+    response.when(success: (RegisterResponseModel data) {
+      emit(AuthState.successRegisterStep1(data));
+    }, failure: (apiErrorModel) {
+      emit(AuthState.errorRegisterStep1(apiErrorModel));
     });
   }
 }

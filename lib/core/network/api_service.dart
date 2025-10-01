@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:future_app/core/network/api_constants.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/data/models/login_response_model.dart';
+import 'package:future_app/features/auth/data/models/register_request_model.dart';
+import 'package:future_app/features/auth/data/models/register_response_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
@@ -17,4 +19,9 @@ abstract class ApiService {
   // logout
   @POST(ApiConstants.logout)
   Future<void> logout();
+
+  // register step 1
+  @POST(ApiConstants.registerStep1)
+  Future<RegisterResponseModel> registerStep1(
+      @Body() RegisterRequestModel request);
 }
