@@ -36,7 +36,10 @@ class DioFactory {
   }
 
   static void setTokenIntoHeaderAfterLogin(String token) {
-    dio?.options.headers = {'Authorization': 'Bearer $token'};
+    dio?.options.headers = {
+      'Authorization': 'Bearer $token',
+      // 'x-api-key': 5551
+    };
   }
 
   static void addDioInterceptor() {

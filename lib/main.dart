@@ -27,13 +27,12 @@ void main() async {
   await StorageService.init();
   // ApiService().init(); // Commented out for MVP - no API calls
 
-  await checkIfLoggedInUser();
-
   // device id
   UserConstant.deviceId = await DeviceInfoHelper.getDeviceId();
   // Initialize Dependency Injection
   setupGetIt();
   MyBlocObserver();
+  await checkIfLoggedInUser();
 
   runApp(const FutureApp());
 }
