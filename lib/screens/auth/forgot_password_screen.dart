@@ -21,29 +21,29 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.dispose();
   }
 
-  Future<void> _handleForgotPassword() async {
-    if (!_formKey.currentState!.validate()) return;
+  // Future<void> _handleForgotPassword() async {
+  //   if (!_formKey.currentState!.validate()) return;
 
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final success = await authProvider.forgotPassword(_emailController.text.trim());
+  //   final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  //   final success = await authProvider.forgotPassword(_emailController.text.trim());
 
-    if (success && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      Navigator.pop(context);
-    } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(authProvider.error ?? 'فشل في إرسال رابط إعادة تعيين كلمة المرور'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
+  //   if (success && mounted) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني'),
+  //         backgroundColor: Colors.green,
+  //       ),
+  //     );
+  //     Navigator.pop(context);
+  //   } else if (mounted) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(authProvider.error ?? 'فشل في إرسال رابط إعادة تعيين كلمة المرور'),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
-                
+
                 // Icon
                 Center(
                   child: Container(
@@ -79,36 +79,36 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 // Title
                 Text(
                   'نسيت كلمة المرور؟',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 Text(
                   'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey[600],
-                  ),
+                        color: Colors.grey[600],
+                      ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Email Field
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) => _handleForgotPassword(),
+                  // onFieldSubmitted: (_) => _handleForgotPassword(),
                   decoration: InputDecoration(
                     labelText: AppStrings.email,
                     prefixIcon: const Icon(Icons.email_outlined),
@@ -121,7 +121,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   validator: (value) {
@@ -134,22 +135,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 // Send Button
-                Consumer<AuthProvider>(
-                  builder: (context, authProvider, child) {
-                    return CustomButton(
-                      text: 'إرسال رابط إعادة التعيين',
-                      onPressed: authProvider.isLoading ? null : _handleForgotPassword,
-                      isLoading: authProvider.isLoading,
-                    );
-                  },
-                ),
-                
+                // Consumer<AuthProvider>(
+                //   builder: (context, authProvider, child) {
+                //     return CustomButton(
+                //       text: 'إرسال رابط إعادة التعيين',
+                //       onPressed: authProvider.isLoading ? null : _handleForgotPassword,
+                //       isLoading: authProvider.isLoading,
+                //     );
+                //   },
+                // ),
+
                 const SizedBox(height: 20),
-                
+
                 // Back to Login
                 TextButton(
                   onPressed: () => Navigator.pop(context),

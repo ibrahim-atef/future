@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../screens/splash/splash_screen.dart';
 import '../../screens/auth/auth_screen.dart';
-import '../../screens/auth/login_screen.dart';
-import '../../screens/auth/register_screen.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../screens/auth/forgot_password_screen.dart';
-import '../../screens/auth/verify_code_screen.dart';
+import '../../features/auth/presentation/screens/verify_code_screen.dart';
 import '../../screens/main/main_navigation_screen.dart';
-import '../../screens/home/home_screen.dart';
 import '../../screens/courses/courses_screen.dart';
 import '../../screens/courses/course_detail_screen.dart';
 import '../../screens/courses/lecture_player_screen.dart';
@@ -53,29 +52,29 @@ class AppRoutes {
           settings: settings,
         );
 
-          case login:
-            return MaterialPageRoute(
-              builder: (_) => const AuthScreen(),
-              settings: settings,
-            );
+      case login:
+        return MaterialPageRoute(
+          builder: (_) => const AuthScreen(),
+          settings: settings,
+        );
 
-          case loginForm:
-            return MaterialPageRoute(
-              builder: (_) => const LoginScreen(),
-              settings: settings,
-            );
+      case loginForm:
+        return MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
+          settings: settings,
+        );
 
-          case register:
-            return MaterialPageRoute(
-              builder: (_) => const RegisterScreen(),
-              settings: settings,
-            );
+      case register:
+        return MaterialPageRoute(
+          builder: (_) => const RegisterScreen(),
+          settings: settings,
+        );
 
-          case registerForm:
-            return MaterialPageRoute(
-              builder: (_) => const RegisterScreen(),
-              settings: settings,
-            );
+      case registerForm:
+        return MaterialPageRoute(
+          builder: (_) => const RegisterScreen(),
+          settings: settings,
+        );
 
       case forgotPassword:
         return MaterialPageRoute(
@@ -89,15 +88,17 @@ class AppRoutes {
           builder: (_) => VerifyCodeScreen(
             email: args?['email'] ?? '',
             type: args?['type'] ?? 'register',
+            fullName: args?['full_name'] ?? '',
+            userId: args?['user_id'] ?? '',
           ),
           settings: settings,
         );
 
-          case home:
-            return MaterialPageRoute(
-              builder: (_) => const MainNavigationScreen(),
-              settings: settings,
-            );
+      case home:
+        return MaterialPageRoute(
+          builder: (_) => const MainNavigationScreen(),
+          settings: settings,
+        );
 
       case courses:
         return MaterialPageRoute(

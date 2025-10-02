@@ -13,9 +13,9 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF1a1a1a),
         elevation: 0,
-        title: Text(
+        title: const Text(
           AppConstants.appName,
-          style: const TextStyle(
+          style: TextStyle(
             color: Color(0xFFd4af37),
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -40,10 +40,10 @@ class HomeScreen extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'مرحباً بك في منصة فيوتشر',
                     style: TextStyle(
                       color: Colors.white,
@@ -51,8 +51,8 @@ class HomeScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
+                  SizedBox(height: 8),
+                  Text(
                     'كل شيء هنا... معمول علشانك',
                     style: TextStyle(
                       color: Colors.white70,
@@ -160,8 +160,6 @@ class HomeScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 24),
-
-
           ],
         ),
       ),
@@ -314,5 +312,4 @@ class HomeScreen extends StatelessWidget {
       ],
     );
   }
-
 }

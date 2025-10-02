@@ -2,43 +2,45 @@ class AppConstants {
   // App Info
   static const String appName = 'فيوتشر';
   static const String appSubtitle = 'كل شيء هنا... معمول علشانك';
-  
+
   // API Configuration
-  static const String baseUrl = 'https://future-academy-courses.com/api/development';
-  static const String apiKey = 'zDg3RLGdt0xOR1Kqhjw3iFiVLv5npnxFfb26dBWa4DcL4ByH6qH6DseVMf9l3Vcy';
+  static const String baseUrl =
+      'https://future-academy-courses.com/api/development';
+  static const String apiKey =
+      'zDg3RLGdt0xOR1Kqhjw3iFiVLv5npnxFfb26dBWa4DcL4ByH6qH6DseVMf9l3Vcy';
   static const String appSource = 'anmka';
-  
+
   // User Levels (فرقة)
   static const List<String> userLevels = [
     'أولى',
-    'ثانية', 
+    'ثانية',
     'ثالثة',
     'رابعة',
     'خامسة',
   ];
-  
+
   // Animation Durations
   static const Duration splashDuration = Duration(milliseconds: 800);
   static const Duration animationDuration = Duration(milliseconds: 300);
-  
+
   // Download Quality Options
   static const List<String> downloadQualities = [
     'عالية الجودة',
     'متوسطة',
     'منخفضة',
   ];
-  
+
   // File Types
   static const String videoType = 'video';
   static const String pdfType = 'pdf';
   static const String audioType = 'audio';
-  
+
   // Storage Keys
   static const String userTokenKey = 'user_token';
   static const String userDataKey = 'user_data';
   static const String settingsKey = 'app_settings';
   static const String downloadsKey = 'downloads';
-  
+
   // Contact Info
   static const String supportWhatsApp = '+201234567890';
   static const String doctorWhatsApp = '+201234567891';
@@ -54,7 +56,7 @@ class AppStrings {
   static const String blog = 'المدونة';
   static const String profile = 'البروفايل';
   static const String settings = 'الإعدادات';
-  
+
   // Auth
   static const String login = 'تسجيل الدخول';
   static const String signup = 'إنشاء حساب';
@@ -67,7 +69,7 @@ class AppStrings {
   static const String userName = 'اسم المستخدم';
   static const String phoneNumber = 'رقم الهاتف';
   static const String level = 'الفرقة';
-  
+
   // Home Screen
   static const String myCourses = 'كورساتي';
   static const String coursesSubtitle = 'نظام بيقفللك المنهج صح';
@@ -77,7 +79,7 @@ class AppStrings {
   static const String blogCaption = 'اخبار الكلية والقانون كلها هنا';
   static const String notificationsCard = 'التنبيهات';
   static const String notificationsCaption = 'تابع كل جديد بيتنزل';
-  
+
   // College Screen
   static const String collegeRecordings = 'تسجيلات الكلية';
   static const String schedules = 'جداول الشرح';
@@ -85,7 +87,7 @@ class AppStrings {
   static const String futureVideos = 'فيديوهات فيوتشر';
   static const String booksAndNotes = 'الكتب وملازم';
   static const String free = 'مجانًا';
-  
+
   // Course Screen
   static const String overview = 'نظرة عامة';
   static const String lectures = 'المحاضرات';
@@ -93,12 +95,12 @@ class AppStrings {
   static const String files = 'ملفات';
   static const String downloadAllLectures = 'تحميل كل المحاضرات';
   static const String more = 'المزيد';
-  
+
   // Downloads
   static const String downloadQuality = 'جودة التحميل';
   static const String wifiOnly = 'Wi-Fi فقط';
   static const String clearAllDownloads = 'مسح كل التحميلات';
-  
+
   // General
   static const String loading = 'جاري التحميل...';
   static const String error = 'خطأ';
@@ -110,5 +112,3 @@ class AppStrings {
   static const String open = 'فتح';
   static const String markAllAsRead = 'تحديد الكل كمقروء';
 }
-
-
