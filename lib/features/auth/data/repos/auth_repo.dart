@@ -1,3 +1,4 @@
+import 'package:future_app/core/network/api_constants.dart';
 import 'package:future_app/core/network/api_error_handel.dart';
 import 'package:future_app/core/network/api_result.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
@@ -17,7 +18,7 @@ class AuthRepo {
   // login
   Future<ApiResult<LoginResponseModel>> login(LoginRequestModel request) async {
     try {
-      final response = await _apiService.login(request);
+      final response = await _apiService.login(request, ApiConstants.apiKey);
       return ApiResult.success(response);
     } catch (e) {
       log(e.toString());
@@ -28,7 +29,7 @@ class AuthRepo {
   // logout
   Future<ApiResult<void>> logout() async {
     try {
-      final response = await _apiService.logout();
+      final response = await _apiService.logout(ApiConstants.apiKey);
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));
@@ -39,7 +40,8 @@ class AuthRepo {
   Future<ApiResult<RegisterResponseModel>> registerStep1(
       RegisterRequestModel request) async {
     try {
-      final response = await _apiService.registerStep1(request);
+      final response =
+          await _apiService.registerStep1(request, ApiConstants.apiKey);
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));
@@ -50,7 +52,8 @@ class AuthRepo {
   Future<ApiResult<RegisterStep2ResponseModel>> registerStep2(
       RegisterStep2RequestModel request) async {
     try {
-      final response = await _apiService.registerStep2(request);
+      final response =
+          await _apiService.registerStep2(request, ApiConstants.apiKey);
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));

@@ -16,20 +16,28 @@ abstract class ApiService {
 
   // login
   @POST(ApiConstants.login)
-  Future<LoginResponseModel> login(@Body() LoginRequestModel request);
+  Future<LoginResponseModel> login(
+    @Body() LoginRequestModel request,
+    @Header('x-api-key') int apiKey,
+  );
 
   // logout
   @POST(ApiConstants.logout)
-  Future<void> logout();
+  Future<void> logout(
+    @Header('x-api-key') int apiKey,
+  );
 
   // register step 1
   @POST(ApiConstants.registerStep1)
   Future<RegisterResponseModel> registerStep1(
-      @Body() RegisterRequestModel request);
+    @Body() RegisterRequestModel request,
+    @Header('x-api-key') int apiKey,
+  );
 
   // register step 2
   @POST(ApiConstants.registerStep2)
   Future<RegisterStep2ResponseModel> registerStep2(
     @Body() RegisterStep2RequestModel request,
+    @Header('x-api-key') int apiKey,
   );
 }

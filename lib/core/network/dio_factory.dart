@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:future_app/core/helper/shared_pref_helper.dart';
 import 'package:future_app/core/helper/shared_pref_keys.dart';
+import 'package:future_app/core/network/api_constants.dart';
 
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -29,7 +30,7 @@ class DioFactory {
 
   static void addDioHeaders() async {
     dio?.options.headers = {
-      'x-api-key': 5551,
+      'x-api-key': ApiConstants.apiKey,
       'Authorization':
           'Bearer ${await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken)}',
     };
@@ -38,7 +39,7 @@ class DioFactory {
   static void setTokenIntoHeaderAfterLogin(String token) {
     dio?.options.headers = {
       'Authorization': 'Bearer $token',
-      // 'x-api-key': 5551
+      'x-api-key': ApiConstants.apiKey,
     };
   }
 
