@@ -1,10 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'dart:async';
 import '../../core/constants/app_constants.dart';
 import '../../core/routes/app_routes.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final PageController _pageController = PageController();
+  Timer? _timer;
+  int _currentIndex = 0;
+
+  // Banner images - you can replace these with your actual images
+  final List<String> _bannerImages = [
+    'assets/images/hero1.jpg',
+    'assets/images/hero2.jpg',
+    'assets/images/hero3.jpg',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoScroll();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _timer = null;
+    if (_pageController.hasClients) {
+      _pageController.dispose();
+    }
+    super.dispose();
+  }
+
+  void _startAutoScroll() {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (mounted && _pageController.hasClients) {
+        setState(() {
+          _currentIndex = (_currentIndex + 1) % _bannerImages.length;
+        });
+        _pageController.animateToPage(
+          _currentIndex,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  void _onPageChanged(int index) {
+    if (mounted) {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,42 +86,61 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Welcome Section
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFd4af37), Color(0xFFb8860b)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+            InkWell(
+              onTap: () => Navigator.pushNamed(context, AppRoutes.profile,
+                  arguments: true),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFd4af37), Color(0xFFb8860b)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'مرحباً بك في منصة فيوتشر',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                child: const Row(
+                  spacing: 10,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_hWubOwCUsUchCRvVuMya7QQXwsSTuuhpHA&s',
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'كل شيء هنا... معمول علشانك',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'مرحباً بك ي احمد ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'كل شيء هنا... معمول علشانك',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
 
             const SizedBox(height: 24),
 
+            // Banner Carousel
+            _buildBannerCarousel(),
+
+            const SizedBox(height: 24),
             // Main Features Grid
             const Text(
               'الأقسام الرئيسية',
@@ -87,26 +163,35 @@ class HomeScreen extends StatelessWidget {
                 _buildFeatureCard(
                   context,
                   'الكورسات',
-                  Icons.play_circle_outline,
-                  () => _showComingSoon(context, 'الكورسات'),
+                  'assets/images/3.png',
+                  null,
+                  () => Navigator.pushNamed(context, AppRoutes.courses),
+                  true,
                 ),
                 _buildFeatureCard(
                   context,
                   'الكلية',
-                  Icons.school,
-                  () => _showComingSoon(context, 'الكلية'),
+                  'assets/images/2.png',
+                  null,
+                  () => Navigator.pushNamed(context, AppRoutes.college),
+                  true,
                 ),
                 _buildFeatureCard(
                   context,
                   'المدونة',
-                  Icons.article,
-                  () => _showComingSoon(context, 'المدونة'),
+                  'assets/images/1.png',
+                  null,
+                  () => Navigator.pushNamed(context, AppRoutes.blog),
+                  true,
                 ),
                 _buildFeatureCard(
                   context,
                   'البروفايل',
+                  '',
                   Icons.person,
-                  () => _showComingSoon(context, 'البروفايل'),
+                  () => Navigator.pushNamed(context, AppRoutes.profile,
+                      arguments: true),
+                  false,
                 ),
               ],
             ),
@@ -213,47 +298,13 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  void _showComingSoon(BuildContext context, String feature) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF2a2a2a),
-        title: const Text(
-          'قريباً',
-          style: TextStyle(
-            color: Color(0xFFd4af37),
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Text(
-          '$feature سيكون متاحاً قريباً في التحديثات القادمة',
-          style: const TextStyle(
-            color: Colors.white70,
-            fontSize: 14,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'موافق',
-              style: TextStyle(
-                color: Color(0xFFd4af37),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildFeatureCard(
     BuildContext context,
     String title,
-    IconData icon,
+    String icon,
+    IconData? iconData,
     VoidCallback onTap,
+    bool? isImage,
   ) {
     return GestureDetector(
       onTap: onTap,
@@ -269,11 +320,14 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 40,
-              color: const Color(0xFFd4af37),
-            ),
+            isImage ?? true
+                ? Image.asset(icon,
+                    width: 40, height: 40, color: const Color(0xFFd4af37))
+                : Icon(
+                    iconData,
+                    size: 40,
+                    color: const Color(0xFFd4af37),
+                  ),
             const SizedBox(height: 12),
             Text(
               title,
@@ -290,25 +344,96 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(String label, String value) {
+  Widget _buildBannerCarousel() {
+    if (_bannerImages.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return Column(
       children: [
-        Text(
-          value,
-          style: const TextStyle(
-            color: Color(0xFFd4af37),
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        SizedBox(
+          height: 200,
+          child: PageView.builder(
+            controller: _pageController,
+            onPageChanged: _onPageChanged,
+            itemCount: _bannerImages.length,
+            allowImplicitScrolling: false,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFd4af37).withOpacity(0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    _bannerImages[index],
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    errorBuilder: (context, error, stackTrace) {
+                      // Fallback container with gradient if image fails to load
+                      return Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              const Color(0xFFd4af37).withOpacity(0.8),
+                              const Color(0xFFb8860b).withOpacity(0.8),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.image,
+                                size: 50,
+                                color: Colors.white.withOpacity(0.8),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Banner ${index + 1}',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.8),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
           ),
         ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.white70,
-            fontSize: 12,
+        const SizedBox(height: 12),
+        // Page Indicators
+        if (_bannerImages.isNotEmpty)
+          SmoothPageIndicator(
+            controller: _pageController,
+            count: _bannerImages.length,
+            effect: WormEffect(
+              activeDotColor: const Color(0xFFd4af37),
+              dotColor: const Color(0xFFd4af37).withOpacity(0.3),
+              dotHeight: 8,
+              dotWidth: 8,
+              spacing: 8,
+              type: WormType.thinUnderground,
+            ),
           ),
-        ),
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_constants.dart';
+import 'package:future_app/core/constants/app_constants.dart';
+import 'package:future_app/widgets/common/custom_button.dart';
 import '../../core/routes/app_routes.dart';
 
 class CoursesScreen extends StatelessWidget {
@@ -117,40 +118,40 @@ class CoursesScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Description
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2a2a2a),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: const Color(0xFFd4af37).withOpacity(0.3),
-                  width: 1,
-                ),
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'محتوى الفيديوهات',
-                    style: TextStyle(
-                      color: Color(0xFFd4af37),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'جميع الفيديوهات متاحة مجاناً للطلاب المسجلين في المنصة. يمكنك الوصول إلى المحتوى التعليمي في أي وقت ومن أي مكان.',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      height: 1.5,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // // Description
+            // Container(
+            //   padding: const EdgeInsets.all(16),
+            //   decoration: BoxDecoration(
+            //     color: const Color(0xFF2a2a2a),
+            //     borderRadius: BorderRadius.circular(12),
+            //     border: Border.all(
+            //       color: const Color(0xFFd4af37).withOpacity(0.3),
+            //       width: 1,
+            //     ),
+            //   ),
+            //   child: const Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text(
+            //         'محتوى الفيديوهات',
+            //         style: TextStyle(
+            //           color: Color(0xFFd4af37),
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //       ),
+            //       SizedBox(height: 8),
+            //       Text(
+            //         'جميع الفيديوهات متاحة مجاناً للطلاب المسجلين في المنصة. يمكنك الوصول إلى المحتوى التعليمي في أي وقت ومن أي مكان.',
+            //         style: TextStyle(
+            //           color: Colors.white70,
+            //           fontSize: 14,
+            //           height: 1.5,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -159,11 +160,27 @@ class CoursesScreen extends StatelessWidget {
 
   Widget _buildCourseCard(BuildContext context, int index) {
     final courses = [
-      {'title': 'قانون مدني', 'subtitle': 'أساسيات القانون المدني', 'type': 'premium'},
-      {'title': 'قانون جنائي', 'subtitle': 'مبادئ القانون الجنائي', 'type': 'free'},
-      {'title': 'قانون تجاري', 'subtitle': 'القوانين التجارية', 'type': 'premium'},
+      {
+        'title': 'قانون مدني',
+        'subtitle': 'أساسيات القانون المدني',
+        'type': 'premium'
+      },
+      {
+        'title': 'قانون جنائي',
+        'subtitle': 'مبادئ القانون الجنائي',
+        'type': 'free'
+      },
+      {
+        'title': 'قانون تجاري',
+        'subtitle': 'القوانين التجارية',
+        'type': 'premium'
+      },
       {'title': 'قانون دستوري', 'subtitle': 'القانون الدستوري', 'type': 'free'},
-      {'title': 'قانون إداري', 'subtitle': 'القانون الإداري', 'type': 'premium'},
+      {
+        'title': 'قانون إداري',
+        'subtitle': 'القانون الإداري',
+        'type': 'premium'
+      },
       {'title': 'قانون دولي', 'subtitle': 'القانون الدولي', 'type': 'free'},
     ];
 
@@ -178,7 +195,8 @@ class CoursesScreen extends StatelessWidget {
           AppRoutes.lecturePlayer,
           arguments: {
             'courseTitle': course['title'],
-            'videoUrl': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Sample YouTube URL
+            'videoUrl':
+                'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Sample YouTube URL
             'videoType': 'youtube',
           },
         );
@@ -188,7 +206,9 @@ class CoursesScreen extends StatelessWidget {
           color: isPremium ? const Color(0xFF2a2a2a) : const Color(0xFF1a1a1a),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isPremium ? const Color(0xFFd4af37) : const Color(0xFFd4af37).withOpacity(0.3),
+            color: isPremium
+                ? const Color(0xFFd4af37)
+                : const Color(0xFFd4af37).withOpacity(0.3),
             width: isPremium ? 2 : 1,
           ),
         ),
@@ -197,23 +217,23 @@ class CoursesScreen extends StatelessWidget {
           children: [
             // Course Thumbnail
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2a2a2a),
-                  borderRadius: const BorderRadius.only(
+                decoration: const BoxDecoration(
+                  color: Color(0xFF2a2a2a),
+                  borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
                   ),
                 ),
                 child: Stack(
                   children: [
-                    Center(
+                    const Center(
                       child: Icon(
                         Icons.play_circle_outline,
                         size: 50,
-                        color: const Color(0xFFd4af37),
+                        color: Color(0xFFd4af37),
                       ),
                     ),
                     if (isPremium)
@@ -221,7 +241,8 @@ class CoursesScreen extends StatelessWidget {
                         top: 8,
                         right: 8,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: const Color(0xFFd4af37),
                             borderRadius: BorderRadius.circular(12),
@@ -272,18 +293,18 @@ class CoursesScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Row(
+                    const Row(
                       children: [
                         Icon(
                           Icons.play_circle,
                           size: 16,
-                          color: const Color(0xFFd4af37),
+                          color: Color(0xFFd4af37),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         Text(
                           '12 محاضرة',
                           style: TextStyle(
-                            color: const Color(0xFFd4af37),
+                            color: Color(0xFFd4af37),
                             fontSize: 12,
                           ),
                         ),
@@ -298,5 +319,4 @@ class CoursesScreen extends StatelessWidget {
       ),
     );
   }
-
 }

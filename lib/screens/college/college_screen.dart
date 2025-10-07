@@ -103,7 +103,8 @@ class CollegeScreen extends StatelessWidget {
               'تسجيلات الكلية',
               'استمع إلى تسجيلات المحاضرات والندوات',
               Icons.mic,
-              () => _showFeatureDialog(context, 'تسجيلات الكلية', 'يمكنك الوصول إلى جميع تسجيلات المحاضرات والندوات من خلال هذا القسم.'),
+              () => _showFeatureDialog(context, 'تسجيلات الكلية',
+                  'يمكنك الوصول إلى جميع تسجيلات المحاضرات والندوات من خلال هذا القسم.'),
             ),
 
             const SizedBox(height: 16),
@@ -113,7 +114,8 @@ class CollegeScreen extends StatelessWidget {
               'الكتب والمذكرات',
               'تحميل الكتب والمذكرات الدراسية',
               Icons.description,
-              () => _showFeatureDialog(context, 'الكتب والمذكرات', 'جميع الكتب والمذكرات الدراسية متاحة للتحميل من خلال هذا القسم.'),
+              () => _showFeatureDialog(context, 'الكتب والمذكرات',
+                  'جميع الكتب والمذكرات الدراسية متاحة للتحميل من خلال هذا القسم.'),
             ),
 
             const SizedBox(height: 16),
@@ -123,7 +125,8 @@ class CollegeScreen extends StatelessWidget {
               'جداول الشرح والامتحان',
               'متابعة الجداول الدراسية والامتحانات',
               Icons.calendar_today,
-              () => _showFeatureDialog(context, 'جداول الشرح والامتحان', 'يمكنك متابعة جميع الجداول الدراسية ومواعيد الامتحانات من هنا.'),
+              () => _showFeatureDialog(context, 'جداول الشرح والامتحان',
+                  'يمكنك متابعة جميع الجداول الدراسية ومواعيد الامتحانات من هنا.'),
             ),
 
             const SizedBox(height: 24),
@@ -139,10 +142,10 @@ class CollegeScreen extends StatelessWidget {
                   width: 1,
                 ),
               ),
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'اختيار الفريق',
                     style: TextStyle(
                       color: Color(0xFFd4af37),
@@ -150,8 +153,8 @@ class CollegeScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
+                  SizedBox(height: 12),
+                  Text(
                     'يمكنك الوصول إلى المواد التعليمية حسب السنة الدراسية والفريق المختار.',
                     style: TextStyle(
                       color: Colors.white70,
@@ -159,22 +162,22 @@ class CollegeScreen extends StatelessWidget {
                       height: 1.5,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildTeamButton('أولى', true),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildTeamButton('ثانية', false),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildTeamButton('ثالثة', false),
-                      ),
-                    ],
-                  ),
+                  SizedBox(height: 16),
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       child: _buildTeamButton('أولى', true),
+                  //     ),
+                  //     const SizedBox(width: 12),
+                  //     Expanded(
+                  //       child: _buildTeamButton('ثانية', false),
+                  //     ),
+                  //     const SizedBox(width: 12),
+                  //     Expanded(
+                  //       child: _buildTeamButton('ثالثة', false),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),
@@ -242,9 +245,9 @@ class CollegeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
+            const Icon(
               Icons.arrow_forward_ios,
-              color: const Color(0xFFd4af37),
+              color: Color(0xFFd4af37),
               size: 20,
             ),
           ],
@@ -276,7 +279,8 @@ class CollegeScreen extends StatelessWidget {
     );
   }
 
-  void _showFeatureDialog(BuildContext context, String title, String description) {
+  void _showFeatureDialog(
+      BuildContext context, String title, String description) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -311,5 +315,4 @@ class CollegeScreen extends StatelessWidget {
       ),
     );
   }
-
 }

@@ -163,7 +163,9 @@ class AppRoutes {
 
       case profile:
         return MaterialPageRoute(
-          builder: (_) => const ProfileScreen(),
+          builder: (_) => ProfileScreen(
+            inHome: settings.arguments as bool,
+          ),
           settings: settings,
         );
 

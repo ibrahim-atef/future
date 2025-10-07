@@ -7,7 +7,8 @@ import 'package:future_app/features/auth/logic/cubit/auth_state.dart';
 import 'package:future_app/features/auth/presentation/screens/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, required this.inHome});
+  final bool inHome;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -48,7 +49,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
           onPressed: () {
-            context.read<AuthCubit>().logout();
+            widget.inHome
+                ? Navigator.pop(context)
+                : context.read<AuthCubit>().logout();
           },
         ),
       ),

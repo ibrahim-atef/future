@@ -240,13 +240,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomButton(
                     text: AppStrings.login,
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        context.read<AuthCubit>().login(LoginRequestModel(
-                              username: _emailController.text,
-                              password: _passwordController.text,
-                              deviceId: UserConstant.deviceId!,
-                            ));
-                      }
+                      // if (_formKey.currentState!.validate()) {
+                      //   context.read<AuthCubit>().login(LoginRequestModel(
+                      //         username: _emailController.text,
+                      //         password: _passwordController.text,
+                      //         deviceId: UserConstant.deviceId!,
+                      //       ));
+                      // }
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppRoutes.home,
+                        (route) => false,
+                      );
                     },
                   ),
 

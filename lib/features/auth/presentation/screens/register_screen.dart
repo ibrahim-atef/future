@@ -240,7 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   // Grade/Class Field (الفرقة)
                   DropdownButtonFormField<String>(
-                    value: _selectedGrade,
+                    initialValue: _selectedGrade,
                     decoration: InputDecoration(
                       labelText: 'الفرقة',
                       prefixIcon: const Icon(Icons.school_outlined),
@@ -317,34 +317,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 20),
 
                   // Major Field (التخصص)
-                  TextFormField(
-                    controller: _majorController,
-                    textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(
-                      labelText: 'التخصص',
-                      prefixIcon: const Icon(Icons.menu_book_outlined),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.grey[300]!),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide:
-                            BorderSide(color: Theme.of(context).primaryColor),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'يرجى إدخال التخصص';
-                      }
-                      return null;
-                    },
-                  ),
+                  // TextFormField(
+                  //   controller: _majorController,
+                  //   textInputAction: TextInputAction.next,
+                  //   decoration: InputDecoration(
+                  //     labelText: 'التخصص',
+                  //     prefixIcon: const Icon(Icons.menu_book_outlined),
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //     ),
+                  //     enabledBorder: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //       borderSide: BorderSide(color: Colors.grey[300]!),
+                  //     ),
+                  //     focusedBorder: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //       borderSide:
+                  //           BorderSide(color: Theme.of(context).primaryColor),
+                  //     ),
+                  //   ),
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'يرجى إدخال التخصص';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
 
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
 
                   // Password Field
                   TextFormField(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:future_app/widgets/common/custom_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -123,9 +123,9 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
+                  const Text(
                     'محتوى تعليمي متقدم',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white70,
                       fontSize: 14,
                     ),
@@ -146,14 +146,16 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                     child: Row(
                       children: [
                         Icon(
-                          widget.videoType == 'youtube' ? Icons.play_circle : Icons.video_library,
+                          widget.videoType == 'youtube'
+                              ? Icons.play_circle
+                              : Icons.video_library,
                           color: const Color(0xFFd4af37),
                           size: 20,
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          widget.videoType == 'youtube' 
-                              ? 'فيديو من يوتيوب' 
+                          widget.videoType == 'youtube'
+                              ? 'فيديو من يوتيوب'
                               : 'فيديو من الخادم',
                           style: const TextStyle(
                             color: Colors.white,
@@ -179,6 +181,12 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                   const SizedBox(height: 12),
 
                   _buildLectureList(),
+                  const SizedBox(height: 12),
+                  CustomButton(
+                    text: 'حمل المحاضرة اوفلاين',
+                    onPressed: () {},
+                  ),
+                  const SizedBox(height: 12),
                 ],
               ),
             ),
@@ -326,7 +334,11 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
 
   Widget _buildLectureList() {
     final lectures = [
-      {'title': 'مقدمة في القانون المدني', 'duration': '15:30', 'type': 'youtube'},
+      {
+        'title': 'مقدمة في القانون المدني',
+        'duration': '15:30',
+        'type': 'youtube'
+      },
       {'title': 'أساسيات العقود', 'duration': '22:45', 'type': 'server'},
       {'title': 'المسؤولية المدنية', 'duration': '18:20', 'type': 'youtube'},
       {'title': 'حقوق الملكية', 'duration': '25:10', 'type': 'server'},
@@ -351,7 +363,9 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
           ),
           child: ListTile(
             leading: Icon(
-              lecture['type'] == 'youtube' ? Icons.play_circle : Icons.video_library,
+              lecture['type'] == 'youtube'
+                  ? Icons.play_circle
+                  : Icons.video_library,
               color: const Color(0xFFd4af37),
             ),
             title: Text(
@@ -369,9 +383,9 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                 fontSize: 12,
               ),
             ),
-            trailing: Icon(
+            trailing: const Icon(
               Icons.play_arrow,
-              color: const Color(0xFFd4af37),
+              color: Color(0xFFd4af37),
             ),
             onTap: () {
               // Handle lecture tap
@@ -387,5 +401,4 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
       },
     );
   }
-
 }
