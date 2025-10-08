@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:future_app/screens/experience_of_excellence/experience_of_excellence_page.dart';
 import '../../screens/splash/splash_screen.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -43,6 +44,7 @@ class AppRoutes {
   static const String settings = '/settings';
   static const String quiz = '/quiz';
   static const String quizResult = '/quiz-result';
+  static const String experienceOfExcellence = '/experience-of-excellence';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -197,6 +199,11 @@ class AppRoutes {
           builder: (_) => QuizResultScreen(
             result: args?['result'],
           ),
+          settings: settings,
+        );
+      case experienceOfExcellence:
+        return MaterialPageRoute(
+          builder: (_) => const ExperienceOfExcellencePage(),
           settings: settings,
         );
 

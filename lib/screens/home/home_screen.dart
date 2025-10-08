@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
+import 'dart:io';
 import '../../core/constants/app_constants.dart';
 import '../../core/routes/app_routes.dart';
 
@@ -27,7 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _startAutoScroll();
+    // Only start auto-scroll if not on iOS
+    if (!Platform.isIOS) {
+      _startAutoScroll();
+    }
   }
 
   @override
@@ -71,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: const Color(0xFF1a1a1a),
         elevation: 0,
         title: const Text(
-          AppConstants.appName,
+          AppConstants.appName2,
           style: TextStyle(
             color: Color(0xFFd4af37),
             fontSize: 24,
@@ -80,6 +84,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () =>
+                Navigator.pushNamed(context, AppRoutes.notifications),
+            icon: const Icon(Icons.notifications),
+            color: const Color(0xFFd4af37),
+            iconSize: 30,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -140,10 +153,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const SizedBox(height: 24),
 
-            // Banner Carousel
-            _buildBannerCarousel(),
+            // Banner Carousel - Hidden on iOS devices
+            if (!Platform.isIOS) ...[
+              _buildBannerCarousel(),
+              const SizedBox(height: 24),
+            ],
 
-            const SizedBox(height: 24),
             // Main Features Grid
             const Text(
               'الأقسام الرئيسية',
@@ -167,35 +182,46 @@ class _HomeScreenState extends State<HomeScreen> {
                 _buildFeatureCard(
                   context,
                   'الكورسات',
-                  'assets/images/3.png',
-                  null,
                   () => Navigator.pushNamed(context, AppRoutes.courses),
-                  true,
+                  Image.asset(
+                    'assets/images/3.png',
+                    width: 40,
+                    height: 40,
+                    color: const Color(0xFFd4af37),
+                  ),
                 ),
                 _buildFeatureCard(
                   context,
                   'الكلية',
-                  'assets/images/2.png',
-                  null,
                   () => Navigator.pushNamed(context, AppRoutes.college),
-                  true,
+                  Image.asset(
+                    'assets/images/2.png',
+                    width: 40,
+                    height: 40,
+                    color: const Color(0xFFd4af37),
+                  ),
                 ),
                 _buildFeatureCard(
                   context,
                   'المدونة',
-                  'assets/images/1.png',
-                  null,
                   () => Navigator.pushNamed(context, AppRoutes.blog),
-                  true,
+                  Image.asset(
+                    'assets/images/1.png',
+                    width: 40,
+                    height: 40,
+                    color: const Color(0xFFd4af37),
+                  ),
                 ),
                 _buildFeatureCard(
                   context,
-                  'البروفايل',
-                  '',
-                  Icons.person,
-                  () => Navigator.pushNamed(context, AppRoutes.profile,
-                      arguments: true),
-                  false,
+                  'تجربة الامتياز',
+                  () => Navigator.pushNamed(
+                      context, AppRoutes.experienceOfExcellence),
+                  Image.asset(
+                    'assets/images/4.png',
+                    width: 40,
+                    height: 40,
+                  ),
                 ),
               ],
             ),
@@ -238,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildWhatsAppButton(
-                          'د مينا دعاء',
+                          'د مينا عيد',
                           'https://wa.me/201234567891',
                           Icons.person,
                         ),
@@ -307,10 +333,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildFeatureCard(
     BuildContext context,
     String title,
-    String icon,
-    IconData? iconData,
     VoidCallback onTap,
-    bool? isImage,
+    Widget image,
   ) {
     return GestureDetector(
       onTap: onTap,
@@ -326,14 +350,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            isImage ?? true
-                ? Image.asset(icon,
-                    width: 40, height: 40, color: const Color(0xFFd4af37))
-                : Icon(
-                    iconData,
-                    size: 40,
-                    color: const Color(0xFFd4af37),
-                  ),
+            image,
             const SizedBox(height: 12),
             Text(
               title,

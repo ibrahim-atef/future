@@ -1,64 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'dart:async';
 
-class CollegeScreen extends StatefulWidget {
-  const CollegeScreen({super.key});
-
-  @override
-  State<CollegeScreen> createState() => _CollegeScreenState();
-}
-
-class _CollegeScreenState extends State<CollegeScreen> {
-  final PageController _pageController = PageController();
-  Timer? _timer;
-  int _currentIndex = 0;
-
-  // Banner images for college
-  final List<String> _bannerImages = [
-    'assets/images/college_hero1.jpg',
-    'assets/images/college_hero2.jpg',
-    'assets/images/hero3.jpg',
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _startAutoScroll();
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    _timer = null;
-    if (_pageController.hasClients) {
-      _pageController.dispose();
-    }
-    super.dispose();
-  }
-
-  void _startAutoScroll() {
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (mounted && _pageController.hasClients) {
-        setState(() {
-          _currentIndex = (_currentIndex + 1) % _bannerImages.length;
-        });
-        _pageController.animateToPage(
-          _currentIndex,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-      }
-    });
-  }
-
-  void _onPageChanged(int index) {
-    if (mounted) {
-      setState(() {
-        _currentIndex = index;
-      });
-    }
-  }
+class ExperienceOfExcellencePage extends StatelessWidget {
+  const ExperienceOfExcellencePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +11,7 @@ class _CollegeScreenState extends State<CollegeScreen> {
         backgroundColor: const Color(0xFF1a1a1a),
         elevation: 0,
         title: const Text(
-          'الكلية - كل حاجة الكلية في مكان واحد',
+          'تجربة الامتياز - جرب الشرح مجانا',
           style: TextStyle(
             color: Color(0xFFd4af37),
             fontSize: 18,
@@ -86,10 +29,63 @@ class _CollegeScreenState extends State<CollegeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Banner Carousel
-            _buildBannerCarousel(),
+            // Hero Section
+            // Container(
+            //   width: double.infinity,
+            //   height: 200,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(16),
+            //     gradient: const LinearGradient(
+            //       colors: [Color(0xFF2a2a2a), Color(0xFF1a1a1a)],
+            //       begin: Alignment.topLeft,
+            //       end: Alignment.bottomRight,
+            //     ),
+            //     border: Border.all(
+            //       color: const Color(0xFFd4af37).withOpacity(0.3),
+            //       width: 1,
+            //     ),
+            //   ),
+            //   child: Stack(
+            //     children: [
+            //       Positioned(
+            //         right: 20,
+            //         top: 20,
+            //         child: Icon(
+            //           Icons.school,
+            //           size: 60,
+            //           color: const Color(0xFFd4af37).withOpacity(0.3),
+            //         ),
+            //       ),
+            //       const Positioned(
+            //         left: 20,
+            //         bottom: 20,
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text(
+            //               'الكلية',
+            //               style: TextStyle(
+            //                 color: Colors.white,
+            //                 fontSize: 24,
+            //                 fontWeight: FontWeight.bold,
+            //               ),
+            //             ),
+            //             SizedBox(height: 8),
+            //             Text(
+            //               'كل حاجة الكلية في مكان واحد',
+            //               style: TextStyle(
+            //                 color: Colors.white70,
+            //                 fontSize: 16,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
-            const SizedBox(height: 24),
+            // const SizedBox(height: 24),
 
             // Main Features
             const Text(
@@ -260,6 +256,29 @@ class _CollegeScreenState extends State<CollegeScreen> {
     );
   }
 
+  Widget _buildTeamButton(String team, bool isSelected) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: isSelected ? const Color(0xFFd4af37) : const Color(0xFF1a1a1a),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: const Color(0xFFd4af37),
+          width: 1,
+        ),
+      ),
+      child: Text(
+        team,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: isSelected ? Colors.black : const Color(0xFFd4af37),
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
   void _showFeatureDialog(
       BuildContext context, String title, String description) {
     showDialog(
@@ -294,101 +313,6 @@ class _CollegeScreenState extends State<CollegeScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildBannerCarousel() {
-    if (_bannerImages.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Column(
-      children: [
-        SizedBox(
-          height: 200,
-          child: PageView.builder(
-            controller: _pageController,
-            onPageChanged: _onPageChanged,
-            itemCount: _bannerImages.length,
-            allowImplicitScrolling: false,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFd4af37).withOpacity(0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
-                    _bannerImages[index],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    errorBuilder: (context, error, stackTrace) {
-                      // Fallback container with gradient if image fails to load
-                      return Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              const Color(0xFFd4af37).withOpacity(0.8),
-                              const Color(0xFFb8860b).withOpacity(0.8),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.image,
-                                size: 50,
-                                color: Colors.white.withOpacity(0.8),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Banner ${index + 1}',
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.8),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Cairo',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 12),
-        // Page Indicators
-        if (_bannerImages.isNotEmpty)
-          SmoothPageIndicator(
-            controller: _pageController,
-            count: _bannerImages.length,
-            effect: WormEffect(
-              activeDotColor: const Color(0xFFd4af37),
-              dotColor: const Color(0xFFd4af37).withOpacity(0.3),
-              dotHeight: 8,
-              dotWidth: 8,
-              spacing: 8,
-              type: WormType.thinUnderground,
-            ),
-          ),
-      ],
     );
   }
 }

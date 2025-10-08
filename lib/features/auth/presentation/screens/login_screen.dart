@@ -99,20 +99,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   Center(
                     child: Column(
                       children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: const Icon(
-                            Icons.school,
-                            size: 40,
-                            color: Colors.white,
-                          ),
+                        Image.asset(
+                          'assets/images/logo.png',
+                          width: 200,
+                          height: 200,
                         ),
-                        const SizedBox(height: 20),
                         Text(
                           AppStrings.login,
                           style: Theme.of(context)

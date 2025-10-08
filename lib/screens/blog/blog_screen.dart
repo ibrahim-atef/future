@@ -1,7 +1,83 @@
 import 'package:flutter/material.dart';
 
-class BlogScreen extends StatelessWidget {
+class BlogScreen extends StatefulWidget {
   const BlogScreen({super.key});
+
+  @override
+  State<BlogScreen> createState() => _BlogScreenState();
+}
+
+class _BlogScreenState extends State<BlogScreen> {
+  String selectedCategory = 'الكل';
+
+  final List<Map<String, String>> categories = [
+    {'name': 'الكل', 'icon': 'all'},
+    {'name': 'مقالات', 'icon': 'article'},
+    {'name': 'أخبار الكلية', 'icon': 'news'},
+    {'name': 'امتحانات', 'icon': 'exam'},
+    {'name': 'إيفنتات الكلية', 'icon': 'event'},
+  ];
+
+  final List<Map<String, String>> allPosts = [
+    {
+      'title': 'نصائح للنجاح في الدراسة',
+      'excerpt': 'تعرف على أفضل الطرق للدراسة الفعالة والنجاح في الامتحانات',
+      'date': '2024-01-15',
+      'category': 'مقالات',
+    },
+    {
+      'title': 'افتتاح مكتبة الكلية الجديدة',
+      'excerpt': 'تعلن الكلية عن افتتاح المكتبة الجديدة بمرافق حديثة ومتطورة',
+      'date': '2024-01-14',
+      'category': 'أخبار الكلية',
+    },
+    {
+      'title': 'جدول امتحانات الفصل الدراسي الأول',
+      'excerpt':
+          'تم الإعلان عن جدول امتحانات الفصل الدراسي الأول لجميع الأقسام',
+      'date': '2024-01-13',
+      'category': 'امتحانات',
+    },
+    {
+      'title': 'معرض المشاريع الطلابية السنوي',
+      'excerpt': 'ندعوكم لحضور معرض المشاريع الطلابية السنوي يوم الأحد القادم',
+      'date': '2024-01-12',
+      'category': 'إيفنتات الكلية',
+    },
+    {
+      'title': 'كيفية إدارة الوقت أثناء الدراسة',
+      'excerpt': 'طرق فعالة لتنظيم الوقت والاستفادة القصوى من ساعات الدراسة',
+      'date': '2024-01-11',
+      'category': 'مقالات',
+    },
+    {
+      'title': 'فوز فريق الكلية ببطولة كرة القدم',
+      'excerpt': 'حقق فريق الكلية لكرة القدم الفوز في البطولة الجامعية',
+      'date': '2024-01-10',
+      'category': 'أخبار الكلية',
+    },
+    {
+      'title': 'تعليمات هامة للامتحانات النهائية',
+      'excerpt': 'قائمة بالتعليمات والإجراءات الواجب اتباعها أثناء الامتحانات',
+      'date': '2024-01-09',
+      'category': 'امتحانات',
+    },
+    {
+      'title': 'ندوة عن الذكاء الاصطناعي',
+      'excerpt': 'ندوة علمية عن تطبيقات الذكاء الاصطناعي في التعليم',
+      'date': '2024-01-08',
+      'category': 'إيفنتات الكلية',
+    },
+  ];
+
+  List<Map<String, String>> get filteredPosts {
+    if (selectedCategory == 'الكل') {
+      return allPosts;
+    }
+    return allPosts
+        .where((post) => post['category'] == selectedCategory)
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +87,7 @@ class BlogScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF1a1a1a),
         elevation: 0,
         title: const Text(
-          'المدونة',
+          'المدونة - مقالات واخبار الكلية',
           style: TextStyle(
             color: Color(0xFFd4af37),
             fontSize: 20,
@@ -72,7 +148,7 @@ class BlogScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'مقالات ونصائح تعليمية',
+                          'مقالات وأخبار ومعلومات الكلية',
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: 16,
@@ -87,24 +163,170 @@ class BlogScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Blog Posts
-            const Text(
-              'المقالات الأخيرة',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            // Categories Horizontal List
+            SizedBox(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  return _buildCategoryCard(
+                      categories[index]['name']!, categories[index]['icon']!);
+                },
               ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Blog Posts
+            Row(
+              children: [
+                Text(
+                  selectedCategory == 'الكل'
+                      ? 'جميع المنشورات'
+                      : selectedCategory,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFd4af37),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '${filteredPosts.length}',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
 
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return _buildBlogPost(context, index);
-              },
+            filteredPosts.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.inbox_outlined,
+                            size: 64,
+                            color: const Color(0xFFd4af37).withOpacity(0.5),
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'لا توجد منشورات في هذه الفئة',
+                            style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: filteredPosts.length,
+                    itemBuilder: (context, index) {
+                      return _buildBlogPost(context, filteredPosts[index]);
+                    },
+                  ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryCard(String name, String iconType) {
+    final isSelected = selectedCategory == name;
+    IconData icon;
+
+    switch (iconType) {
+      case 'all':
+        icon = Icons.apps;
+        break;
+      case 'article':
+        icon = Icons.article;
+        break;
+      case 'news':
+        icon = Icons.newspaper;
+        break;
+      case 'exam':
+        icon = Icons.assignment;
+        break;
+      case 'event':
+        icon = Icons.event;
+        break;
+      default:
+        icon = Icons.category;
+    }
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedCategory = name;
+        });
+      },
+      child: Container(
+        width: 120,
+        margin: const EdgeInsets.only(left: 12),
+        decoration: BoxDecoration(
+          gradient: isSelected
+              ? const LinearGradient(
+                  colors: [Color(0xFFd4af37), Color(0xFFb8941f)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+              : null,
+          color: isSelected ? null : const Color(0xFF2a2a2a),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected
+                ? const Color(0xFFd4af37)
+                : const Color(0xFFd4af37).withOpacity(0.3),
+            width: isSelected ? 2 : 1,
+          ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFFd4af37).withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : null,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 32,
+              color: isSelected ? Colors.black : const Color(0xFFd4af37),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              name,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: isSelected ? Colors.black : Colors.white,
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
             ),
           ],
         ),
@@ -112,42 +334,7 @@ class BlogScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBlogPost(BuildContext context, int index) {
-    final posts = [
-      {
-        'title': 'نصائح للنجاح في الدراسة',
-        'excerpt': 'تعرف على أفضل الطرق للدراسة الفعالة والنجاح في الامتحانات',
-        'date': '2024-01-15',
-        'category': 'تعليمي',
-      },
-      {
-        'title': 'كيفية إدارة الوقت أثناء الدراسة',
-        'excerpt': 'طرق فعالة لتنظيم الوقت والاستفادة القصوى من ساعات الدراسة',
-        'date': '2024-01-12',
-        'category': 'تنمية ذاتية',
-      },
-      {
-        'title': 'أهمية القراءة في تطوير الذات',
-        'excerpt': 'كيف يمكن للقراءة أن تساهم في تطوير مهاراتك الشخصية والأكاديمية',
-        'date': '2024-01-10',
-        'category': 'ثقافي',
-      },
-      {
-        'title': 'استراتيجيات الحفظ الفعال',
-        'excerpt': 'تقنيات متقدمة للحفظ والاسترجاع السريع للمعلومات',
-        'date': '2024-01-08',
-        'category': 'تعليمي',
-      },
-      {
-        'title': 'التغلب على القلق من الامتحانات',
-        'excerpt': 'نصائح عملية للتغلب على التوتر والقلق أثناء الامتحانات',
-        'date': '2024-01-05',
-        'category': 'نفسي',
-      },
-    ];
-
-    final post = posts[index];
-
+  Widget _buildBlogPost(BuildContext context, Map<String, String> post) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
@@ -171,7 +358,8 @@ class BlogScreen extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: const Color(0xFFd4af37),
                         borderRadius: BorderRadius.circular(12),
@@ -216,26 +404,26 @@ class BlogScreen extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 12),
-                Row(
+                const Row(
                   children: [
                     Icon(
                       Icons.visibility,
                       size: 16,
-                      color: const Color(0xFFd4af37),
+                      color: Color(0xFFd4af37),
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Text(
-                      '${(index + 1) * 25} مشاهدة',
-                      style: const TextStyle(
+                      'اقرأ المزيد',
+                      style: TextStyle(
                         color: Color(0xFFd4af37),
                         fontSize: 12,
                       ),
                     ),
-                    const Spacer(),
+                    Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
                       size: 16,
-                      color: const Color(0xFFd4af37),
+                      color: Color(0xFFd4af37),
                     ),
                   ],
                 ),
@@ -252,6 +440,13 @@ class BlogScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF2a2a2a),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: const Color(0xFFd4af37).withOpacity(0.3),
+            width: 1,
+          ),
+        ),
         title: Text(
           post['title']!,
           style: const TextStyle(
@@ -260,28 +455,49 @@ class BlogScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              post['excerpt']!,
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
-                height: 1.4,
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFd4af37).withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  post['category']!,
+                  style: const TextStyle(
+                    color: Color(0xFFd4af37),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'هذا مثال على محتوى المقال الكامل. في التطبيق الحقيقي، سيتم تحميل المحتوى الكامل من الخادم.',
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
-                height: 1.4,
+              const SizedBox(height: 12),
+              Text(
+                post['excerpt']!,
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  height: 1.4,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              const Text(
+                'هذا مثال على محتوى المقال الكامل. في التطبيق الحقيقي، سيتم تحميل المحتوى الكامل من الخادم.',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -298,5 +514,4 @@ class BlogScreen extends StatelessWidget {
       ),
     );
   }
-
 }
