@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:future_app/features/courses/data/models/courses_model.dart';
 import '../constants/app_constants.dart';
 import '../models/user_model.dart';
-import '../models/course_model.dart';
 import '../models/lecture_model.dart';
 import '../models/blog_post_model.dart';
 import '../models/notification_model.dart';

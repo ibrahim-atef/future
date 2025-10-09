@@ -7,6 +7,7 @@ import 'package:future_app/features/auth/data/models/register_request_model.dart
 import 'package:future_app/features/auth/data/models/register_response_model.dart';
 import 'package:future_app/features/auth/data/models/register_step2_request_model.dart';
 import 'package:future_app/features/auth/data/models/register_step2_response_model.dart';
+import 'package:future_app/features/courses/data/models/courses_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
@@ -51,5 +52,14 @@ abstract class ApiService {
   Future<BannerResponseModel> getBanners(
     @Header('x-api-key') int apiKey,
     @Header('X-App-Source') String appSource,
+  );
+
+  // get courses with pagination
+  @GET(ApiConstants.courses)
+  Future<GetCoursesResponseModel> getCourses(
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+    @Query('page') int page,
+    @Query('limit') int limit,
   );
 }

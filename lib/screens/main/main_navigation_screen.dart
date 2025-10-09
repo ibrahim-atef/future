@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:future_app/screens/downloads/downloads_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
-import '../courses/courses_screen.dart';
+import '../../features/courses/presentation/courses_screen.dart';
 import '../college/college_screen.dart';
 import '../blog/blog_screen.dart';
 import '../profile/profile_screen.dart';

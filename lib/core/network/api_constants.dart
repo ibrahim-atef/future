@@ -8,4 +8,5 @@ class ApiConstants {
   static const String registerStep1 = "register/step/1";
   static const String registerStep2 = "register/step/2";
   static const String banners = "banners";
+  static const String courses = "courses";
 }
