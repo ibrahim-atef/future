@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:future_app/core/models/banner_model.dart';
 import 'package:future_app/core/network/api_constants.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/data/models/login_response_model.dart';
@@ -19,12 +20,14 @@ abstract class ApiService {
   Future<LoginResponseModel> login(
     @Body() LoginRequestModel request,
     @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
   );
 
   // logout
   @POST(ApiConstants.logout)
   Future<void> logout(
     @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
   );
 
   // register step 1
@@ -32,6 +35,7 @@ abstract class ApiService {
   Future<RegisterResponseModel> registerStep1(
     @Body() RegisterRequestModel request,
     @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
   );
 
   // register step 2
@@ -39,5 +43,13 @@ abstract class ApiService {
   Future<RegisterStep2ResponseModel> registerStep2(
     @Body() RegisterStep2RequestModel request,
     @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
+  // get banners
+  @GET(ApiConstants.banners)
+  Future<BannerResponseModel> getBanners(
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
   );
 }

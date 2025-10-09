@@ -10,7 +10,7 @@ part of 'api_service.dart';
 
 class _ApiService implements ApiService {
   _ApiService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://future-academy-courses.com/api/development/';
+    baseUrl ??= 'https://lmsdemo2.anmka.com/wp-json/tutor-api/v1/';
   }
 
   final Dio _dio;
@@ -23,10 +23,14 @@ class _ApiService implements ApiService {
   Future<LoginResponseModel> login(
     LoginRequestModel request,
     int apiKey,
+    String appSource,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'x-api-key': apiKey};
+    final _headers = <String, dynamic>{
+      r'x-api-key': apiKey,
+      r'X-App-Source': appSource,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
@@ -52,10 +56,13 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<void> logout(int apiKey) async {
+  Future<void> logout(int apiKey, String appSource) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'x-api-key': apiKey};
+    final _headers = <String, dynamic>{
+      r'x-api-key': apiKey,
+      r'X-App-Source': appSource,
+    };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<void>(
@@ -75,10 +82,14 @@ class _ApiService implements ApiService {
   Future<RegisterResponseModel> registerStep1(
     RegisterRequestModel request,
     int apiKey,
+    String appSource,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'x-api-key': apiKey};
+    final _headers = <String, dynamic>{
+      r'x-api-key': apiKey,
+      r'X-App-Source': appSource,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
@@ -107,10 +118,14 @@ class _ApiService implements ApiService {
   Future<RegisterStep2ResponseModel> registerStep2(
     RegisterStep2RequestModel request,
     int apiKey,
+    String appSource,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'x-api-key': apiKey};
+    final _headers = <String, dynamic>{
+      r'x-api-key': apiKey,
+      r'X-App-Source': appSource,
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
@@ -128,6 +143,37 @@ class _ApiService implements ApiService {
     late RegisterStep2ResponseModel _value;
     try {
       _value = RegisterStep2ResponseModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<BannerResponseModel> getBanners(int apiKey, String appSource) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': apiKey,
+      r'X-App-Source': appSource,
+    };
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<BannerResponseModel>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'banners',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late BannerResponseModel _value;
+    try {
+      _value = BannerResponseModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

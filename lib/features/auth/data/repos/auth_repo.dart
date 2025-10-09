@@ -18,7 +18,11 @@ class AuthRepo {
   // login
   Future<ApiResult<LoginResponseModel>> login(LoginRequestModel request) async {
     try {
-      final response = await _apiService.login(request, ApiConstants.apiKey);
+      final response = await _apiService.login(
+        request,
+        ApiConstants.apiKey,
+        ApiConstants.appSource,
+      );
       return ApiResult.success(response);
     } catch (e) {
       log(e.toString());
@@ -29,7 +33,10 @@ class AuthRepo {
   // logout
   Future<ApiResult<void>> logout() async {
     try {
-      final response = await _apiService.logout(ApiConstants.apiKey);
+      final response = await _apiService.logout(
+        ApiConstants.apiKey,
+        ApiConstants.appSource,
+      );
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));
@@ -40,8 +47,11 @@ class AuthRepo {
   Future<ApiResult<RegisterResponseModel>> registerStep1(
       RegisterRequestModel request) async {
     try {
-      final response =
-          await _apiService.registerStep1(request, ApiConstants.apiKey);
+      final response = await _apiService.registerStep1(
+        request,
+        ApiConstants.apiKey,
+        ApiConstants.appSource,
+      );
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));
@@ -52,8 +62,11 @@ class AuthRepo {
   Future<ApiResult<RegisterStep2ResponseModel>> registerStep2(
       RegisterStep2RequestModel request) async {
     try {
-      final response =
-          await _apiService.registerStep2(request, ApiConstants.apiKey);
+      final response = await _apiService.registerStep2(
+        request,
+        ApiConstants.apiKey,
+        ApiConstants.appSource,
+      );
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));

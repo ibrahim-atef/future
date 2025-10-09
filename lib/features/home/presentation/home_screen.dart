@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
 import 'dart:io';
-import '../../core/constants/app_constants.dart';
-import '../../core/routes/app_routes.dart';
+import '../../../core/constants/app_constants.dart';
+import '../../../core/di/di.dart';
+import '../../../core/routes/app_routes.dart';
+import '../logic/cubit/home_cubit.dart';
+import '../logic/cubit/home_state.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<HomeCubit>()..getBanners(),
+      child: const _HomeScreenContent(),
+    );
+  }
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenContent extends StatefulWidget {
+  const _HomeScreenContent();
+
+  @override
+  State<_HomeScreenContent> createState() => _HomeScreenContentState();
+}
+
+class _HomeScreenContentState extends State<_HomeScreenContent> {
   final PageController _pageController = PageController();
   Timer? _timer;
   int _currentIndex = 0;
 
-  // Banner images - you can replace these with your actual images
-  final List<String> _bannerImages = [
-    'assets/images/hero1.jpg',
-    'assets/images/hero2.jpg',
-    'assets/images/hero3.jpg',
-  ];
-
   @override
   void initState() {
     super.initState();
-    // Only start auto-scroll if not on iOS
-    if (!Platform.isIOS) {
-      _startAutoScroll();
-    }
   }
 
   @override
@@ -44,11 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  void _startAutoScroll() {
+  void _startAutoScroll(int bannersCount) {
+    if (bannersCount == 0) return;
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (mounted && _pageController.hasClients) {
         setState(() {
-          _currentIndex = (_currentIndex + 1) % _bannerImages.length;
+          _currentIndex = (_currentIndex + 1) % bannersCount;
         });
         _pageController.animateToPage(
           _currentIndex,
@@ -155,7 +161,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
             // Banner Carousel - Hidden on iOS devices
             if (!Platform.isIOS) ...[
-              _buildBannerCarousel(),
+              BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  return state.when(
+                    initial: () => const SizedBox.shrink(),
+                    getBannerLoading: () => _buildBannerLoading(),
+                    getBannerSuccess: (data) {
+                      final banners = data.data.banners;
+                      if (banners.isEmpty) {
+                        return _buildEmptyBanner();
+                      }
+                      // Start auto-scroll after banners are loaded
+                      if (_timer == null) {
+                        Future.delayed(Duration.zero, () {
+                          _startAutoScroll(banners.length);
+                        });
+                      }
+                      return _buildBannerCarousel(banners);
+                    },
+                    getBannerError: (error) => _buildBannerError(error.message),
+                  );
+                },
+              ),
               const SizedBox(height: 24),
             ],
 
@@ -368,8 +395,90 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBannerCarousel() {
-    if (_bannerImages.isEmpty) {
+  Widget _buildBannerLoading() {
+    return Container(
+      height: 200,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2a2a2a),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFFd4af37).withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: const Center(
+        child: CircularProgressIndicator(
+          color: Color(0xFFd4af37),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyBanner() {
+    return Container(
+      height: 200,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2a2a2a),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFFd4af37).withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: const Center(
+        child: Text(
+          'البانر فارغ',
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 16,
+            fontFamily: 'Cairo',
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBannerError(String? message) {
+    return Container(
+      height: 200,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2a2a2a),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.red.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 40,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              message ?? 'حدث خطأ في تحميل البانرات',
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 14,
+                fontFamily: 'Cairo',
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBannerCarousel(List<String> banners) {
+    if (banners.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -380,7 +489,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: PageView.builder(
             controller: _pageController,
             onPageChanged: _onPageChanged,
-            itemCount: _bannerImages.length,
+            itemCount: banners.length,
             allowImplicitScrolling: false,
             itemBuilder: (context, index) {
               return Container(
@@ -397,10 +506,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
-                    _bannerImages[index],
+                  child: Image.network(
+                    banners[index],
                     fit: BoxFit.cover,
                     width: double.infinity,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        color: const Color(0xFF2a2a2a),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: const Color(0xFFd4af37),
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        ),
+                      );
+                    },
                     errorBuilder: (context, error, stackTrace) {
                       // Fallback container with gradient if image fails to load
                       return Container(
@@ -446,10 +570,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const SizedBox(height: 12),
         // Page Indicators
-        if (_bannerImages.isNotEmpty)
+        if (banners.isNotEmpty)
           SmoothPageIndicator(
             controller: _pageController,
-            count: _bannerImages.length,
+            count: banners.length,
             effect: WormEffect(
               activeDotColor: const Color(0xFFd4af37),
               dotColor: const Color(0xFFd4af37).withOpacity(0.3),
