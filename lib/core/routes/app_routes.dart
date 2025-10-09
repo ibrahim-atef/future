@@ -14,7 +14,7 @@ import '../../screens/downloads/downloads_screen.dart';
 import '../../screens/college/college_screen.dart';
 import '../../screens/blog/blog_screen.dart';
 import '../../screens/blog/blog_detail_screen.dart';
-import '../../screens/notifications/notifications_screen.dart';
+import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../screens/profile/profile_screen.dart';
 import '../../screens/profile/edit_profile_screen.dart';
 import '../../screens/profile/settings_screen.dart';

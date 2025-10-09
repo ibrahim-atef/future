@@ -21,18 +21,19 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthState.loadingLogin());
     final response = await _authRepo.login(request);
     response.when(success: (data) {
-      saveUserToken(data.data.token);
+      saveUserToken(data.data.token, data.data.userId);
       emit(AuthState.successLogin(data));
     }, failure: (apiErrorModel) {
       emit(AuthState.errorLogin(apiErrorModel));
     });
   }
 
-  Future<void> saveUserToken(String userToken) async {
+  Future<void> saveUserToken(String userToken, int userId) async {
     await SharedPrefHelper.setSecuredString(
       SharedPrefKeys.userToken,
       userToken,
     );
+    await SharedPrefHelper.setData(SharedPrefKeys.userId, userId);
     DioFactory.setTokenIntoHeaderAfterLogin(userToken);
   }
 
@@ -65,7 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthState.loadingRegisterStep2());
     final response = await _authRepo.registerStep2(request);
     response.when(success: (RegisterStep2ResponseModel data) {
-      saveUserToken(data.data!.token);
+      saveUserToken(data.data!.token, data.data!.userId);
       emit(AuthState.successRegisterStep2(data));
     }, failure: (apiErrorModel) {
       emit(AuthState.errorRegisterStep2(apiErrorModel));

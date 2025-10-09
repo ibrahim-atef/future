@@ -12,4 +12,12 @@ class ApiConstants {
 
   // Get single course by ID
   static String getSingleCourse(String id) => "courses/$id";
+
+  // Notifications endpoints
+  static String getUserNotifications(String userId) =>
+      "users/$userId/notifications";
+  static String markNotificationAsRead(String notificationId) =>
+      "notifications/$notificationId/read";
+  static String deleteNotification(String notificationId) =>
+      "notifications/$notificationId";
 }

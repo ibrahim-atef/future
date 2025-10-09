@@ -7,6 +7,8 @@ import 'package:future_app/features/home/data/repos/home_repo.dart';
 import 'package:future_app/features/home/logic/cubit/home_cubit.dart';
 import 'package:future_app/features/courses/data/repos/courses_repo.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_cubit.dart';
+import 'package:future_app/features/notifications/data/repos/notifications_repo.dart';
+import 'package:future_app/features/notifications/logic/cubit/notifications_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -27,4 +29,8 @@ void setupGetIt() {
   // courses
   getIt.registerLazySingleton(() => CoursesRepo(getIt()));
   getIt.registerFactory(() => CoursesCubit(getIt()));
+
+  // notifications
+  getIt.registerLazySingleton(() => NotificationsRepo(getIt()));
+  getIt.registerFactory(() => NotificationsCubit(getIt()));
 }

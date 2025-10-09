@@ -8,6 +8,7 @@ import 'package:future_app/features/auth/data/models/register_response_model.dar
 import 'package:future_app/features/auth/data/models/register_step2_request_model.dart';
 import 'package:future_app/features/auth/data/models/register_step2_response_model.dart';
 import 'package:future_app/features/courses/data/models/courses_model.dart';
+import 'package:future_app/features/notifications/data/models/notifications_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
@@ -67,6 +68,30 @@ abstract class ApiService {
   @GET('courses/{id}')
   Future<GetSingleCourseResponseModel> getSingleCourse(
     @Path('id') String id,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
+  // get user notifications
+  @GET('users/{userId}/notifications')
+  Future<GetNotificationsResponseModel> getUserNotifications(
+    @Path('userId') String userId,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
+  // mark notification as read
+  @POST('notifications/{notificationId}/read')
+  Future<MarkNotificationReadResponseModel> markNotificationAsRead(
+    @Path('notificationId') String notificationId,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
+  // delete notification
+  @DELETE('notifications/{notificationId}')
+  Future<DeleteNotificationResponseModel> deleteNotification(
+    @Path('notificationId') String notificationId,
     @Header('x-api-key') int apiKey,
     @Header('X-App-Source') String appSource,
   );

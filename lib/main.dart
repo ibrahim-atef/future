@@ -90,6 +90,7 @@ class FutureApp extends StatelessWidget {
 checkIfLoggedInUser() async {
   String? userToken =
       await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
+  UserConstant.userId = await SharedPrefHelper.getString(SharedPrefKeys.userId);
   log('token : $userToken');
   if (userToken == null || userToken == '') {
     UserConstant.isLoggedInUser = false;
