@@ -8,7 +8,7 @@ import '../../screens/auth/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/verify_code_screen.dart';
 import '../../screens/main/main_navigation_screen.dart';
 import '../../features/courses/presentation/courses_screen.dart';
-import '../../screens/courses/course_detail_screen.dart';
+import '../../features/courses/presentation/course_detail_screen.dart';
 import '../../screens/courses/lecture_player_screen.dart';
 import '../../screens/downloads/downloads_screen.dart';
 import '../../screens/college/college_screen.dart';

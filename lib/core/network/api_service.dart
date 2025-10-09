@@ -62,4 +62,12 @@ abstract class ApiService {
     @Query('page') int page,
     @Query('limit') int limit,
   );
+
+  // get single course by ID
+  @GET('courses/{id}')
+  Future<GetSingleCourseResponseModel> getSingleCourse(
+    @Path('id') String id,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
 }

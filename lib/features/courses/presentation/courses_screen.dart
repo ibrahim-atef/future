@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
 import '../../../core/di/di.dart';
+import '../../../core/routes/app_routes.dart';
 import '../logic/cubit/courses_cubit.dart';
 import '../logic/cubit/courses_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -271,11 +272,14 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
     return GestureDetector(
       onTap: () {
         // Navigate to course details
-        // Navigator.pushNamed(
-        //   context,
-        //   AppRoutes.courseDetails,
-        //   arguments: course,
-        // );
+        Navigator.pushNamed(
+          context,
+          AppRoutes.courseDetail,
+          arguments: {
+            'courseId': course.id,
+            'courseTitle': course.title,
+          },
+        );
       },
       child: Container(
         decoration: BoxDecoration(

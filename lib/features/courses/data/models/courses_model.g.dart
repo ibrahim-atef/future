@@ -79,6 +79,22 @@ Map<String, dynamic> _$CourseModelToJson(CourseModel instance) =>
       'updatedAt': instance.updatedAt,
     };
 
+GetSingleCourseResponseModel _$GetSingleCourseResponseModelFromJson(
+        Map<String, dynamic> json) =>
+    GetSingleCourseResponseModel(
+      success: json['success'] as bool,
+      message: json['message'] as String,
+      data: CourseModel.fromJson(json['data'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$GetSingleCourseResponseModelToJson(
+        GetSingleCourseResponseModel instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'message': instance.message,
+      'data': instance.data,
+    };
+
 PaginationData _$PaginationDataFromJson(Map<String, dynamic> json) =>
     PaginationData(
       currentPage: (json['current_page'] as num).toInt(),

@@ -29,4 +29,11 @@ class CoursesState with _$CoursesState {
       GetCoursesResponseModel data) = LoadMoreCoursesSuccess;
   const factory CoursesState.loadMoreCoursesError(ApiErrorModel apiErrorModel) =
       LoadMoreCoursesError;
+
+  // get single course
+  const factory CoursesState.getSingleCourseLoading() = GetSingleCourseLoading;
+  const factory CoursesState.getSingleCourseSuccess(
+      GetSingleCourseResponseModel data) = GetSingleCourseSuccess;
+  const factory CoursesState.getSingleCourseError(ApiErrorModel apiErrorModel) =
+      GetSingleCourseError;
 }

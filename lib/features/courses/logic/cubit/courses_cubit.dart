@@ -114,4 +114,18 @@ class CoursesCubit extends Cubit<CoursesState> {
   Future<void> refresh() async {
     await getCourses(refresh: true);
   }
+
+  // Get single course by ID
+  Future<void> getSingleCourse(String courseId) async {
+    emit(const CoursesState.getSingleCourseLoading());
+    final response = await _coursesRepo.getSingleCourse(courseId);
+    response.when(
+      success: (data) {
+        emit(CoursesState.getSingleCourseSuccess(data));
+      },
+      failure: (apiErrorModel) {
+        emit(CoursesState.getSingleCourseError(apiErrorModel));
+      },
+    );
+  }
 }

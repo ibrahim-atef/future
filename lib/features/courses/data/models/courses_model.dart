@@ -129,6 +129,30 @@ class CourseModel {
   String get ratingText => rating > 0 ? rating.toStringAsFixed(1) : '';
 }
 
+// Single Course Response Model
+@JsonSerializable()
+class GetSingleCourseResponseModel {
+  @JsonKey(name: 'success')
+  final bool success;
+
+  @JsonKey(name: 'message')
+  final String message;
+
+  @JsonKey(name: 'data')
+  final CourseModel data;
+
+  GetSingleCourseResponseModel({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
+
+  factory GetSingleCourseResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$GetSingleCourseResponseModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GetSingleCourseResponseModelToJson(this);
+}
+
 // Pagination Model
 @JsonSerializable()
 class PaginationData {

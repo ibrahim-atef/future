@@ -45,4 +45,22 @@ class CoursesRepo {
       return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
+
+  // get single course by ID
+  Future<ApiResult<GetSingleCourseResponseModel>> getSingleCourse(
+      String courseId) async {
+    try {
+      log('🌐 CoursesRepo: Calling getSingleCourse API for ID: $courseId');
+      final response = await _apiService.getSingleCourse(
+        courseId,
+        ApiConstants.apiKey,
+        ApiConstants.appSource,
+      );
+      log('✅ CoursesRepo: Single course API success - ${response.data.title}');
+      return ApiResult.success(response);
+    } catch (e) {
+      log('❌ CoursesRepo: Single course API error: ${e.toString()}');
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
 }
