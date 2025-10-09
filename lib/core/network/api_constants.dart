@@ -9,6 +9,7 @@ class ApiConstants {
   static const String registerStep2 = "register/step/2";
   static const String banners = "banners";
   static const String courses = "courses";
+  static const String posts = "posts";
 
   // Get single course by ID
   static String getSingleCourse(String id) => "courses/$id";
@@ -20,4 +21,7 @@ class ApiConstants {
       "notifications/$notificationId/read";
   static String deleteNotification(String notificationId) =>
       "notifications/$notificationId";
+
+  // Blog/Posts endpoints
+  static String getPostDetails(String postId) => "posts/$postId";
 }

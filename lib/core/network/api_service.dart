@@ -9,6 +9,7 @@ import 'package:future_app/features/auth/data/models/register_step2_request_mode
 import 'package:future_app/features/auth/data/models/register_step2_response_model.dart';
 import 'package:future_app/features/courses/data/models/courses_model.dart';
 import 'package:future_app/features/notifications/data/models/notifications_model.dart';
+import 'package:future_app/features/blog/data/models/blog_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
@@ -92,6 +93,23 @@ abstract class ApiService {
   @DELETE('notifications/{notificationId}')
   Future<DeleteNotificationResponseModel> deleteNotification(
     @Path('notificationId') String notificationId,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
+  // get posts with pagination
+  @GET(ApiConstants.posts)
+  Future<GetPostsResponseModel> getPosts(
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+    @Query('page') int page,
+    @Query('limit') int limit,
+  );
+
+  // get single post by ID
+  @GET('posts/{postId}')
+  Future<GetPostDetailsResponseModel> getPostDetails(
+    @Path('postId') String postId,
     @Header('x-api-key') int apiKey,
     @Header('X-App-Source') String appSource,
   );
