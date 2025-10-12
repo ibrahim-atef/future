@@ -9,7 +9,7 @@ import 'package:future_app/features/college/logic/cubit/college_cubit.dart';
 import 'package:future_app/features/college/logic/cubit/college_state.dart';
 
 class CourseVideosScreen extends StatelessWidget {
-  final int category;
+  final String category;
   final String categoryName;
 
   const CourseVideosScreen({

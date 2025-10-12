@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:future_app/core/helper/shared_pref_helper.dart';
-import 'package:future_app/core/routes/app_routes.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_state.dart';
 import 'package:future_app/features/auth/presentation/screens/login_screen.dart';

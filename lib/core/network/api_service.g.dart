@@ -187,7 +187,7 @@ class _ApiService implements ApiService {
     String appSource,
     int page,
     int limit,
-    int? category,
+    String? category,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{

@@ -129,7 +129,8 @@ class _CollegeScreenState extends State<CollegeScreen> {
                   'فيديوهات فيوتشر',
                   'ملخص اسبوع الكلية بطريقتنا',
                   Icons.video_call,
-                  () => _navigateToCourseVideos(1, 'فيديوهات فيوتشر'),
+                  () => _navigateToCourseVideos(
+                      'future_videos', 'فيديوهات فيوتشر'),
                 ),
 
                 const SizedBox(height: 16),
@@ -139,7 +140,8 @@ class _CollegeScreenState extends State<CollegeScreen> {
                   'الكتب والمذكرات',
                   'تحميل الكتب والمذكرات الدراسية',
                   Icons.description,
-                  () => _navigateToCourseVideos(2, 'الكتب والمذكرات'),
+                  () => _navigateToCourseVideos(
+                      'books_and_notes', 'الكتب والمذكرات'),
                 ),
 
                 const SizedBox(height: 16),
@@ -149,7 +151,8 @@ class _CollegeScreenState extends State<CollegeScreen> {
                   'جداول الشرح والامتحان',
                   'متابعة الجداول الدراسية والامتحانات',
                   Icons.calendar_today,
-                  () => _navigateToCourseVideos(3, 'جداول الشرح والامتحان'),
+                  () => _navigateToCourseVideos(
+                      'study_and_exam_tables', 'جداول الشرح والامتحان'),
                 ),
 
                 const SizedBox(height: 24),
@@ -161,7 +164,7 @@ class _CollegeScreenState extends State<CollegeScreen> {
     );
   }
 
-  void _navigateToCourseVideos(int category, String categoryName) {
+  void _navigateToCourseVideos(String category, String categoryName) {
     Navigator.pushNamed(
       context,
       AppRoutes.courseVideos,

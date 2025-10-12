@@ -38,14 +38,14 @@ class CollegeCubit extends Cubit<CollegeState> {
   }
 
   // Get college courses by category (1=future, 2=books, 3=tables)
-  Future<void> getCourses(int category) async {
+  Future<void> getCourses(String category) async {
     log('🚀 CollegeCubit: Starting getCourses for category: $category');
     emit(const CollegeState.getCoursesLoading());
     final response = await _collegeRepo.getCourses(category: category);
     response.when(
       success: (data) {
         log('✅ CollegeCubit: Get courses success - ${data.data.length} courses');
-        _coursesByCategory[category] = data.data;
+        // _coursesByCategory[category] = data.data;
         emit(CollegeState.getCoursesSuccess(data));
       },
       failure: (apiErrorModel) {

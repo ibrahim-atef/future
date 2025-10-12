@@ -11,14 +11,14 @@ import '../../features/courses/presentation/courses_screen.dart';
 import '../../features/courses/presentation/course_detail_screen.dart';
 import '../../screens/courses/lecture_player_screen.dart';
 import '../../screens/downloads/downloads_screen.dart';
-import '../../features/college/college_screen.dart';
+import '../../features/college/presentation/college_screen.dart';
 import '../../features/college/presentation/course_videos_screen.dart';
 import '../../features/blog/presentation/blog_screen.dart';
 import '../../features/blog/presentation/blog_detail_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
-import '../../screens/profile/profile_screen.dart';
-import '../../screens/profile/edit_profile_screen.dart';
-import '../../screens/profile/settings_screen.dart';
+import '../../features/profile/profile_screen.dart';
+import '../../features/profile/edit_profile_screen.dart';
+import '../../features/profile/settings_screen.dart';
 import '../../screens/quiz/quiz_screen.dart';
 import '../../screens/quiz/quiz_result_screen.dart';
 
@@ -145,7 +145,7 @@ class AppRoutes {
 
       case courseVideos:
         final args = settings.arguments as Map<String, dynamic>?;
-        final category = args?['category'] as int? ?? 1;
+        final category = args?['category'] as String? ?? '';
         final categoryName =
             args?['categoryName'] as String? ?? 'فيديوهات فيوتشر';
         return MaterialPageRoute(
