@@ -427,14 +427,26 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           width: 1,
         ),
       ),
-      child: const Center(
-        child: Text(
-          'البانر فارغ',
-          style: TextStyle(
-            color: Colors.white70,
-            fontSize: 16,
-            fontFamily: 'Cairo',
-          ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.image_not_supported_outlined,
+              size: 60,
+              color: const Color(0xFFd4af37).withOpacity(0.5),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'لا توجد بنرات متاحه',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.7),
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'Cairo',
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -496,23 +496,32 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
             height: 200,
             margin: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color(0xFFd4af37).withOpacity(0.3),
-                  const Color(0xFFb8860b).withOpacity(0.3),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: const Color(0xFF2a2a2a),
               borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: const Color(0xFFd4af37).withOpacity(0.3),
+                width: 1,
+              ),
             ),
-            child: const Center(
-              child: Text(
-                'لا توجد بنرات متاحة',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 16,
-                ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.image_not_supported_outlined,
+                    size: 60,
+                    color: const Color(0xFFd4af37).withOpacity(0.5),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'لا توجد بنرات متاحه',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
             ),
           );

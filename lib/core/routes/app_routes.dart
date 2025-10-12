@@ -11,7 +11,8 @@ import '../../features/courses/presentation/courses_screen.dart';
 import '../../features/courses/presentation/course_detail_screen.dart';
 import '../../screens/courses/lecture_player_screen.dart';
 import '../../screens/downloads/downloads_screen.dart';
-import '../../screens/college/college_screen.dart';
+import '../../features/college/college_screen.dart';
+import '../../features/college/presentation/course_videos_screen.dart';
 import '../../features/blog/presentation/blog_screen.dart';
 import '../../features/blog/presentation/blog_detail_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
@@ -36,6 +37,7 @@ class AppRoutes {
   static const String lecturePlayer = '/lecture-player';
   static const String downloads = '/downloads';
   static const String college = '/college';
+  static const String courseVideos = '/course-videos';
   static const String blog = '/blog';
   static const String blogDetail = '/blog-detail';
   static const String notifications = '/notifications';
@@ -138,6 +140,19 @@ class AppRoutes {
       case college:
         return MaterialPageRoute(
           builder: (_) => const CollegeScreen(),
+          settings: settings,
+        );
+
+      case courseVideos:
+        final args = settings.arguments as Map<String, dynamic>?;
+        final category = args?['category'] as int? ?? 1;
+        final categoryName =
+            args?['categoryName'] as String? ?? 'فيديوهات فيوتشر';
+        return MaterialPageRoute(
+          builder: (_) => CourseVideosScreen(
+            category: category,
+            categoryName: categoryName,
+          ),
           settings: settings,
         );
 
