@@ -121,7 +121,6 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Row(
-                  spacing: 10,
                   children: [
                     CircleAvatar(
                       radius: 30,
@@ -129,6 +128,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_hWubOwCUsUchCRvVuMya7QQXwsSTuuhpHA&s',
                       ),
                     ),
+                    SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

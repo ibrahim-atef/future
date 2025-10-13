@@ -240,7 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   // Grade/Class Field (الفرقة)
                   DropdownButtonFormField<String>(
-                    initialValue: _selectedGrade,
+                    value: _selectedGrade,
                     decoration: InputDecoration(
                       labelText: 'الفرقة',
                       prefixIcon: const Icon(Icons.school_outlined),

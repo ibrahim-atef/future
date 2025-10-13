@@ -341,13 +341,13 @@ class _NotificationsScreenContent extends StatelessWidget {
           border: Border.all(
             color: notification.isRead
                 ? Colors.transparent
-                : const Color(0xFFd4af37).withValues(alpha: 0.3),
+                : const Color(0xFFd4af37).withOpacity(0.3),
             width: 1.5,
           ),
           boxShadow: [
             if (!notification.isRead)
               BoxShadow(
-                color: const Color(0xFFd4af37).withValues(alpha: 0.1),
+                color: const Color(0xFFd4af37).withOpacity(0.1),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -357,8 +357,8 @@ class _NotificationsScreenContent extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             borderRadius: BorderRadius.circular(16),
-            splashColor: const Color(0xFFd4af37).withValues(alpha: 0.1),
-            highlightColor: const Color(0xFFd4af37).withValues(alpha: 0.05),
+            splashColor: const Color(0xFFd4af37).withOpacity(0.1),
+            highlightColor: const Color(0xFFd4af37).withOpacity(0.05),
             onTap: isLoading
                 ? null
                 : () {
@@ -382,9 +382,9 @@ class _NotificationsScreenContent extends StatelessWidget {
                       gradient: LinearGradient(
                         colors: [
                           _getNotificationColor(notification.type)
-                              .withValues(alpha: 0.25),
+                              .withOpacity(0.25),
                           _getNotificationColor(notification.type)
-                              .withValues(alpha: 0.15),
+                              .withOpacity(0.15),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -392,7 +392,7 @@ class _NotificationsScreenContent extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: _getNotificationColor(notification.type)
-                            .withValues(alpha: 0.3),
+                            .withOpacity(0.3),
                         width: 1,
                       ),
                     ),
@@ -436,7 +436,7 @@ class _NotificationsScreenContent extends StatelessWidget {
                                   boxShadow: [
                                     BoxShadow(
                                       color: const Color(0xFFd4af37)
-                                          .withValues(alpha: 0.5),
+                                          .withOpacity(0.5),
                                       blurRadius: 4,
                                       spreadRadius: 1,
                                     ),
@@ -449,7 +449,7 @@ class _NotificationsScreenContent extends StatelessWidget {
                         Text(
                           notification.message,
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: Colors.white.withOpacity(0.7),
                             fontSize: 14,
                             height: 1.4,
                           ),
@@ -462,15 +462,13 @@ class _NotificationsScreenContent extends StatelessWidget {
                             Icon(
                               Icons.access_time,
                               size: 14,
-                              color: const Color(0xFFd4af37)
-                                  .withValues(alpha: 0.7),
+                              color: const Color(0xFFd4af37).withOpacity(0.7),
                             ),
                             const SizedBox(width: 4),
                             Text(
                               notification.timeAgoText,
                               style: TextStyle(
-                                color: const Color(0xFFd4af37)
-                                    .withValues(alpha: 0.7),
+                                color: const Color(0xFFd4af37).withOpacity(0.7),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -483,12 +481,12 @@ class _NotificationsScreenContent extends StatelessWidget {
                               ),
                               decoration: BoxDecoration(
                                 color: _getNotificationColor(notification.type)
-                                    .withValues(alpha: 0.15),
+                                    .withOpacity(0.15),
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(
                                   color:
                                       _getNotificationColor(notification.type)
-                                          .withValues(alpha: 0.3),
+                                          .withOpacity(0.3),
                                   width: 0.5,
                                 ),
                               ),
@@ -542,21 +540,21 @@ class _NotificationsScreenContent extends StatelessWidget {
                     ),
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: const Color(0xFFd4af37).withValues(alpha: 0.3),
+                      color: const Color(0xFFd4af37).withOpacity(0.3),
                       width: 2,
                     ),
                   ),
                   child: Icon(
                     Icons.notifications_none_outlined,
                     size: 60,
-                    color: const Color(0xFFd4af37).withValues(alpha: 0.6),
+                    color: const Color(0xFFd4af37).withOpacity(0.6),
                   ),
                 ),
                 const SizedBox(height: 24),
                 Text(
                   'لا توجد تنبيهات',
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: Colors.white.withOpacity(0.9),
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
@@ -568,7 +566,7 @@ class _NotificationsScreenContent extends StatelessWidget {
                     'سيتم عرض جميع التنبيهات والإشعارات هنا\nعند وصولها',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: Colors.white.withOpacity(0.5),
                       fontSize: 15,
                       height: 1.5,
                     ),
@@ -595,29 +593,29 @@ class _NotificationsScreenContent extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Colors.red.withValues(alpha: 0.2),
-                    Colors.red.withValues(alpha: 0.1),
+                    Colors.red.withOpacity(0.2),
+                    Colors.red.withOpacity(0.1),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.red.withValues(alpha: 0.3),
+                  color: Colors.red.withOpacity(0.3),
                   width: 2,
                 ),
               ),
               child: Icon(
                 Icons.error_outline_rounded,
                 size: 50,
-                color: Colors.red.withValues(alpha: 0.8),
+                color: Colors.red.withOpacity(0.8),
               ),
             ),
             const SizedBox(height: 24),
             Text(
               'حدث خطأ',
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.9),
+                color: Colors.white.withOpacity(0.9),
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -629,7 +627,7 @@ class _NotificationsScreenContent extends StatelessWidget {
                 message,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.6),
+                  color: Colors.white.withOpacity(0.6),
                   fontSize: 15,
                   height: 1.5,
                 ),
@@ -737,7 +735,7 @@ class _NotificationsScreenContent extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
-            color: const Color(0xFFd4af37).withValues(alpha: 0.3),
+            color: const Color(0xFFd4af37).withOpacity(0.3),
             width: 1,
           ),
         ),

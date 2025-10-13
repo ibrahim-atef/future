@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:future_app/widgets/common/custom_button.dart';
 import 'package:video_player/video_player.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LecturePlayerScreen extends StatefulWidget {
   final String courseTitle;
@@ -21,7 +21,6 @@ class LecturePlayerScreen extends StatefulWidget {
 
 class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   VideoPlayerController? _videoController;
-  YoutubePlayerController? _youtubeController;
   bool _isLoading = true;
   bool _isPlaying = false;
 
@@ -33,23 +32,27 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
 
   void _initializeVideo() {
     if (widget.videoType == 'youtube') {
-      // Extract YouTube video ID from URL
-      String videoId = YoutubePlayer.convertUrlToId(widget.videoUrl) ?? '';
-      if (videoId.isNotEmpty) {
-        _youtubeController = YoutubePlayerController(
-          initialVideoId: videoId,
-          flags: const YoutubePlayerFlags(
-            autoPlay: false,
-            mute: false,
-            isLive: false,
-          ),
-        );
-      }
       setState(() {
         _isLoading = false;
       });
     } else {
       _initializeServerVideo();
+    }
+  }
+
+  Future<void> _openYouTubeVideo() async {
+    final Uri url = Uri.parse(widget.videoUrl);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('لا يمكن فتح الفيديو'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -72,7 +75,6 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   @override
   void dispose() {
     _videoController?.dispose();
-    _youtubeController?.dispose();
     super.dispose();
   }
 
@@ -261,9 +263,9 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   }
 
   Widget _buildYouTubePlayer() {
-    if (_youtubeController == null) {
-      return Container(
-        height: 200,
+    return GestureDetector(
+      onTap: _openYouTubeVideo,
+      child: Container(
         decoration: BoxDecoration(
           color: Colors.black,
           border: Border.all(
@@ -271,25 +273,34 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
             width: 1,
           ),
         ),
-        child: const Center(
-          child: Text(
-            'خطأ في تحميل الفيديو',
-            style: TextStyle(
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.play_circle_outline,
+              size: 80,
               color: Color(0xFFd4af37),
-              fontSize: 16,
             ),
-          ),
+            SizedBox(height: 16),
+            Text(
+              'اضغط لفتح الفيديو في يوتيوب',
+              style: TextStyle(
+                color: Color(0xFFd4af37),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'سيتم فتح الفيديو في تطبيق يوتيوب',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 14,
+              ),
+            ),
+          ],
         ),
-      );
-    }
-
-    return YoutubePlayer(
-      controller: _youtubeController!,
-      showVideoProgressIndicator: true,
-      progressIndicatorColor: const Color(0xFFd4af37),
-      onReady: () {
-        // Video is ready to play
-      },
+      ),
     );
   }
 

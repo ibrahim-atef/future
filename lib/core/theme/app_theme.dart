@@ -35,12 +35,13 @@ class AppTheme {
       ),
 
       // Card Theme
-      cardTheme: CardThemeData(
+      cardTheme: const CardTheme(
         color: AppColors.cardBackground,
         elevation: 4,
         shadowColor: AppColors.shadowColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusLg),
+          borderRadius:
+              BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
         ),
       ),
 
@@ -128,12 +129,13 @@ class AppTheme {
       ),
 
       // Dialog Theme
-      dialogTheme: DialogThemeData(
+      dialogTheme: const DialogTheme(
         backgroundColor: AppColors.cardBackground,
         titleTextStyle: AppTypography.h2,
         contentTextStyle: AppTypography.bodyMedium,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusLg),
+          borderRadius:
+              BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
         ),
       ),
 
