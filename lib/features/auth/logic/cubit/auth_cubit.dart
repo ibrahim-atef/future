@@ -47,6 +47,8 @@ class AuthCubit extends Cubit<AuthState> {
     response.when(success: (_) {
       SharedPrefHelper.clearAllData();
       SharedPrefHelper.clearAllSecuredData();
+      UserConstant.userId = null;
+      UserConstant.userName = null;
       emit(const AuthState.successLogout());
     }, failure: (apiErrorModel) {
       emit(AuthState.errorLogout(apiErrorModel));

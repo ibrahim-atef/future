@@ -174,11 +174,6 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                                       (exception, stackTrace) {
                                     // Handle image loading error
                                   },
-                                  child: const Icon(
-                                    Icons.person,
-                                    color: Colors.white,
-                                    size: 30,
-                                  ),
                                 );
                               }
                               return const CircleAvatar(
@@ -191,12 +186,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                                 ),
                               );
                             },
-                            orElse: () => const CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_hWubOwCUsUchCRvVuMya7QQXwsSTuuhpHA&s',
-                              ),
-                            ),
+                            orElse: () => const SizedBox.shrink(),
                           );
                         },
                       ),
