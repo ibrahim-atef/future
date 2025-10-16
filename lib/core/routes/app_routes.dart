@@ -19,8 +19,8 @@ import '../../features/college/presentation/course_videos_screen.dart';
 import '../../features/blog/presentation/blog_screen.dart';
 import '../../features/blog/presentation/blog_detail_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
-import '../../features/profile/profile_screen.dart';
-import '../../features/profile/edit_profile_screen.dart';
+import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/profile/presentation/edit_password_screen.dart';
 import '../../features/profile/settings_screen.dart';
 import '../../screens/quiz/quiz_screen.dart';
 import '../../screens/quiz/quiz_result_screen.dart';
@@ -46,6 +46,7 @@ class AppRoutes {
   static const String notifications = '/notifications';
   static const String profile = '/profile';
   static const String editProfile = '/edit-profile';
+  static const String editPassword = '/edit-password';
   static const String settings = '/settings';
   static const String quiz = '/quiz';
   static const String quizResult = '/quiz-result';
@@ -192,9 +193,12 @@ class AppRoutes {
           settings: settings,
         );
 
-      case editProfile:
+      case editPassword:
         return MaterialPageRoute(
-          builder: (_) => const EditProfileScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<ProfileCubit>(),
+            child: const EditPasswordScreen(),
+          ),
           settings: settings,
         );
 

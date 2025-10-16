@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:future_app/core/di/di.dart';
+import 'package:future_app/core/helper/shared_pref_helper.dart';
+import 'package:future_app/core/helper/shared_pref_keys.dart';
+import 'package:future_app/core/routes/app_routes.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_state.dart';
 import 'package:future_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:future_app/features/home/presentation/home_screen.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_state.dart';
+import 'package:future_app/features/profile/data/models/update_profile_response_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.inHome});
@@ -18,16 +22,16 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _nicknameController = TextEditingController();
   final _mobileController = TextEditingController();
   final _teamController = TextEditingController();
+  final _aboutController = TextEditingController();
 
   @override
   void dispose() {
     _nameController.dispose();
-    _nicknameController.dispose();
     _mobileController.dispose();
     _teamController.dispose();
+    _aboutController.dispose();
     super.dispose();
   }
 
@@ -39,11 +43,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
           successGetProfile: (data) {
             // Update controllers with profile data
             _nameController.text = data.data.fullName;
-            _nicknameController.text =
-                data.data.bio.isNotEmpty ? data.data.bio : data.data.fullName;
             _mobileController.text = data.data.mobile;
+            _aboutController.text = data.data.about;
           },
           errorGetProfile: (error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(error.message),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          successUpdateProfile: (data) {
+            SharedPrefHelper.setData(
+                SharedPrefKeys.userName, _nameController.text.trim());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(data.message),
+                backgroundColor: const Color(0xFFd4af37),
+              ),
+            );
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+                (route) => false);
+          },
+          errorUpdateProfile: (error) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(error.message),
@@ -229,16 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         controller: _nameController,
                         label: 'الاسم',
                         icon: Icons.person,
-                        enabled: false, // Name cannot be changed
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // Nickname Field
-                      _buildTextField(
-                        controller: _nicknameController,
-                        label: 'الاسم الثاني',
-                        icon: Icons.badge,
+                        enabled: true, // Name can be changed
                       ),
 
                       const SizedBox(height: 16),
@@ -249,6 +265,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         label: 'رقم الموبايل',
                         icon: Icons.phone,
                         keyboardType: TextInputType.phone,
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // About Field
+                      _buildTextField(
+                        controller: _aboutController,
+                        label: 'نبذة عني',
+                        icon: Icons.info_outline,
+                        maxLines: 3,
                       ),
 
                       const SizedBox(height: 16),
@@ -267,7 +293,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          onPressed: () => _showPasswordResetDialog(),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, AppRoutes.editPassword);
+                          },
                           icon: const Icon(Icons.lock_reset),
                           label: const Text('إعادة تعين كلمة المرور'),
                           style: ElevatedButton.styleFrom(
@@ -361,11 +390,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required IconData icon,
     TextInputType? keyboardType,
     bool enabled = true,
+    int? maxLines,
   }) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       enabled: enabled,
+      maxLines: maxLines ?? 1,
       style: const TextStyle(
         color: Colors.white,
         fontSize: 16,
@@ -412,66 +443,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تم حفظ البيانات بنجاح'),
-          backgroundColor: Color(0xFFd4af37),
-        ),
+      final request = UpdateProfileRequestModel(
+        fullName: _nameController.text.trim(),
+        mobile: _mobileController.text.trim(),
+        bio: _nameController.text.trim(), // Use the same name for bio
+        about: _aboutController.text.trim(),
       );
-    }
-  }
 
-  void _showPasswordResetDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF2a2a2a),
-        title: const Text(
-          'إعادة تعين كلمة المرور',
-          style: TextStyle(
-            color: Color(0xFFd4af37),
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: const Text(
-          'سيتم إرسال رابط إعادة تعين كلمة المرور إلى بريدك الإلكتروني المسجل.',
-          style: TextStyle(
-            color: Colors.white70,
-            fontSize: 14,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'إلغاء',
-              style: TextStyle(
-                color: Colors.white70,
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('تم إرسال رابط إعادة تعين كلمة المرور'),
-                  backgroundColor: Color(0xFFd4af37),
-                ),
-              );
-            },
-            child: const Text(
-              'إرسال',
-              style: TextStyle(
-                color: Color(0xFFd4af37),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+      context.read<ProfileCubit>().updateProfile(request);
+    }
   }
 }
 
@@ -520,32 +500,3 @@ class LogoutListener extends StatelessWidget {
     );
   }
 }
-
-
-/*
-
-get profile flow :
-1-api call : panel/profile-setting
-2-create response model use json serilizable : response : {
-    "success": true,
-    "message": "تم جلب البيانات بنجاح.",
-    "data": {
-        "id": "3",
-        "full_name": "ahmed",
-        "email": "adel0@gmail.com",
-        "mobile": "01003574672",
-        "bio": "",
-        "about": "",
-        "avatar": "https://secure.gravatar.com/avatar/3c322ce59d5e1a9402b0875dcd99b4c2cb0adcf805bbe2df00ef14cb3714cb72?s=300&d=mm&r=g",
-        "cover": ""
-    }
-}
-3- create getProfile in ApiService and use getProfileResponseModel in return type 
-4- create getProfileRepo and use ApiService in return type 
-5- create getProfileCubit and use getProfileRepo in return type 
-6- create getProfileState and use getProfileCubit in return type 
-7 - add repo and cubit to di.dart 
-8 - connect cubit to view path : lib\features\profile\profile_screen.dart
-
-
-*/

@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/features/profile/data/repos/profile_repo.dart';
+import 'package:future_app/features/profile/data/models/update_profile_response_model.dart';
+import 'package:future_app/features/profile/data/models/update_password_response_model.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
@@ -17,6 +19,34 @@ class ProfileCubit extends Cubit<ProfileState> {
       },
       failure: (apiErrorModel) {
         emit(ProfileState.errorGetProfile(apiErrorModel));
+      },
+    );
+  }
+
+  // update profile
+  Future<void> updateProfile(UpdateProfileRequestModel request) async {
+    emit(const ProfileState.loadingUpdateProfile());
+    final response = await _profileRepo.updateProfile(request);
+    response.when(
+      success: (data) {
+        emit(ProfileState.successUpdateProfile(data));
+      },
+      failure: (apiErrorModel) {
+        emit(ProfileState.errorUpdateProfile(apiErrorModel));
+      },
+    );
+  }
+
+  // update password
+  Future<void> updatePassword(UpdatePasswordRequestModel request) async {
+    emit(const ProfileState.loadingUpdatePassword());
+    final response = await _profileRepo.updatePassword(request);
+    response.when(
+      success: (data) {
+        emit(ProfileState.successUpdatePassword(data));
+      },
+      failure: (apiErrorModel) {
+        emit(ProfileState.errorUpdatePassword(apiErrorModel));
       },
     );
   }

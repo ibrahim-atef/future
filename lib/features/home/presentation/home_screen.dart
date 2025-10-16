@@ -13,6 +13,8 @@ import '../logic/cubit/home_cubit.dart';
 import '../logic/cubit/home_state.dart';
 import '../../auth/logic/cubit/auth_cubit.dart';
 import '../../auth/logic/cubit/auth_state.dart';
+import '../../profile/logic/cubit/profile_cubit.dart';
+import '../../profile/logic/cubit/profile_state.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -23,6 +25,7 @@ class HomeScreen extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<HomeCubit>()..getBanners()),
         BlocProvider(create: (context) => getIt<AuthCubit>()),
+        BlocProvider(create: (context) => getIt<ProfileCubit>()..getProfile()),
       ],
       child: const _HomeScreenContent(),
     );
@@ -90,85 +93,297 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1a1a1a),
-      appBar: AppBar(
+    return BlocListener<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        state.whenOrNull(
+          errorGetProfile: (error) {
+            // Show error message if profile loading fails
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('خطأ في تحميل البيانات: ${error.message}'),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          },
+        );
+      },
+      child: Scaffold(
         backgroundColor: const Color(0xFF1a1a1a),
-        elevation: 0,
-        title: const Text(
-          AppConstants.appName2,
-          style: TextStyle(
-            color: Color(0xFFd4af37),
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Cairo',
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF1a1a1a),
+          elevation: 0,
+          title: const Text(
+            AppConstants.appName2,
+            style: TextStyle(
+              color: Color(0xFFd4af37),
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Cairo',
+            ),
           ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () =>
+                  Navigator.pushNamed(context, AppRoutes.notifications),
+              icon: const Icon(Icons.notifications),
+              color: const Color(0xFFd4af37),
+              iconSize: 30,
+            ),
+            IconButton(
+              onPressed: () => _showLogoutDialog(context),
+              icon: const Icon(Icons.logout),
+              color: const Color(0xFFd4af37),
+              iconSize: 30,
+            ),
+          ],
         ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () =>
-                Navigator.pushNamed(context, AppRoutes.notifications),
-            icon: const Icon(Icons.notifications),
-            color: const Color(0xFFd4af37),
-            iconSize: 30,
-          ),
-          IconButton(
-            onPressed: () => _showLogoutDialog(context),
-            icon: const Icon(Icons.logout),
-            color: const Color(0xFFd4af37),
-            iconSize: 30,
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Welcome Section
-            InkWell(
-              onTap: () => Navigator.pushNamed(context, AppRoutes.profile,
-                  arguments: true),
-              child: Container(
-                width: double.infinity,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Welcome Section
+              InkWell(
+                onTap: () => Navigator.pushNamed(context, AppRoutes.profile,
+                    arguments: true),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFd4af37), Color(0xFFb8860b)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            successGetProfile: (data) {
+                              if (data.data.avatar.isNotEmpty) {
+                                return CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage:
+                                      NetworkImage(data.data.avatar),
+                                  onBackgroundImageError:
+                                      (exception, stackTrace) {
+                                    // Handle image loading error
+                                  },
+                                  child: const Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                );
+                              }
+                              return const CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Color(0xFFd4af37),
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              );
+                            },
+                            orElse: () => const CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_hWubOwCUsUchCRvVuMya7QQXwsSTuuhpHA&s',
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 10),
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          String userName = UserConstant.userName ?? 'بك';
+
+                          state.maybeWhen(
+                            successGetProfile: (data) {
+                              userName = data.data.fullName.isNotEmpty
+                                  ? data.data.fullName
+                                  : 'بك';
+                            },
+                            orElse: () {
+                              // Keep the default userName from UserConstant
+                            },
+                          );
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'مرحباً بك ي $userName',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Cairo',
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'كل شيء هنا... معمول علشانك',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 16,
+                                  fontFamily: 'Cairo',
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Banner Carousel - Hidden on iOS devices
+              if (!Platform.isIOS) ...[
+                BlocBuilder<HomeCubit, HomeState>(
+                  builder: (context, state) {
+                    return state.when(
+                      initial: () => const SizedBox.shrink(),
+                      getBannerLoading: () => _buildBannerLoading(),
+                      getBannerSuccess: (data) {
+                        final banners = data.data.banners;
+                        if (banners.isEmpty) {
+                          return _buildEmptyBanner();
+                        }
+                        // Start auto-scroll after banners are loaded
+                        if (_timer == null) {
+                          Future.delayed(Duration.zero, () {
+                            _startAutoScroll(banners.length);
+                          });
+                        }
+                        return _buildBannerCarousel(banners);
+                      },
+                      getBannerError: (error) =>
+                          _buildBannerError(error.message),
+                    );
+                  },
+                ),
+                const SizedBox(height: 24),
+              ],
+
+              // Main Features Grid
+              const Text(
+                'الأقسام الرئيسية',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Cairo',
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 1.2,
+                children: [
+                  _buildFeatureCard(
+                    context,
+                    'الكورسات',
+                    () => Navigator.pushNamed(context, AppRoutes.courses),
+                    Image.asset(
+                      'assets/images/3.png',
+                      width: 40,
+                      height: 40,
+                      color: const Color(0xFFd4af37),
+                    ),
+                  ),
+                  _buildFeatureCard(
+                    context,
+                    'الكلية',
+                    () => Navigator.pushNamed(context, AppRoutes.college),
+                    Image.asset(
+                      'assets/images/2.png',
+                      width: 40,
+                      height: 40,
+                      color: const Color(0xFFd4af37),
+                    ),
+                  ),
+                  _buildFeatureCard(
+                    context,
+                    'المدونة',
+                    () => Navigator.pushNamed(context, AppRoutes.blog),
+                    Image.asset(
+                      'assets/images/1.png',
+                      width: 40,
+                      height: 40,
+                      color: const Color(0xFFd4af37),
+                    ),
+                  ),
+                  _buildFeatureCard(
+                    context,
+                    'تجربة الامتياز',
+                    () => Navigator.pushNamed(
+                        context, AppRoutes.experienceOfExcellence),
+                    Image.asset(
+                      'assets/images/4.png',
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // WhatsApp Support Section
+              Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFd4af37), Color(0xFFb8860b)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  color: const Color(0xFF2a2a2a),
                   borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: const Color(0xFFd4af37).withOpacity(0.3),
+                    width: 1,
+                  ),
                 ),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CircleAvatar(
-                      radius: 30,
-                      backgroundImage: NetworkImage(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_hWubOwCUsUchCRvVuMya7QQXwsSTuuhpHA&s',
+                    const Text(
+                      'دعم المنصة',
+                      style: TextStyle(
+                        color: Color(0xFFd4af37),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Cairo',
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    const SizedBox(height: 16),
+                    Row(
                       children: [
-                        Text(
-                          'مرحباً بك ي ${UserConstant.userName} ',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Cairo',
+                        Expanded(
+                          child: _buildWhatsAppButton(
+                            'دعم المنصة',
+                            'https://wa.me/201234567890',
+                            Icons.support_agent,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'كل شيء هنا... معمول علشانك',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 16,
-                            fontFamily: 'Cairo',
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildWhatsAppButton(
+                            'د مينا عيد',
+                            'https://wa.me/201234567891',
+                            Icons.person,
                           ),
                         ),
                       ],
@@ -176,155 +391,10 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   ],
                 ),
               ),
-            ),
 
-            const SizedBox(height: 24),
-
-            // Banner Carousel - Hidden on iOS devices
-            if (!Platform.isIOS) ...[
-              BlocBuilder<HomeCubit, HomeState>(
-                builder: (context, state) {
-                  return state.when(
-                    initial: () => const SizedBox.shrink(),
-                    getBannerLoading: () => _buildBannerLoading(),
-                    getBannerSuccess: (data) {
-                      final banners = data.data.banners;
-                      if (banners.isEmpty) {
-                        return _buildEmptyBanner();
-                      }
-                      // Start auto-scroll after banners are loaded
-                      if (_timer == null) {
-                        Future.delayed(Duration.zero, () {
-                          _startAutoScroll(banners.length);
-                        });
-                      }
-                      return _buildBannerCarousel(banners);
-                    },
-                    getBannerError: (error) => _buildBannerError(error.message),
-                  );
-                },
-              ),
               const SizedBox(height: 24),
             ],
-
-            // Main Features Grid
-            const Text(
-              'الأقسام الرئيسية',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Cairo',
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1.2,
-              children: [
-                _buildFeatureCard(
-                  context,
-                  'الكورسات',
-                  () => Navigator.pushNamed(context, AppRoutes.courses),
-                  Image.asset(
-                    'assets/images/3.png',
-                    width: 40,
-                    height: 40,
-                    color: const Color(0xFFd4af37),
-                  ),
-                ),
-                _buildFeatureCard(
-                  context,
-                  'الكلية',
-                  () => Navigator.pushNamed(context, AppRoutes.college),
-                  Image.asset(
-                    'assets/images/2.png',
-                    width: 40,
-                    height: 40,
-                    color: const Color(0xFFd4af37),
-                  ),
-                ),
-                _buildFeatureCard(
-                  context,
-                  'المدونة',
-                  () => Navigator.pushNamed(context, AppRoutes.blog),
-                  Image.asset(
-                    'assets/images/1.png',
-                    width: 40,
-                    height: 40,
-                    color: const Color(0xFFd4af37),
-                  ),
-                ),
-                _buildFeatureCard(
-                  context,
-                  'تجربة الامتياز',
-                  () => Navigator.pushNamed(
-                      context, AppRoutes.experienceOfExcellence),
-                  Image.asset(
-                    'assets/images/4.png',
-                    width: 40,
-                    height: 40,
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            // WhatsApp Support Section
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2a2a2a),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: const Color(0xFFd4af37).withOpacity(0.3),
-                  width: 1,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'دعم المنصة',
-                    style: TextStyle(
-                      color: Color(0xFFd4af37),
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Cairo',
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildWhatsAppButton(
-                          'دعم المنصة',
-                          'https://wa.me/201234567890',
-                          Icons.support_agent,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildWhatsAppButton(
-                          'د مينا عيد',
-                          'https://wa.me/201234567891',
-                          Icons.person,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-          ],
+          ),
         ),
       ),
     );
