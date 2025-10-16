@@ -21,20 +21,23 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthState.loadingLogin());
     final response = await _authRepo.login(request);
     response.when(success: (data) {
-      saveUserToken(data.data.token, data.data.user.id);
+      saveUserToken(
+          data.data.token, data.data.user.id, data.data.user.fullName);
       emit(AuthState.successLogin(data));
     }, failure: (apiErrorModel) {
       emit(AuthState.errorLogin(apiErrorModel));
     });
   }
 
-  Future<void> saveUserToken(String userToken, String userId) async {
+  Future<void> saveUserToken(
+      String userToken, String userId, String userName) async {
     await SharedPrefHelper.setSecuredString(
       SharedPrefKeys.userToken,
       userToken,
     );
     await SharedPrefHelper.setData(SharedPrefKeys.userId, userId);
     DioFactory.setTokenIntoHeaderAfterLogin(userToken);
+    await SharedPrefHelper.setData(SharedPrefKeys.userName, userName);
   }
 
   // logout
@@ -55,7 +58,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthState.loadingRegisterStep1());
     final response = await _authRepo.registerStep1(request);
     response.when(success: (RegisterResponseModel data) {
-      saveUserToken(data.data.token, data.data.user.id);
+      saveUserToken(
+          data.data.token, data.data.user.id, data.data.user.fullName);
       emit(AuthState.successRegisterStep1(data));
     }, failure: (apiErrorModel) {
       emit(AuthState.errorRegisterStep1(apiErrorModel));
@@ -67,7 +71,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthState.loadingRegisterStep2());
     final response = await _authRepo.registerStep2(request);
     response.when(success: (RegisterStep2ResponseModel data) {
-      saveUserToken(data.data!.token, data.data!.userId.toString());
+      saveUserToken(
+          data.data!.token, data.data!.userId.toString(), data.data!.fullName);
       emit(AuthState.successRegisterStep2(data));
     }, failure: (apiErrorModel) {
       emit(AuthState.errorRegisterStep2(apiErrorModel));

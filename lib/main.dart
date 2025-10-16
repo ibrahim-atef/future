@@ -91,6 +91,8 @@ checkIfLoggedInUser() async {
   String? userToken =
       await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
   UserConstant.userId = await SharedPrefHelper.getString(SharedPrefKeys.userId);
+  UserConstant.userName =
+      await SharedPrefHelper.getString(SharedPrefKeys.userName);
   log('token : $userToken');
   if (userToken == null || userToken == '') {
     UserConstant.isLoggedInUser = false;

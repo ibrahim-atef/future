@@ -75,9 +75,9 @@ abstract class ApiService {
   );
 
   // get user notifications
-  @GET('users/{userId}/notifications')
+  @GET('users/{user_id}/notifications')
   Future<GetNotificationsResponseModel> getUserNotifications(
-    @Path('userId') String userId,
+    @Path('user_id') String userId,
     @Header('x-api-key') int apiKey,
     @Header('X-App-Source') String appSource,
   );

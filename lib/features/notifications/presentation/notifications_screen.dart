@@ -12,12 +12,9 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Get actual user ID from auth state
-    String userId = UserConstant.userId ?? '1'; // Replace with actual user ID
-
     return BlocProvider(
-      create: (context) =>
-          getIt<NotificationsCubit>()..getUserNotifications(userId),
+      create: (context) => getIt<NotificationsCubit>()
+        ..getUserNotifications(UserConstant.userId.toString()),
       child: const _NotificationsScreenContent(),
     );
   }

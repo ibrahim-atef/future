@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:future_app/core/helper/shared_pref_helper.dart';
+import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
@@ -41,6 +43,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
 
   @override
   void initState() {
+    _getUserData();
     super.initState();
   }
 
@@ -52,6 +55,13 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
       _pageController.dispose();
     }
     super.dispose();
+  }
+
+  void _getUserData() async {
+    UserConstant.userId =
+        await SharedPrefHelper.getString(SharedPrefKeys.userId);
+    UserConstant.userName =
+        await SharedPrefHelper.getString(SharedPrefKeys.userName);
   }
 
   void _startAutoScroll(int bannersCount) {
@@ -131,29 +141,29 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   ),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 30,
                       backgroundImage: NetworkImage(
                         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_hWubOwCUsUchCRvVuMya7QQXwsSTuuhpHA&s',
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'مرحباً بك ي احمد ',
-                          style: TextStyle(
+                          'مرحباً بك ي ${UserConstant.userName} ',
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Cairo',
                           ),
                         ),
-                        SizedBox(height: 8),
-                        Text(
+                        const SizedBox(height: 8),
+                        const Text(
                           'كل شيء هنا... معمول علشانك',
                           style: TextStyle(
                             color: Colors.white70,

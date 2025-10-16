@@ -1,3 +1,4 @@
+import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/core/network/api_constants.dart';
 import 'package:future_app/core/network/api_error_handel.dart';
 import 'package:future_app/core/network/api_result.dart';
@@ -15,7 +16,7 @@ class NotificationsRepo {
     try {
       log('🌐 NotificationsRepo: Calling getUserNotifications API for userId: $userId');
       final response = await _apiService.getUserNotifications(
-        userId,
+        UserConstant.userId!,
         ApiConstants.apiKey,
         ApiConstants.appSource,
       );
@@ -63,4 +64,3 @@ class NotificationsRepo {
     }
   }
 }
-
