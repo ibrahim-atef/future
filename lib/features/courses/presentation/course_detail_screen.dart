@@ -275,53 +275,53 @@ class CourseDetailScreen extends StatelessWidget {
           const SizedBox(height: 20),
 
           // Price
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: course.isFree
-                    ? [
-                        const Color(0xFF2a2a2a),
-                        const Color(0xFF1f1f1f),
-                      ]
-                    : [
-                        const Color(0xFFd4af37).withOpacity(0.2),
-                        const Color(0xFFd4af37).withOpacity(0.1),
-                      ],
-              ),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: course.isFree
-                    ? const Color(0xFFd4af37).withOpacity(0.3)
-                    : const Color(0xFFd4af37),
-                width: 1.5,
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'السعر',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  course.priceText,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: course.isFree
-                        ? const Color(0xFFd4af37)
-                        : const Color(0xFFd4af37),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
+          // Container(
+          //   padding: const EdgeInsets.all(16),
+          //   decoration: BoxDecoration(
+          //     gradient: LinearGradient(
+          //       colors: course.isFree
+          //           ? [
+          //               const Color(0xFF2a2a2a),
+          //               const Color(0xFF1f1f1f),
+          //             ]
+          //           : [
+          //               const Color(0xFFd4af37).withOpacity(0.2),
+          //               const Color(0xFFd4af37).withOpacity(0.1),
+          //             ],
+          //     ),
+          //     borderRadius: BorderRadius.circular(12),
+          //     border: Border.all(
+          //       color: course.isFree
+          //           ? const Color(0xFFd4af37).withOpacity(0.3)
+          //           : const Color(0xFFd4af37),
+          //       width: 1.5,
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       const Text(
+          //         'السعر',
+          //         style: TextStyle(
+          //           color: Colors.white,
+          //           fontSize: 18,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       Text(
+          //         course.priceText,
+          //         style: TextStyle(
+          //           fontSize: 24,
+          //           fontWeight: FontWeight.bold,
+          //           color: course.isFree
+          //               ? const Color(0xFFd4af37)
+          //               : const Color(0xFFd4af37),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // const SizedBox(height: 20),
 
           // Categories
           if (course.categories.isNotEmpty) ...[
