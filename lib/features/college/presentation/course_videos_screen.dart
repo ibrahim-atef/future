@@ -9,19 +9,19 @@ import 'package:future_app/features/college/logic/cubit/college_cubit.dart';
 import 'package:future_app/features/college/logic/cubit/college_state.dart';
 
 class CourseVideosScreen extends StatelessWidget {
-  final String category;
+  final int categoryId;
   final String categoryName;
 
   const CourseVideosScreen({
     super.key,
-    required this.category,
+    required this.categoryId,
     required this.categoryName,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<CollegeCubit>()..getCourses(category),
+      create: (context) => getIt<CollegeCubit>()..getCourses(categoryId),
       child: Scaffold(
         backgroundColor: const Color(0xFF1a1a1a),
         appBar: AppBar(
@@ -43,7 +43,7 @@ class CourseVideosScreen extends StatelessWidget {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            await context.read<CollegeCubit>().getCourses(category);
+            await context.read<CollegeCubit>().getCourses(categoryId);
           },
           color: const Color(0xFFd4af37),
           child: SingleChildScrollView(

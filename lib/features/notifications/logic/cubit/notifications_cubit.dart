@@ -69,14 +69,15 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     response.when(
       success: (data) {
         log('✅ NotificationsCubit: Delete notification success');
-        // Update local state
-        _removeNotificationFromList(notificationId);
+        // Note: Notification already removed from local state in onDismissed
         emit(NotificationsState.deleteNotificationSuccess(data));
         // Refresh notifications to get updated list
         getUserNotifications(userId);
       },
       failure: (apiErrorModel) {
         log('❌ NotificationsCubit: Delete notification failed - ${apiErrorModel.message}');
+        // If delete failed, re-add the notification to the list
+        getUserNotifications(userId);
         emit(NotificationsState.deleteNotificationError(apiErrorModel));
       },
     );
@@ -123,9 +124,13 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     }
   }
 
+  // Public method to remove notification from local state (for Dismissible widget)
+  void removeNotificationFromList(String notificationId) {
+    _removeNotificationFromList(notificationId);
+  }
+
   // Refresh notifications
   Future<void> refresh(String userId) async {
     await getUserNotifications(userId);
   }
 }
-

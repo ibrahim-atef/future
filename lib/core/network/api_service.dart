@@ -66,7 +66,7 @@ abstract class ApiService {
     @Header('X-App-Source') String appSource,
     @Query('page') int page,
     @Query('limit') int limit,
-    @Query('category') String? category,
+    @Query('category_id') int? categoryId,
   );
 
   // get single course by ID

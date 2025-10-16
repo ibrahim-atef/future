@@ -227,13 +227,13 @@ class _ApiService implements ApiService {
     String appSource,
     int page,
     int limit,
-    String? category,
+    int? categoryId,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'limit': limit,
-      r'category': category,
+      r'category_id': categoryId,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{

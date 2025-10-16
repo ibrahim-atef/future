@@ -8,6 +8,7 @@ import 'package:future_app/core/helper/bloc_observer.dart';
 import 'package:future_app/core/helper/device_info_helper.dart';
 import 'package:future_app/core/helper/shared_pref_helper.dart';
 import 'package:future_app/core/helper/shared_pref_keys.dart';
+import 'package:future_app/core/network/dio_factory.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:future_app/screens/main/main_navigation_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -16,16 +17,24 @@ import 'core/theme/app_theme.dart';
 import 'core/routes/app_routes.dart';
 import 'core/services/storage_service.dart';
 import 'screens/splash/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'core/notification/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // Initialize Hive
   await Hive.initFlutter();
 
   // Initialize services
   await StorageService.init();
-  // ApiService().init(); // Commented out for MVP - no API calls
+
+  // Initialize Firebase Notifications
+  await FirebaseNotification.initializeNotifications();
 
   // device id
   UserConstant.deviceId = await DeviceInfoHelper.getDeviceId();
@@ -98,5 +107,7 @@ checkIfLoggedInUser() async {
     UserConstant.isLoggedInUser = false;
   } else {
     UserConstant.isLoggedInUser = true;
+    // Set token in headers if user is already logged in
+    DioFactory.setTokenIntoHeaderAfterLogin(userToken);
   }
 }

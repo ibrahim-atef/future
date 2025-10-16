@@ -51,5 +51,38 @@ class DioFactory {
         responseHeader: true,
       ),
     );
+
+    // Add auth token interceptor
+    dio?.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // Get the stored token
+          String? token =
+              await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          handler.next(options);
+        },
+        onError: (error, handler) {
+          // Handle token expiry
+          if (error.response?.statusCode == 401) {
+            // Token expired, clear stored data and redirect to login
+            _handleTokenExpiry();
+          }
+          handler.next(error);
+        },
+      ),
+    );
+  }
+
+  static void _handleTokenExpiry() async {
+    // Clear stored token and user data
+    await SharedPrefHelper.setSecuredString(SharedPrefKeys.userToken, '');
+    await SharedPrefHelper.setData(SharedPrefKeys.userId, '');
+    await SharedPrefHelper.setData(SharedPrefKeys.userName, '');
+
+    // Clear headers
+    dio?.options.headers.remove('Authorization');
   }
 }

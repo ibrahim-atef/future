@@ -14,7 +14,7 @@ class CoursesRepo {
   Future<ApiResult<GetCoursesResponseModel>> getCourses({
     required int page,
     required int limit,
-    String? category,
+    int? categoryId,
   }) async {
     try {
       final response = await _apiService.getCourses(
@@ -22,7 +22,7 @@ class CoursesRepo {
         ApiConstants.appSource,
         page,
         limit,
-        category,
+        categoryId,
       );
       return ApiResult.success(response);
     } catch (e) {

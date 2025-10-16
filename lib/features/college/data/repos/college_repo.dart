@@ -27,18 +27,18 @@ class CollegeRepo {
 
   // Get college courses by category (1=future, 2=books, 3=tables)
   Future<ApiResult<GetCoursesResponseModel>> getCourses({
-    required String category,
+    required int categoryId,
     int page = 1,
     int limit = 100,
   }) async {
     try {
-      log('🌐 CollegeRepo: Calling getCourses API - category: $category');
+      log('🌐 CollegeRepo: Calling getCourses API - category: $categoryId');
       final response = await _apiService.getCourses(
         ApiConstants.apiKey,
         ApiConstants.appSource,
         page,
         limit,
-        category,
+        categoryId,
       );
       log('✅ CollegeRepo: Get courses API success - ${response.data.length} courses');
       return ApiResult.success(response);

@@ -37,11 +37,23 @@ class CollegeCubit extends Cubit<CollegeState> {
     );
   }
 
-  // Get college courses by category (1=future, 2=books, 3=tables)
-  Future<void> getCourses(String category) async {
-    log('🚀 CollegeCubit: Starting getCourses for category: $category');
+  // Get college courses by category
+  /*
+فيديوهات فيوتشر
+GET /courses?category_id=22
+
+الكتب والملاحظات
+GET /courses?category_id=23
+
+جداول الدراسة والامتحانات
+GET /courses?category_id=24
+
+  */
+
+  Future<void> getCourses(int categoryId) async {
+    log('🚀 CollegeCubit: Starting getCourses for category: $categoryId');
     emit(const CollegeState.getCoursesLoading());
-    final response = await _collegeRepo.getCourses(category: category);
+    final response = await _collegeRepo.getCourses(categoryId: categoryId);
     response.when(
       success: (data) {
         log('✅ CollegeCubit: Get courses success - ${data.data.length} courses');

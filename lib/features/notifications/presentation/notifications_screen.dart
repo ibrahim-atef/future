@@ -348,6 +348,11 @@ class _NotificationsScreenContent extends StatelessWidget {
       ),
       onDismissed: (direction) {
         if (!isLoading) {
+          // Immediately remove from local state to prevent Dismissible error
+          context
+              .read<NotificationsCubit>()
+              .removeNotificationFromList(notification.id);
+          // Then call delete API
           context
               .read<NotificationsCubit>()
               .deleteNotification(notification.id, userId);

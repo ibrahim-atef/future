@@ -149,12 +149,11 @@ class AppRoutes {
 
       case courseVideos:
         final args = settings.arguments as Map<String, dynamic>?;
-        final category = args?['category'] as String? ?? '';
-        final categoryName =
-            args?['categoryName'] as String? ?? 'فيديوهات فيوتشر';
+        final categoryId = args?['categoryId'] as int? ?? 0;
+        final categoryName = args?['categoryName'] as String? ?? '';
         return MaterialPageRoute(
           builder: (_) => CourseVideosScreen(
-            category: category,
+            categoryId: categoryId,
             categoryName: categoryName,
           ),
           settings: settings,

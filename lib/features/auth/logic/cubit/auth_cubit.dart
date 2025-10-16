@@ -49,6 +49,8 @@ class AuthCubit extends Cubit<AuthState> {
       SharedPrefHelper.clearAllSecuredData();
       UserConstant.userId = null;
       UserConstant.userName = null;
+      // Clear headers in DioFactory
+      DioFactory.dio?.options.headers.remove('Authorization');
       emit(const AuthState.successLogout());
     }, failure: (apiErrorModel) {
       emit(AuthState.errorLogout(apiErrorModel));
