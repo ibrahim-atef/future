@@ -65,4 +65,22 @@ class CoursesRepo {
       return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
+
+  // get course content
+  Future<ApiResult<GetCourseContentResponseModel>> getCourseContent(
+      String courseId) async {
+    try {
+      log('🌐 CoursesRepo: Calling getCourseContent API for ID: $courseId');
+      final response = await _apiService.getCourseContent(
+        courseId,
+        ApiConstants.apiKey,
+        ApiConstants.appSource,
+      );
+      log('✅ CoursesRepo: Course content API success - ${response.data.lectures.length} lectures');
+      return ApiResult.success(response);
+    } catch (e) {
+      log('❌ CoursesRepo: Course content API error: ${e.toString()}');
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
 }

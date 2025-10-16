@@ -129,4 +129,18 @@ class CoursesCubit extends Cubit<CoursesState> {
       },
     );
   }
+
+  // Get course content
+  Future<void> getCourseContent(String courseId) async {
+    emit(const CoursesState.getCourseContentLoading());
+    final response = await _coursesRepo.getCourseContent(courseId);
+    response.when(
+      success: (data) {
+        emit(CoursesState.getCourseContentSuccess(data));
+      },
+      failure: (apiErrorModel) {
+        emit(CoursesState.getCourseContentError(apiErrorModel));
+      },
+    );
+  }
 }

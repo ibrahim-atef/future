@@ -33,6 +33,11 @@ mixin _$CoursesState {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -51,6 +56,10 @@ mixin _$CoursesState {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -68,6 +77,10 @@ mixin _$CoursesState {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -90,6 +103,12 @@ mixin _$CoursesState {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -107,6 +126,9 @@ mixin _$CoursesState {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -124,6 +146,9 @@ mixin _$CoursesState {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -200,6 +225,11 @@ class _$InitialImpl implements _Initial {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return initial();
   }
@@ -221,6 +251,10 @@ class _$InitialImpl implements _Initial {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return initial?.call();
   }
@@ -241,6 +275,10 @@ class _$InitialImpl implements _Initial {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -269,6 +307,12 @@ class _$InitialImpl implements _Initial {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return initial(this);
   }
@@ -289,6 +333,9 @@ class _$InitialImpl implements _Initial {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return initial?.call(this);
   }
@@ -309,6 +356,9 @@ class _$InitialImpl implements _Initial {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -375,6 +425,11 @@ class _$GetBannersLoadingImpl implements GetBannersLoading {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return getBannersLoading();
   }
@@ -396,6 +451,10 @@ class _$GetBannersLoadingImpl implements GetBannersLoading {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return getBannersLoading?.call();
   }
@@ -416,6 +475,10 @@ class _$GetBannersLoadingImpl implements GetBannersLoading {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getBannersLoading != null) {
@@ -444,6 +507,12 @@ class _$GetBannersLoadingImpl implements GetBannersLoading {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return getBannersLoading(this);
   }
@@ -464,6 +533,9 @@ class _$GetBannersLoadingImpl implements GetBannersLoading {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return getBannersLoading?.call(this);
   }
@@ -484,6 +556,9 @@ class _$GetBannersLoadingImpl implements GetBannersLoading {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getBannersLoading != null) {
@@ -577,6 +652,11 @@ class _$GetBannersSuccessImpl implements GetBannersSuccess {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return getBannersSuccess(data);
   }
@@ -598,6 +678,10 @@ class _$GetBannersSuccessImpl implements GetBannersSuccess {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return getBannersSuccess?.call(data);
   }
@@ -618,6 +702,10 @@ class _$GetBannersSuccessImpl implements GetBannersSuccess {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getBannersSuccess != null) {
@@ -646,6 +734,12 @@ class _$GetBannersSuccessImpl implements GetBannersSuccess {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return getBannersSuccess(this);
   }
@@ -666,6 +760,9 @@ class _$GetBannersSuccessImpl implements GetBannersSuccess {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return getBannersSuccess?.call(this);
   }
@@ -686,6 +783,9 @@ class _$GetBannersSuccessImpl implements GetBannersSuccess {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getBannersSuccess != null) {
@@ -786,6 +886,11 @@ class _$GetBannersErrorImpl implements GetBannersError {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return getBannersError(apiErrorModel);
   }
@@ -807,6 +912,10 @@ class _$GetBannersErrorImpl implements GetBannersError {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return getBannersError?.call(apiErrorModel);
   }
@@ -827,6 +936,10 @@ class _$GetBannersErrorImpl implements GetBannersError {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getBannersError != null) {
@@ -855,6 +968,12 @@ class _$GetBannersErrorImpl implements GetBannersError {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return getBannersError(this);
   }
@@ -875,6 +994,9 @@ class _$GetBannersErrorImpl implements GetBannersError {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return getBannersError?.call(this);
   }
@@ -895,6 +1017,9 @@ class _$GetBannersErrorImpl implements GetBannersError {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getBannersError != null) {
@@ -967,6 +1092,11 @@ class _$GetCoursesLoadingImpl implements GetCoursesLoading {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return getCoursesLoading();
   }
@@ -988,6 +1118,10 @@ class _$GetCoursesLoadingImpl implements GetCoursesLoading {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return getCoursesLoading?.call();
   }
@@ -1008,6 +1142,10 @@ class _$GetCoursesLoadingImpl implements GetCoursesLoading {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getCoursesLoading != null) {
@@ -1036,6 +1174,12 @@ class _$GetCoursesLoadingImpl implements GetCoursesLoading {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return getCoursesLoading(this);
   }
@@ -1056,6 +1200,9 @@ class _$GetCoursesLoadingImpl implements GetCoursesLoading {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return getCoursesLoading?.call(this);
   }
@@ -1076,6 +1223,9 @@ class _$GetCoursesLoadingImpl implements GetCoursesLoading {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getCoursesLoading != null) {
@@ -1169,6 +1319,11 @@ class _$GetCoursesSuccessImpl implements GetCoursesSuccess {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return getCoursesSuccess(data);
   }
@@ -1190,6 +1345,10 @@ class _$GetCoursesSuccessImpl implements GetCoursesSuccess {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return getCoursesSuccess?.call(data);
   }
@@ -1210,6 +1369,10 @@ class _$GetCoursesSuccessImpl implements GetCoursesSuccess {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getCoursesSuccess != null) {
@@ -1238,6 +1401,12 @@ class _$GetCoursesSuccessImpl implements GetCoursesSuccess {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return getCoursesSuccess(this);
   }
@@ -1258,6 +1427,9 @@ class _$GetCoursesSuccessImpl implements GetCoursesSuccess {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return getCoursesSuccess?.call(this);
   }
@@ -1278,6 +1450,9 @@ class _$GetCoursesSuccessImpl implements GetCoursesSuccess {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getCoursesSuccess != null) {
@@ -1378,6 +1553,11 @@ class _$GetCoursesErrorImpl implements GetCoursesError {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return getCoursesError(apiErrorModel);
   }
@@ -1399,6 +1579,10 @@ class _$GetCoursesErrorImpl implements GetCoursesError {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return getCoursesError?.call(apiErrorModel);
   }
@@ -1419,6 +1603,10 @@ class _$GetCoursesErrorImpl implements GetCoursesError {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getCoursesError != null) {
@@ -1447,6 +1635,12 @@ class _$GetCoursesErrorImpl implements GetCoursesError {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return getCoursesError(this);
   }
@@ -1467,6 +1661,9 @@ class _$GetCoursesErrorImpl implements GetCoursesError {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return getCoursesError?.call(this);
   }
@@ -1487,6 +1684,9 @@ class _$GetCoursesErrorImpl implements GetCoursesError {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getCoursesError != null) {
@@ -1562,6 +1762,11 @@ class _$LoadMoreCoursesLoadingImpl implements LoadMoreCoursesLoading {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return loadMoreCoursesLoading();
   }
@@ -1583,6 +1788,10 @@ class _$LoadMoreCoursesLoadingImpl implements LoadMoreCoursesLoading {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return loadMoreCoursesLoading?.call();
   }
@@ -1603,6 +1812,10 @@ class _$LoadMoreCoursesLoadingImpl implements LoadMoreCoursesLoading {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (loadMoreCoursesLoading != null) {
@@ -1631,6 +1844,12 @@ class _$LoadMoreCoursesLoadingImpl implements LoadMoreCoursesLoading {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return loadMoreCoursesLoading(this);
   }
@@ -1651,6 +1870,9 @@ class _$LoadMoreCoursesLoadingImpl implements LoadMoreCoursesLoading {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return loadMoreCoursesLoading?.call(this);
   }
@@ -1671,6 +1893,9 @@ class _$LoadMoreCoursesLoadingImpl implements LoadMoreCoursesLoading {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (loadMoreCoursesLoading != null) {
@@ -1766,6 +1991,11 @@ class _$LoadMoreCoursesSuccessImpl implements LoadMoreCoursesSuccess {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return loadMoreCoursesSuccess(data);
   }
@@ -1787,6 +2017,10 @@ class _$LoadMoreCoursesSuccessImpl implements LoadMoreCoursesSuccess {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return loadMoreCoursesSuccess?.call(data);
   }
@@ -1807,6 +2041,10 @@ class _$LoadMoreCoursesSuccessImpl implements LoadMoreCoursesSuccess {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (loadMoreCoursesSuccess != null) {
@@ -1835,6 +2073,12 @@ class _$LoadMoreCoursesSuccessImpl implements LoadMoreCoursesSuccess {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return loadMoreCoursesSuccess(this);
   }
@@ -1855,6 +2099,9 @@ class _$LoadMoreCoursesSuccessImpl implements LoadMoreCoursesSuccess {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return loadMoreCoursesSuccess?.call(this);
   }
@@ -1875,6 +2122,9 @@ class _$LoadMoreCoursesSuccessImpl implements LoadMoreCoursesSuccess {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (loadMoreCoursesSuccess != null) {
@@ -1976,6 +2226,11 @@ class _$LoadMoreCoursesErrorImpl implements LoadMoreCoursesError {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return loadMoreCoursesError(apiErrorModel);
   }
@@ -1997,6 +2252,10 @@ class _$LoadMoreCoursesErrorImpl implements LoadMoreCoursesError {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return loadMoreCoursesError?.call(apiErrorModel);
   }
@@ -2017,6 +2276,10 @@ class _$LoadMoreCoursesErrorImpl implements LoadMoreCoursesError {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (loadMoreCoursesError != null) {
@@ -2045,6 +2308,12 @@ class _$LoadMoreCoursesErrorImpl implements LoadMoreCoursesError {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return loadMoreCoursesError(this);
   }
@@ -2065,6 +2334,9 @@ class _$LoadMoreCoursesErrorImpl implements LoadMoreCoursesError {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return loadMoreCoursesError?.call(this);
   }
@@ -2085,6 +2357,9 @@ class _$LoadMoreCoursesErrorImpl implements LoadMoreCoursesError {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (loadMoreCoursesError != null) {
@@ -2160,6 +2435,11 @@ class _$GetSingleCourseLoadingImpl implements GetSingleCourseLoading {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return getSingleCourseLoading();
   }
@@ -2181,6 +2461,10 @@ class _$GetSingleCourseLoadingImpl implements GetSingleCourseLoading {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return getSingleCourseLoading?.call();
   }
@@ -2201,6 +2485,10 @@ class _$GetSingleCourseLoadingImpl implements GetSingleCourseLoading {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getSingleCourseLoading != null) {
@@ -2229,6 +2517,12 @@ class _$GetSingleCourseLoadingImpl implements GetSingleCourseLoading {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return getSingleCourseLoading(this);
   }
@@ -2249,6 +2543,9 @@ class _$GetSingleCourseLoadingImpl implements GetSingleCourseLoading {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return getSingleCourseLoading?.call(this);
   }
@@ -2269,6 +2566,9 @@ class _$GetSingleCourseLoadingImpl implements GetSingleCourseLoading {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getSingleCourseLoading != null) {
@@ -2364,6 +2664,11 @@ class _$GetSingleCourseSuccessImpl implements GetSingleCourseSuccess {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return getSingleCourseSuccess(data);
   }
@@ -2385,6 +2690,10 @@ class _$GetSingleCourseSuccessImpl implements GetSingleCourseSuccess {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return getSingleCourseSuccess?.call(data);
   }
@@ -2405,6 +2714,10 @@ class _$GetSingleCourseSuccessImpl implements GetSingleCourseSuccess {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getSingleCourseSuccess != null) {
@@ -2433,6 +2746,12 @@ class _$GetSingleCourseSuccessImpl implements GetSingleCourseSuccess {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return getSingleCourseSuccess(this);
   }
@@ -2453,6 +2772,9 @@ class _$GetSingleCourseSuccessImpl implements GetSingleCourseSuccess {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return getSingleCourseSuccess?.call(this);
   }
@@ -2473,6 +2795,9 @@ class _$GetSingleCourseSuccessImpl implements GetSingleCourseSuccess {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getSingleCourseSuccess != null) {
@@ -2574,6 +2899,11 @@ class _$GetSingleCourseErrorImpl implements GetSingleCourseError {
     required TResult Function(GetSingleCourseResponseModel data)
         getSingleCourseSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
   }) {
     return getSingleCourseError(apiErrorModel);
   }
@@ -2595,6 +2925,10 @@ class _$GetSingleCourseErrorImpl implements GetSingleCourseError {
     TResult? Function(GetSingleCourseResponseModel data)?
         getSingleCourseSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
   }) {
     return getSingleCourseError?.call(apiErrorModel);
   }
@@ -2615,6 +2949,10 @@ class _$GetSingleCourseErrorImpl implements GetSingleCourseError {
     TResult Function()? getSingleCourseLoading,
     TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getSingleCourseError != null) {
@@ -2643,6 +2981,12 @@ class _$GetSingleCourseErrorImpl implements GetSingleCourseError {
     required TResult Function(GetSingleCourseSuccess value)
         getSingleCourseSuccess,
     required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
   }) {
     return getSingleCourseError(this);
   }
@@ -2663,6 +3007,9 @@ class _$GetSingleCourseErrorImpl implements GetSingleCourseError {
     TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
   }) {
     return getSingleCourseError?.call(this);
   }
@@ -2683,6 +3030,9 @@ class _$GetSingleCourseErrorImpl implements GetSingleCourseError {
     TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
     TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
     TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
     required TResult orElse(),
   }) {
     if (getSingleCourseError != null) {
@@ -2699,5 +3049,678 @@ abstract class GetSingleCourseError implements CoursesState {
   ApiErrorModel get apiErrorModel;
   @JsonKey(ignore: true)
   _$$GetSingleCourseErrorImplCopyWith<_$GetSingleCourseErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$GetCourseContentLoadingImplCopyWith<$Res> {
+  factory _$$GetCourseContentLoadingImplCopyWith(
+          _$GetCourseContentLoadingImpl value,
+          $Res Function(_$GetCourseContentLoadingImpl) then) =
+      __$$GetCourseContentLoadingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GetCourseContentLoadingImplCopyWithImpl<$Res>
+    extends _$CoursesStateCopyWithImpl<$Res, _$GetCourseContentLoadingImpl>
+    implements _$$GetCourseContentLoadingImplCopyWith<$Res> {
+  __$$GetCourseContentLoadingImplCopyWithImpl(
+      _$GetCourseContentLoadingImpl _value,
+      $Res Function(_$GetCourseContentLoadingImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$GetCourseContentLoadingImpl implements GetCourseContentLoading {
+  const _$GetCourseContentLoadingImpl();
+
+  @override
+  String toString() {
+    return 'CoursesState.getCourseContentLoading()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetCourseContentLoadingImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() getBannersLoading,
+    required TResult Function(BannerResponseModel data) getBannersSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getBannersError,
+    required TResult Function() getCoursesLoading,
+    required TResult Function(GetCoursesResponseModel data) getCoursesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCoursesError,
+    required TResult Function() loadMoreCoursesLoading,
+    required TResult Function(GetCoursesResponseModel data)
+        loadMoreCoursesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) loadMoreCoursesError,
+    required TResult Function() getSingleCourseLoading,
+    required TResult Function(GetSingleCourseResponseModel data)
+        getSingleCourseSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
+  }) {
+    return getCourseContentLoading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? getBannersLoading,
+    TResult? Function(BannerResponseModel data)? getBannersSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getBannersError,
+    TResult? Function()? getCoursesLoading,
+    TResult? Function(GetCoursesResponseModel data)? getCoursesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCoursesError,
+    TResult? Function()? loadMoreCoursesLoading,
+    TResult? Function(GetCoursesResponseModel data)? loadMoreCoursesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? loadMoreCoursesError,
+    TResult? Function()? getSingleCourseLoading,
+    TResult? Function(GetSingleCourseResponseModel data)?
+        getSingleCourseSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
+  }) {
+    return getCourseContentLoading?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? getBannersLoading,
+    TResult Function(BannerResponseModel data)? getBannersSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getBannersError,
+    TResult Function()? getCoursesLoading,
+    TResult Function(GetCoursesResponseModel data)? getCoursesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCoursesError,
+    TResult Function()? loadMoreCoursesLoading,
+    TResult Function(GetCoursesResponseModel data)? loadMoreCoursesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? loadMoreCoursesError,
+    TResult Function()? getSingleCourseLoading,
+    TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
+    required TResult orElse(),
+  }) {
+    if (getCourseContentLoading != null) {
+      return getCourseContentLoading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(GetBannersLoading value) getBannersLoading,
+    required TResult Function(GetBannersSuccess value) getBannersSuccess,
+    required TResult Function(GetBannersError value) getBannersError,
+    required TResult Function(GetCoursesLoading value) getCoursesLoading,
+    required TResult Function(GetCoursesSuccess value) getCoursesSuccess,
+    required TResult Function(GetCoursesError value) getCoursesError,
+    required TResult Function(LoadMoreCoursesLoading value)
+        loadMoreCoursesLoading,
+    required TResult Function(LoadMoreCoursesSuccess value)
+        loadMoreCoursesSuccess,
+    required TResult Function(LoadMoreCoursesError value) loadMoreCoursesError,
+    required TResult Function(GetSingleCourseLoading value)
+        getSingleCourseLoading,
+    required TResult Function(GetSingleCourseSuccess value)
+        getSingleCourseSuccess,
+    required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
+  }) {
+    return getCourseContentLoading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(GetBannersLoading value)? getBannersLoading,
+    TResult? Function(GetBannersSuccess value)? getBannersSuccess,
+    TResult? Function(GetBannersError value)? getBannersError,
+    TResult? Function(GetCoursesLoading value)? getCoursesLoading,
+    TResult? Function(GetCoursesSuccess value)? getCoursesSuccess,
+    TResult? Function(GetCoursesError value)? getCoursesError,
+    TResult? Function(LoadMoreCoursesLoading value)? loadMoreCoursesLoading,
+    TResult? Function(LoadMoreCoursesSuccess value)? loadMoreCoursesSuccess,
+    TResult? Function(LoadMoreCoursesError value)? loadMoreCoursesError,
+    TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
+    TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
+    TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
+  }) {
+    return getCourseContentLoading?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(GetBannersLoading value)? getBannersLoading,
+    TResult Function(GetBannersSuccess value)? getBannersSuccess,
+    TResult Function(GetBannersError value)? getBannersError,
+    TResult Function(GetCoursesLoading value)? getCoursesLoading,
+    TResult Function(GetCoursesSuccess value)? getCoursesSuccess,
+    TResult Function(GetCoursesError value)? getCoursesError,
+    TResult Function(LoadMoreCoursesLoading value)? loadMoreCoursesLoading,
+    TResult Function(LoadMoreCoursesSuccess value)? loadMoreCoursesSuccess,
+    TResult Function(LoadMoreCoursesError value)? loadMoreCoursesError,
+    TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
+    TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
+    TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
+    required TResult orElse(),
+  }) {
+    if (getCourseContentLoading != null) {
+      return getCourseContentLoading(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GetCourseContentLoading implements CoursesState {
+  const factory GetCourseContentLoading() = _$GetCourseContentLoadingImpl;
+}
+
+/// @nodoc
+abstract class _$$GetCourseContentSuccessImplCopyWith<$Res> {
+  factory _$$GetCourseContentSuccessImplCopyWith(
+          _$GetCourseContentSuccessImpl value,
+          $Res Function(_$GetCourseContentSuccessImpl) then) =
+      __$$GetCourseContentSuccessImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({GetCourseContentResponseModel data});
+}
+
+/// @nodoc
+class __$$GetCourseContentSuccessImplCopyWithImpl<$Res>
+    extends _$CoursesStateCopyWithImpl<$Res, _$GetCourseContentSuccessImpl>
+    implements _$$GetCourseContentSuccessImplCopyWith<$Res> {
+  __$$GetCourseContentSuccessImplCopyWithImpl(
+      _$GetCourseContentSuccessImpl _value,
+      $Res Function(_$GetCourseContentSuccessImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? data = null,
+  }) {
+    return _then(_$GetCourseContentSuccessImpl(
+      null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as GetCourseContentResponseModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$GetCourseContentSuccessImpl implements GetCourseContentSuccess {
+  const _$GetCourseContentSuccessImpl(this.data);
+
+  @override
+  final GetCourseContentResponseModel data;
+
+  @override
+  String toString() {
+    return 'CoursesState.getCourseContentSuccess(data: $data)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetCourseContentSuccessImpl &&
+            (identical(other.data, data) || other.data == data));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, data);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetCourseContentSuccessImplCopyWith<_$GetCourseContentSuccessImpl>
+      get copyWith => __$$GetCourseContentSuccessImplCopyWithImpl<
+          _$GetCourseContentSuccessImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() getBannersLoading,
+    required TResult Function(BannerResponseModel data) getBannersSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getBannersError,
+    required TResult Function() getCoursesLoading,
+    required TResult Function(GetCoursesResponseModel data) getCoursesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCoursesError,
+    required TResult Function() loadMoreCoursesLoading,
+    required TResult Function(GetCoursesResponseModel data)
+        loadMoreCoursesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) loadMoreCoursesError,
+    required TResult Function() getSingleCourseLoading,
+    required TResult Function(GetSingleCourseResponseModel data)
+        getSingleCourseSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
+  }) {
+    return getCourseContentSuccess(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? getBannersLoading,
+    TResult? Function(BannerResponseModel data)? getBannersSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getBannersError,
+    TResult? Function()? getCoursesLoading,
+    TResult? Function(GetCoursesResponseModel data)? getCoursesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCoursesError,
+    TResult? Function()? loadMoreCoursesLoading,
+    TResult? Function(GetCoursesResponseModel data)? loadMoreCoursesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? loadMoreCoursesError,
+    TResult? Function()? getSingleCourseLoading,
+    TResult? Function(GetSingleCourseResponseModel data)?
+        getSingleCourseSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
+  }) {
+    return getCourseContentSuccess?.call(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? getBannersLoading,
+    TResult Function(BannerResponseModel data)? getBannersSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getBannersError,
+    TResult Function()? getCoursesLoading,
+    TResult Function(GetCoursesResponseModel data)? getCoursesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCoursesError,
+    TResult Function()? loadMoreCoursesLoading,
+    TResult Function(GetCoursesResponseModel data)? loadMoreCoursesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? loadMoreCoursesError,
+    TResult Function()? getSingleCourseLoading,
+    TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
+    required TResult orElse(),
+  }) {
+    if (getCourseContentSuccess != null) {
+      return getCourseContentSuccess(data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(GetBannersLoading value) getBannersLoading,
+    required TResult Function(GetBannersSuccess value) getBannersSuccess,
+    required TResult Function(GetBannersError value) getBannersError,
+    required TResult Function(GetCoursesLoading value) getCoursesLoading,
+    required TResult Function(GetCoursesSuccess value) getCoursesSuccess,
+    required TResult Function(GetCoursesError value) getCoursesError,
+    required TResult Function(LoadMoreCoursesLoading value)
+        loadMoreCoursesLoading,
+    required TResult Function(LoadMoreCoursesSuccess value)
+        loadMoreCoursesSuccess,
+    required TResult Function(LoadMoreCoursesError value) loadMoreCoursesError,
+    required TResult Function(GetSingleCourseLoading value)
+        getSingleCourseLoading,
+    required TResult Function(GetSingleCourseSuccess value)
+        getSingleCourseSuccess,
+    required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
+  }) {
+    return getCourseContentSuccess(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(GetBannersLoading value)? getBannersLoading,
+    TResult? Function(GetBannersSuccess value)? getBannersSuccess,
+    TResult? Function(GetBannersError value)? getBannersError,
+    TResult? Function(GetCoursesLoading value)? getCoursesLoading,
+    TResult? Function(GetCoursesSuccess value)? getCoursesSuccess,
+    TResult? Function(GetCoursesError value)? getCoursesError,
+    TResult? Function(LoadMoreCoursesLoading value)? loadMoreCoursesLoading,
+    TResult? Function(LoadMoreCoursesSuccess value)? loadMoreCoursesSuccess,
+    TResult? Function(LoadMoreCoursesError value)? loadMoreCoursesError,
+    TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
+    TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
+    TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
+  }) {
+    return getCourseContentSuccess?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(GetBannersLoading value)? getBannersLoading,
+    TResult Function(GetBannersSuccess value)? getBannersSuccess,
+    TResult Function(GetBannersError value)? getBannersError,
+    TResult Function(GetCoursesLoading value)? getCoursesLoading,
+    TResult Function(GetCoursesSuccess value)? getCoursesSuccess,
+    TResult Function(GetCoursesError value)? getCoursesError,
+    TResult Function(LoadMoreCoursesLoading value)? loadMoreCoursesLoading,
+    TResult Function(LoadMoreCoursesSuccess value)? loadMoreCoursesSuccess,
+    TResult Function(LoadMoreCoursesError value)? loadMoreCoursesError,
+    TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
+    TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
+    TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
+    required TResult orElse(),
+  }) {
+    if (getCourseContentSuccess != null) {
+      return getCourseContentSuccess(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GetCourseContentSuccess implements CoursesState {
+  const factory GetCourseContentSuccess(
+      final GetCourseContentResponseModel data) = _$GetCourseContentSuccessImpl;
+
+  GetCourseContentResponseModel get data;
+  @JsonKey(ignore: true)
+  _$$GetCourseContentSuccessImplCopyWith<_$GetCourseContentSuccessImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$GetCourseContentErrorImplCopyWith<$Res> {
+  factory _$$GetCourseContentErrorImplCopyWith(
+          _$GetCourseContentErrorImpl value,
+          $Res Function(_$GetCourseContentErrorImpl) then) =
+      __$$GetCourseContentErrorImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ApiErrorModel apiErrorModel});
+}
+
+/// @nodoc
+class __$$GetCourseContentErrorImplCopyWithImpl<$Res>
+    extends _$CoursesStateCopyWithImpl<$Res, _$GetCourseContentErrorImpl>
+    implements _$$GetCourseContentErrorImplCopyWith<$Res> {
+  __$$GetCourseContentErrorImplCopyWithImpl(_$GetCourseContentErrorImpl _value,
+      $Res Function(_$GetCourseContentErrorImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? apiErrorModel = null,
+  }) {
+    return _then(_$GetCourseContentErrorImpl(
+      null == apiErrorModel
+          ? _value.apiErrorModel
+          : apiErrorModel // ignore: cast_nullable_to_non_nullable
+              as ApiErrorModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$GetCourseContentErrorImpl implements GetCourseContentError {
+  const _$GetCourseContentErrorImpl(this.apiErrorModel);
+
+  @override
+  final ApiErrorModel apiErrorModel;
+
+  @override
+  String toString() {
+    return 'CoursesState.getCourseContentError(apiErrorModel: $apiErrorModel)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetCourseContentErrorImpl &&
+            (identical(other.apiErrorModel, apiErrorModel) ||
+                other.apiErrorModel == apiErrorModel));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, apiErrorModel);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetCourseContentErrorImplCopyWith<_$GetCourseContentErrorImpl>
+      get copyWith => __$$GetCourseContentErrorImplCopyWithImpl<
+          _$GetCourseContentErrorImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() getBannersLoading,
+    required TResult Function(BannerResponseModel data) getBannersSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getBannersError,
+    required TResult Function() getCoursesLoading,
+    required TResult Function(GetCoursesResponseModel data) getCoursesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCoursesError,
+    required TResult Function() loadMoreCoursesLoading,
+    required TResult Function(GetCoursesResponseModel data)
+        loadMoreCoursesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) loadMoreCoursesError,
+    required TResult Function() getSingleCourseLoading,
+    required TResult Function(GetSingleCourseResponseModel data)
+        getSingleCourseSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getSingleCourseError,
+    required TResult Function() getCourseContentLoading,
+    required TResult Function(GetCourseContentResponseModel data)
+        getCourseContentSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+        getCourseContentError,
+  }) {
+    return getCourseContentError(apiErrorModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? getBannersLoading,
+    TResult? Function(BannerResponseModel data)? getBannersSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getBannersError,
+    TResult? Function()? getCoursesLoading,
+    TResult? Function(GetCoursesResponseModel data)? getCoursesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCoursesError,
+    TResult? Function()? loadMoreCoursesLoading,
+    TResult? Function(GetCoursesResponseModel data)? loadMoreCoursesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? loadMoreCoursesError,
+    TResult? Function()? getSingleCourseLoading,
+    TResult? Function(GetSingleCourseResponseModel data)?
+        getSingleCourseSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult? Function()? getCourseContentLoading,
+    TResult? Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCourseContentError,
+  }) {
+    return getCourseContentError?.call(apiErrorModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? getBannersLoading,
+    TResult Function(BannerResponseModel data)? getBannersSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getBannersError,
+    TResult Function()? getCoursesLoading,
+    TResult Function(GetCoursesResponseModel data)? getCoursesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCoursesError,
+    TResult Function()? loadMoreCoursesLoading,
+    TResult Function(GetCoursesResponseModel data)? loadMoreCoursesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? loadMoreCoursesError,
+    TResult Function()? getSingleCourseLoading,
+    TResult Function(GetSingleCourseResponseModel data)? getSingleCourseSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getSingleCourseError,
+    TResult Function()? getCourseContentLoading,
+    TResult Function(GetCourseContentResponseModel data)?
+        getCourseContentSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCourseContentError,
+    required TResult orElse(),
+  }) {
+    if (getCourseContentError != null) {
+      return getCourseContentError(apiErrorModel);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(GetBannersLoading value) getBannersLoading,
+    required TResult Function(GetBannersSuccess value) getBannersSuccess,
+    required TResult Function(GetBannersError value) getBannersError,
+    required TResult Function(GetCoursesLoading value) getCoursesLoading,
+    required TResult Function(GetCoursesSuccess value) getCoursesSuccess,
+    required TResult Function(GetCoursesError value) getCoursesError,
+    required TResult Function(LoadMoreCoursesLoading value)
+        loadMoreCoursesLoading,
+    required TResult Function(LoadMoreCoursesSuccess value)
+        loadMoreCoursesSuccess,
+    required TResult Function(LoadMoreCoursesError value) loadMoreCoursesError,
+    required TResult Function(GetSingleCourseLoading value)
+        getSingleCourseLoading,
+    required TResult Function(GetSingleCourseSuccess value)
+        getSingleCourseSuccess,
+    required TResult Function(GetSingleCourseError value) getSingleCourseError,
+    required TResult Function(GetCourseContentLoading value)
+        getCourseContentLoading,
+    required TResult Function(GetCourseContentSuccess value)
+        getCourseContentSuccess,
+    required TResult Function(GetCourseContentError value)
+        getCourseContentError,
+  }) {
+    return getCourseContentError(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(GetBannersLoading value)? getBannersLoading,
+    TResult? Function(GetBannersSuccess value)? getBannersSuccess,
+    TResult? Function(GetBannersError value)? getBannersError,
+    TResult? Function(GetCoursesLoading value)? getCoursesLoading,
+    TResult? Function(GetCoursesSuccess value)? getCoursesSuccess,
+    TResult? Function(GetCoursesError value)? getCoursesError,
+    TResult? Function(LoadMoreCoursesLoading value)? loadMoreCoursesLoading,
+    TResult? Function(LoadMoreCoursesSuccess value)? loadMoreCoursesSuccess,
+    TResult? Function(LoadMoreCoursesError value)? loadMoreCoursesError,
+    TResult? Function(GetSingleCourseLoading value)? getSingleCourseLoading,
+    TResult? Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
+    TResult? Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult? Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult? Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult? Function(GetCourseContentError value)? getCourseContentError,
+  }) {
+    return getCourseContentError?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(GetBannersLoading value)? getBannersLoading,
+    TResult Function(GetBannersSuccess value)? getBannersSuccess,
+    TResult Function(GetBannersError value)? getBannersError,
+    TResult Function(GetCoursesLoading value)? getCoursesLoading,
+    TResult Function(GetCoursesSuccess value)? getCoursesSuccess,
+    TResult Function(GetCoursesError value)? getCoursesError,
+    TResult Function(LoadMoreCoursesLoading value)? loadMoreCoursesLoading,
+    TResult Function(LoadMoreCoursesSuccess value)? loadMoreCoursesSuccess,
+    TResult Function(LoadMoreCoursesError value)? loadMoreCoursesError,
+    TResult Function(GetSingleCourseLoading value)? getSingleCourseLoading,
+    TResult Function(GetSingleCourseSuccess value)? getSingleCourseSuccess,
+    TResult Function(GetSingleCourseError value)? getSingleCourseError,
+    TResult Function(GetCourseContentLoading value)? getCourseContentLoading,
+    TResult Function(GetCourseContentSuccess value)? getCourseContentSuccess,
+    TResult Function(GetCourseContentError value)? getCourseContentError,
+    required TResult orElse(),
+  }) {
+    if (getCourseContentError != null) {
+      return getCourseContentError(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GetCourseContentError implements CoursesState {
+  const factory GetCourseContentError(final ApiErrorModel apiErrorModel) =
+      _$GetCourseContentErrorImpl;
+
+  ApiErrorModel get apiErrorModel;
+  @JsonKey(ignore: true)
+  _$$GetCourseContentErrorImplCopyWith<_$GetCourseContentErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ import '../../features/auth/presentation/screens/verify_code_screen.dart';
 import '../../screens/main/main_navigation_screen.dart';
 import '../../features/courses/presentation/courses_screen.dart';
 import '../../features/courses/presentation/course_detail_screen.dart';
-import '../../screens/courses/lecture_player_screen.dart';
+import '../../features/courses/presentation/lecture_player_screen.dart';
 import '../../screens/downloads/downloads_screen.dart';
 import '../../features/college/presentation/college_screen.dart';
 import '../../features/college/presentation/course_videos_screen.dart';
@@ -128,9 +128,10 @@ class AppRoutes {
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
           builder: (_) => LecturePlayerScreen(
+            courseId: args?['courseId'] ?? '',
             courseTitle: args?['courseTitle'] ?? '',
-            videoUrl: args?['videoUrl'] ?? '',
-            videoType: args?['videoType'] ?? 'youtube',
+            videoUrl: args?['videoUrl'],
+            videoType: args?['videoType'],
           ),
           settings: settings,
         );

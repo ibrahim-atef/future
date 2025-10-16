@@ -110,3 +110,31 @@ Map<String, dynamic> _$PaginationDataToJson(PaginationData instance) =>
       'total_items': instance.totalItems,
       'total_pages': instance.totalPages,
     };
+
+GetCourseContentResponseModel _$GetCourseContentResponseModelFromJson(
+        Map<String, dynamic> json) =>
+    GetCourseContentResponseModel(
+      success: json['success'] as bool,
+      message: json['message'] as String,
+      data: CourseContentData.fromJson(json['data'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$GetCourseContentResponseModelToJson(
+        GetCourseContentResponseModel instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'message': instance.message,
+      'data': instance.data,
+    };
+
+CourseContentData _$CourseContentDataFromJson(Map<String, dynamic> json) =>
+    CourseContentData(
+      lectures: (json['lectures'] as List<dynamic>)
+          .map((e) => LectureModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$CourseContentDataToJson(CourseContentData instance) =>
+    <String, dynamic>{
+      'lectures': instance.lectures,
+    };

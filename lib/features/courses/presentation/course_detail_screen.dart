@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/core/di/di.dart';
+import 'package:future_app/core/routes/app_routes.dart';
 import 'package:future_app/features/courses/data/models/courses_model.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_cubit.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_state.dart';
@@ -410,13 +411,14 @@ class CourseDetailScreen extends StatelessWidget {
               ),
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: Implement enrollment
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('التسجيل قيد التطوير'),
-                      backgroundColor: Color(0xFF2a2a2a),
-                      behavior: SnackBarBehavior.floating,
-                    ),
+                  // Navigate to lecture player screen
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.lecturePlayer,
+                    arguments: {
+                      'courseId': courseId,
+                      'courseTitle': courseTitle,
+                    },
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -428,18 +430,18 @@ class CourseDetailScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      course.isFree ? 'سجل الآن مجاناً' : 'سجل الآن',
-                      style: const TextStyle(
+                      "start now",
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.arrow_forward, size: 20),
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_forward, size: 20),
                   ],
                 ),
               ),

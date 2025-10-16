@@ -77,6 +77,14 @@ abstract class ApiService {
     @Header('X-App-Source') String appSource,
   );
 
+  // get course content
+  @GET('courses/{courseId}/content')
+  Future<GetCourseContentResponseModel> getCourseContent(
+    @Path('courseId') String courseId,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
   // get user notifications
   @GET('users/{user_id}/notifications')
   Future<GetNotificationsResponseModel> getUserNotifications(

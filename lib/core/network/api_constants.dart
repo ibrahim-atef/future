@@ -16,6 +16,10 @@ class ApiConstants {
   // Get single course by ID
   static String getSingleCourse(String id) => "courses/$id";
 
+  // Get course content
+  static String getCourseContent(String courseId) =>
+      "courses/$courseId/content";
+
   // Notifications endpoints
   static String getUserNotifications(String userId) =>
       "users/$userId/notifications";

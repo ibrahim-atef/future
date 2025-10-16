@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:future_app/core/models/lecture_model.dart';
 
 part 'courses_model.g.dart';
 
@@ -183,4 +184,44 @@ class PaginationData {
   // Helper getters
   bool get hasNextPage => currentPage < totalPages;
   bool get hasPreviousPage => currentPage > 1;
+}
+
+// Course Content Response Model
+@JsonSerializable()
+class GetCourseContentResponseModel {
+  @JsonKey(name: 'success')
+  final bool success;
+
+  @JsonKey(name: 'message')
+  final String message;
+
+  @JsonKey(name: 'data')
+  final CourseContentData data;
+
+  GetCourseContentResponseModel({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
+
+  factory GetCourseContentResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$GetCourseContentResponseModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GetCourseContentResponseModelToJson(this);
+}
+
+// Course Content Data Model
+@JsonSerializable()
+class CourseContentData {
+  @JsonKey(name: 'lectures')
+  final List<LectureModel> lectures;
+
+  CourseContentData({
+    required this.lectures,
+  });
+
+  factory CourseContentData.fromJson(Map<String, dynamic> json) =>
+      _$CourseContentDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CourseContentDataToJson(this);
 }
