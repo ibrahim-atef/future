@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:future_app/core/di/di.dart';
+import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
 import 'package:future_app/screens/experience_of_excellence/experience_of_excellence_page.dart';
 import '../../screens/splash/splash_screen.dart';
 import '../../screens/auth/auth_screen.dart';
@@ -180,8 +183,11 @@ class AppRoutes {
 
       case profile:
         return MaterialPageRoute(
-          builder: (_) => ProfileScreen(
-            inHome: settings.arguments as bool,
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<ProfileCubit>()..getProfile(),
+            child: ProfileScreen(
+              inHome: settings.arguments as bool,
+            ),
           ),
           settings: settings,
         );

@@ -13,6 +13,8 @@ import 'package:future_app/features/blog/data/repos/blog_repo.dart';
 import 'package:future_app/features/blog/logic/cubit/blog_cubit.dart';
 import 'package:future_app/features/college/data/repos/college_repo.dart';
 import 'package:future_app/features/college/logic/cubit/college_cubit.dart';
+import 'package:future_app/features/profile/data/repos/profile_repo.dart';
+import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -45,4 +47,8 @@ void setupGetIt() {
   // college
   getIt.registerLazySingleton(() => CollegeRepo(getIt()));
   getIt.registerFactory(() => CollegeCubit(getIt()));
+
+  // profile
+  getIt.registerLazySingleton(() => ProfileRepo(getIt()));
+  getIt.registerFactory(() => ProfileCubit(getIt()));
 }

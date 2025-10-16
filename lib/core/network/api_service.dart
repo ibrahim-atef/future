@@ -10,6 +10,7 @@ import 'package:future_app/features/auth/data/models/register_step2_response_mod
 import 'package:future_app/features/courses/data/models/courses_model.dart';
 import 'package:future_app/features/notifications/data/models/notifications_model.dart';
 import 'package:future_app/features/blog/data/models/blog_model.dart';
+import 'package:future_app/features/profile/data/models/get_profile_response_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
@@ -111,6 +112,13 @@ abstract class ApiService {
   @GET('posts/{postId}')
   Future<GetPostDetailsResponseModel> getPostDetails(
     @Path('postId') String postId,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
+  // get profile settings
+  @GET(ApiConstants.profileSetting)
+  Future<GetProfileResponseModel> getProfile(
     @Header('x-api-key') int apiKey,
     @Header('X-App-Source') String appSource,
   );

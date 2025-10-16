@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:future_app/core/di/di.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_state.dart';
 import 'package:future_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
+import 'package:future_app/features/profile/logic/cubit/profile_state.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.inHome});
@@ -14,10 +17,10 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController(text: 'أحمد محمد علي');
-  final _nicknameController = TextEditingController(text: 'أحمد');
-  final _mobileController = TextEditingController(text: '01234567890');
-  final _teamController = TextEditingController(text: 'أولى');
+  final _nameController = TextEditingController();
+  final _nicknameController = TextEditingController();
+  final _mobileController = TextEditingController();
+  final _teamController = TextEditingController();
 
   @override
   void dispose() {
@@ -30,242 +33,325 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1a1a1a),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1a1a1a),
-        elevation: 0,
-        title: const Text(
-          'منطقة البروفايل',
-          style: TextStyle(
-            color: Color(0xFFd4af37),
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
-          onPressed: () {
-            widget.inHome
-                ? Navigator.pop(context)
-                : context.read<AuthCubit>().logout();
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        state.whenOrNull(
+          successGetProfile: (data) {
+            // Update controllers with profile data
+            _nameController.text = data.data.fullName;
+            _nicknameController.text =
+                data.data.bio.isNotEmpty ? data.data.bio : data.data.fullName;
+            _mobileController.text = data.data.mobile;
           },
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Profile Header
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFd4af37), Color(0xFFb8860b)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
+          errorGetProfile: (error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(error.message),
+                backgroundColor: Colors.red,
               ),
-              child: Column(
-                children: [
-                  // Profile Avatar
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(40),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 3,
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      size: 40,
-                      color: Color(0xFFd4af37),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'أحمد محمد علي',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'طالب - كلية الحقوق',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
+            );
+          },
+        );
+      },
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: const Color(0xFF1a1a1a),
+          appBar: AppBar(
+            backgroundColor: const Color(0xFF1a1a1a),
+            elevation: 0,
+            title: const Text(
+              'منطقة البروفايل',
+              style: TextStyle(
+                color: Color(0xFFd4af37),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
+            centerTitle: true,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
+              onPressed: () {
+                widget.inHome
+                    ? Navigator.pop(context)
+                    : context.read<AuthCubit>().logout();
+              },
+            ),
+          ),
+          body: state.maybeWhen(
+            loadingGetProfile: () => const Center(
+              child: CircularProgressIndicator(color: Color(0xFFd4af37)),
+            ),
+            orElse: () => _buildProfileBody(),
+          ),
+        );
+      },
+    );
+  }
 
-            const SizedBox(height: 24),
-
-            // Profile Form
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2a2a2a),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: const Color(0xFFd4af37).withOpacity(0.3),
-                  width: 1,
+  Widget _buildProfileBody() {
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, state) {
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Profile Header
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFd4af37), Color(0xFFb8860b)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: state.maybeWhen(
+                  successGetProfile: (data) => Column(
+                    children: [
+                      // Profile Avatar
+                      Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(40),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 3,
+                          ),
+                        ),
+                        child: data.data.avatar.isNotEmpty
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: Image.network(
+                                  data.data.avatar,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(
+                                    Icons.person,
+                                    size: 40,
+                                    color: Color(0xFFd4af37),
+                                  ),
+                                ),
+                              )
+                            : const Icon(
+                                Icons.person,
+                                size: 40,
+                                color: Color(0xFFd4af37),
+                              ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        data.data.fullName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        data.data.email,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  orElse: () => Column(
+                    children: [
+                      // Profile Avatar
+                      Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(40),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 3,
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.person,
+                          size: 40,
+                          color: Color(0xFFd4af37),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'جاري التحميل...',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+
+              const SizedBox(height: 24),
+
+              // Profile Form
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2a2a2a),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: const Color(0xFFd4af37).withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'تعديل البيانات',
+                        style: TextStyle(
+                          color: Color(0xFFd4af37),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Name Field
+                      _buildTextField(
+                        controller: _nameController,
+                        label: 'الاسم',
+                        icon: Icons.person,
+                        enabled: false, // Name cannot be changed
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Nickname Field
+                      _buildTextField(
+                        controller: _nicknameController,
+                        label: 'الاسم الثاني',
+                        icon: Icons.badge,
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Mobile Field
+                      _buildTextField(
+                        controller: _mobileController,
+                        label: 'رقم الموبايل',
+                        icon: Icons.phone,
+                        keyboardType: TextInputType.phone,
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Team Field
+                      _buildTextField(
+                        controller: _teamController,
+                        label: "",
+                        icon: Icons.group,
+                        enabled: false, // Team cannot be changed
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Password Reset Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _showPasswordResetDialog(),
+                          icon: const Icon(Icons.lock_reset),
+                          label: const Text('إعادة تعين كلمة المرور'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFd4af37),
+                            foregroundColor: Colors.black,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Save Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _saveProfile,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF2a2a2a),
+                            foregroundColor: const Color(0xFFd4af37),
+                            side: const BorderSide(
+                              color: Color(0xFFd4af37),
+                              width: 1,
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'حفظ التغييرات',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Quality Control Message
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2a2a2a),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.orange.withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+                child: const Row(
                   children: [
-                    const Text(
-                      'تعديل البيانات',
-                      style: TextStyle(
-                        color: Color(0xFFd4af37),
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.orange,
+                      size: 24,
                     ),
-                    const SizedBox(height: 20),
-
-                    // Name Field
-                    _buildTextField(
-                      controller: _nameController,
-                      label: 'الاسم',
-                      icon: Icons.person,
-                      enabled: false, // Name cannot be changed
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Nickname Field
-                    _buildTextField(
-                      controller: _nicknameController,
-                      label: 'الاسم الثاني',
-                      icon: Icons.badge,
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Mobile Field
-                    _buildTextField(
-                      controller: _mobileController,
-                      label: 'رقم الموبايل',
-                      icon: Icons.phone,
-                      keyboardType: TextInputType.phone,
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Team Field
-                    _buildTextField(
-                      controller: _teamController,
-                      label: 'الفريقة',
-                      icon: Icons.group,
-                      enabled: false, // Team cannot be changed
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Password Reset Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () => _showPasswordResetDialog(),
-                        icon: const Icon(Icons.lock_reset),
-                        label: const Text('إعادة تعين كلمة المرور'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFd4af37),
-                          foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Save Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _saveProfile,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF2a2a2a),
-                          foregroundColor: const Color(0xFFd4af37),
-                          side: const BorderSide(
-                            color: Color(0xFFd4af37),
-                            width: 1,
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          'حفظ التغييرات',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'مراقبة الجودة: التحميل متاح فقط للطلاب المسجلين',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Quality Control Message
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2a2a2a),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.orange.withOpacity(0.3),
-                  width: 1,
-                ),
-              ),
-              child: const Row(
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    color: Colors.orange,
-                    size: 24,
-                  ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'مراقبة الجودة: التحميل متاح فقط للطلاب المسجلين',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const LogoutListener()
-          ],
-        ),
-      ),
+              const LogoutListener()
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -407,7 +493,7 @@ class LogoutListener extends StatelessWidget {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(error.message ?? 'فشل في تسجيل الخروج'),
+                content: Text(error.message),
                 backgroundColor: Colors.red,
               ),
             );
@@ -434,3 +520,32 @@ class LogoutListener extends StatelessWidget {
     );
   }
 }
+
+
+/*
+
+get profile flow :
+1-api call : panel/profile-setting
+2-create response model use json serilizable : response : {
+    "success": true,
+    "message": "تم جلب البيانات بنجاح.",
+    "data": {
+        "id": "3",
+        "full_name": "ahmed",
+        "email": "adel0@gmail.com",
+        "mobile": "01003574672",
+        "bio": "",
+        "about": "",
+        "avatar": "https://secure.gravatar.com/avatar/3c322ce59d5e1a9402b0875dcd99b4c2cb0adcf805bbe2df00ef14cb3714cb72?s=300&d=mm&r=g",
+        "cover": ""
+    }
+}
+3- create getProfile in ApiService and use getProfileResponseModel in return type 
+4- create getProfileRepo and use ApiService in return type 
+5- create getProfileCubit and use getProfileRepo in return type 
+6- create getProfileState and use getProfileCubit in return type 
+7 - add repo and cubit to di.dart 
+8 - connect cubit to view path : lib\features\profile\profile_screen.dart
+
+
+*/
