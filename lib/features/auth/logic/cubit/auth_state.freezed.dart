@@ -138,9 +138,6 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -157,9 +154,6 @@ class __$$InitialAuthImplCopyWithImpl<$Res>
   __$$InitialAuthImplCopyWithImpl(
       _$InitialAuthImpl _value, $Res Function(_$InitialAuthImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -329,9 +323,6 @@ class __$$LoadingLoginImplCopyWithImpl<$Res>
   __$$LoadingLoginImplCopyWithImpl(
       _$LoadingLoginImpl _value, $Res Function(_$LoadingLoginImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -504,8 +495,6 @@ class __$$SuccessLoginImplCopyWithImpl<$Res>
       _$SuccessLoginImpl _value, $Res Function(_$SuccessLoginImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -544,9 +533,7 @@ class _$SuccessLoginImpl implements SuccessLogin {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SuccessLoginImplCopyWith<_$SuccessLoginImpl> get copyWith =>
@@ -687,10 +674,7 @@ abstract class SuccessLogin implements AuthState {
       _$SuccessLoginImpl;
 
   LoginResponseModel get data;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SuccessLoginImplCopyWith<_$SuccessLoginImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -712,8 +696,6 @@ class __$$ErrorLoginImplCopyWithImpl<$Res>
       _$ErrorLoginImpl _value, $Res Function(_$ErrorLoginImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -753,9 +735,7 @@ class _$ErrorLoginImpl implements ErrorLogin {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorLoginImplCopyWith<_$ErrorLoginImpl> get copyWith =>
@@ -896,10 +876,7 @@ abstract class ErrorLogin implements AuthState {
       _$ErrorLoginImpl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorLoginImplCopyWith<_$ErrorLoginImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -918,9 +895,6 @@ class __$$LoadingLogoutImplCopyWithImpl<$Res>
   __$$LoadingLogoutImplCopyWithImpl(
       _$LoadingLogoutImpl _value, $Res Function(_$LoadingLogoutImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1090,9 +1064,6 @@ class __$$SuccessLogoutImplCopyWithImpl<$Res>
   __$$SuccessLogoutImplCopyWithImpl(
       _$SuccessLogoutImpl _value, $Res Function(_$SuccessLogoutImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1265,8 +1236,6 @@ class __$$ErrorLogoutImplCopyWithImpl<$Res>
       _$ErrorLogoutImpl _value, $Res Function(_$ErrorLogoutImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1306,9 +1275,7 @@ class _$ErrorLogoutImpl implements ErrorLogout {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorLogoutImplCopyWith<_$ErrorLogoutImpl> get copyWith =>
@@ -1449,10 +1416,7 @@ abstract class ErrorLogout implements AuthState {
       _$ErrorLogoutImpl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorLogoutImplCopyWith<_$ErrorLogoutImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1471,9 +1435,6 @@ class __$$LoadingRegisterStep1ImplCopyWithImpl<$Res>
   __$$LoadingRegisterStep1ImplCopyWithImpl(_$LoadingRegisterStep1Impl _value,
       $Res Function(_$LoadingRegisterStep1Impl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1647,8 +1608,6 @@ class __$$SuccessRegisterStep1ImplCopyWithImpl<$Res>
       $Res Function(_$SuccessRegisterStep1Impl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1687,9 +1646,7 @@ class _$SuccessRegisterStep1Impl implements SuccessRegisterStep1 {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SuccessRegisterStep1ImplCopyWith<_$SuccessRegisterStep1Impl>
@@ -1832,10 +1789,7 @@ abstract class SuccessRegisterStep1 implements AuthState {
       _$SuccessRegisterStep1Impl;
 
   RegisterResponseModel get data;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SuccessRegisterStep1ImplCopyWith<_$SuccessRegisterStep1Impl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1857,8 +1811,6 @@ class __$$ErrorRegisterStep1ImplCopyWithImpl<$Res>
       $Res Function(_$ErrorRegisterStep1Impl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1898,9 +1850,7 @@ class _$ErrorRegisterStep1Impl implements ErrorRegisterStep1 {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorRegisterStep1ImplCopyWith<_$ErrorRegisterStep1Impl> get copyWith =>
@@ -2042,10 +1992,7 @@ abstract class ErrorRegisterStep1 implements AuthState {
       _$ErrorRegisterStep1Impl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorRegisterStep1ImplCopyWith<_$ErrorRegisterStep1Impl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2064,9 +2011,6 @@ class __$$LoadingRegisterStep2ImplCopyWithImpl<$Res>
   __$$LoadingRegisterStep2ImplCopyWithImpl(_$LoadingRegisterStep2Impl _value,
       $Res Function(_$LoadingRegisterStep2Impl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2240,8 +2184,6 @@ class __$$SuccessRegisterStep2ImplCopyWithImpl<$Res>
       $Res Function(_$SuccessRegisterStep2Impl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2280,9 +2222,7 @@ class _$SuccessRegisterStep2Impl implements SuccessRegisterStep2 {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SuccessRegisterStep2ImplCopyWith<_$SuccessRegisterStep2Impl>
@@ -2425,10 +2365,7 @@ abstract class SuccessRegisterStep2 implements AuthState {
       _$SuccessRegisterStep2Impl;
 
   RegisterStep2ResponseModel get data;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SuccessRegisterStep2ImplCopyWith<_$SuccessRegisterStep2Impl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -2450,8 +2387,6 @@ class __$$ErrorRegisterStep2ImplCopyWithImpl<$Res>
       $Res Function(_$ErrorRegisterStep2Impl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2491,9 +2426,7 @@ class _$ErrorRegisterStep2Impl implements ErrorRegisterStep2 {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorRegisterStep2ImplCopyWith<_$ErrorRegisterStep2Impl> get copyWith =>
@@ -2635,10 +2568,7 @@ abstract class ErrorRegisterStep2 implements AuthState {
       _$ErrorRegisterStep2Impl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorRegisterStep2ImplCopyWith<_$ErrorRegisterStep2Impl> get copyWith =>
       throw _privateConstructorUsedError;
 }

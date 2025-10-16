@@ -16,23 +16,15 @@ class RegisterRequestModel {
   @JsonKey(name: 'password')
   final String password;
 
-  @JsonKey(name: 'password_confirmation')
-  final String passwordConfirmation;
-
-  @JsonKey(name: 'device_id')
-  final String deviceId;
-
-  @JsonKey(name: 'role_name')
-  final String roleName;
+  @JsonKey(name: 'role')
+  final String role;
 
   RegisterRequestModel({
     required this.fullName,
     required this.email,
     required this.mobile,
     required this.password,
-    required this.passwordConfirmation,
-    required this.deviceId,
-    required this.roleName,
+    required this.role,
   });
 
   factory RegisterRequestModel.fromJson(Map<String, dynamic> json) =>

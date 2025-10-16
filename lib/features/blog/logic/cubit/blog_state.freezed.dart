@@ -104,9 +104,6 @@ class _$BlogStateCopyWithImpl<$Res, $Val extends BlogState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -123,9 +120,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -261,9 +255,6 @@ class __$$GetPostsLoadingImplCopyWithImpl<$Res>
   __$$GetPostsLoadingImplCopyWithImpl(
       _$GetPostsLoadingImpl _value, $Res Function(_$GetPostsLoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -404,8 +395,6 @@ class __$$GetPostsSuccessImplCopyWithImpl<$Res>
       _$GetPostsSuccessImpl _value, $Res Function(_$GetPostsSuccessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -419,8 +408,6 @@ class __$$GetPostsSuccessImplCopyWithImpl<$Res>
     ));
   }
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $GetPostsResponseModelCopyWith<$Res> get data {
@@ -454,9 +441,7 @@ class _$GetPostsSuccessImpl implements GetPostsSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetPostsSuccessImplCopyWith<_$GetPostsSuccessImpl> get copyWith =>
@@ -564,10 +549,7 @@ abstract class GetPostsSuccess implements BlogState {
       _$GetPostsSuccessImpl;
 
   GetPostsResponseModel get data;
-
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetPostsSuccessImplCopyWith<_$GetPostsSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -589,8 +571,6 @@ class __$$GetPostsErrorImplCopyWithImpl<$Res>
       _$GetPostsErrorImpl _value, $Res Function(_$GetPostsErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -630,9 +610,7 @@ class _$GetPostsErrorImpl implements GetPostsError {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetPostsErrorImplCopyWith<_$GetPostsErrorImpl> get copyWith =>
@@ -739,10 +717,7 @@ abstract class GetPostsError implements BlogState {
       _$GetPostsErrorImpl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetPostsErrorImplCopyWith<_$GetPostsErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -762,9 +737,6 @@ class __$$GetPostDetailsLoadingImplCopyWithImpl<$Res>
   __$$GetPostDetailsLoadingImplCopyWithImpl(_$GetPostDetailsLoadingImpl _value,
       $Res Function(_$GetPostDetailsLoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -907,8 +879,6 @@ class __$$GetPostDetailsSuccessImplCopyWithImpl<$Res>
       $Res Function(_$GetPostDetailsSuccessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -922,8 +892,6 @@ class __$$GetPostDetailsSuccessImplCopyWithImpl<$Res>
     ));
   }
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $GetPostDetailsResponseModelCopyWith<$Res> get data {
@@ -957,9 +925,7 @@ class _$GetPostDetailsSuccessImpl implements GetPostDetailsSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetPostDetailsSuccessImplCopyWith<_$GetPostDetailsSuccessImpl>
@@ -1067,10 +1033,7 @@ abstract class GetPostDetailsSuccess implements BlogState {
       _$GetPostDetailsSuccessImpl;
 
   GetPostDetailsResponseModel get data;
-
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetPostDetailsSuccessImplCopyWith<_$GetPostDetailsSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1092,8 +1055,6 @@ class __$$GetPostDetailsErrorImplCopyWithImpl<$Res>
       $Res Function(_$GetPostDetailsErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1133,9 +1094,7 @@ class _$GetPostDetailsErrorImpl implements GetPostDetailsError {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetPostDetailsErrorImplCopyWith<_$GetPostDetailsErrorImpl> get copyWith =>
@@ -1243,10 +1202,7 @@ abstract class GetPostDetailsError implements BlogState {
       _$GetPostDetailsErrorImpl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of BlogState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetPostDetailsErrorImplCopyWith<_$GetPostDetailsErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

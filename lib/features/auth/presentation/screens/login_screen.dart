@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:future_app/core/helper/device_info_helper.dart';
 import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
@@ -231,18 +230,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomButton(
                     text: AppStrings.login,
                     onPressed: () {
-                      // if (_formKey.currentState!.validate()) {
-                      //   context.read<AuthCubit>().login(LoginRequestModel(
-                      //         username: _emailController.text,
-                      //         password: _passwordController.text,
-                      //         deviceId: UserConstant.deviceId!,
-                      //       ));
-                      // }
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        AppRoutes.home,
-                        (route) => false,
-                      );
+                      if (_formKey.currentState!.validate()) {
+                        context.read<AuthCubit>().login(LoginRequestModel(
+                              username: _emailController.text,
+                              password: _passwordController.text,
+                              deviceId: UserConstant.deviceId!,
+                            ));
+                      }
                     },
                   ),
 

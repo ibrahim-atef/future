@@ -9,14 +9,19 @@ import '../../../core/di/di.dart';
 import '../../../core/routes/app_routes.dart';
 import '../logic/cubit/home_cubit.dart';
 import '../logic/cubit/home_state.dart';
+import '../../auth/logic/cubit/auth_cubit.dart';
+import '../../auth/logic/cubit/auth_state.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<HomeCubit>()..getBanners(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<HomeCubit>()..getBanners()),
+        BlocProvider(create: (context) => getIt<AuthCubit>()),
+      ],
       child: const _HomeScreenContent(),
     );
   }
@@ -95,6 +100,12 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
             onPressed: () =>
                 Navigator.pushNamed(context, AppRoutes.notifications),
             icon: const Icon(Icons.notifications),
+            color: const Color(0xFFd4af37),
+            iconSize: 30,
+          ),
+          IconButton(
+            onPressed: () => _showLogoutDialog(context),
+            icon: const Icon(Icons.logout),
             color: const Color(0xFFd4af37),
             iconSize: 30,
           ),
@@ -596,6 +607,117 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
             ),
           ),
       ],
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF2a2a2a),
+          title: const Text(
+            'تسجيل الخروج',
+            style: TextStyle(
+              color: Color(0xFFd4af37),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Cairo',
+            ),
+          ),
+          content: const Text(
+            'هل أنت متأكد من أنك تريد تسجيل الخروج؟',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontFamily: 'Cairo',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                  fontFamily: 'Cairo',
+                ),
+              ),
+            ),
+            BlocListener<AuthCubit, AuthState>(
+              listener: (context, state) {
+                state.when(
+                  initialAuth: () {},
+                  loadingLogin: () {},
+                  successLogin: (data) {},
+                  errorLogin: (error) {},
+                  loadingRegisterStep1: () {},
+                  successRegisterStep1: (data) {},
+                  errorRegisterStep1: (error) {},
+                  loadingRegisterStep2: () {},
+                  successRegisterStep2: (data) {},
+                  errorRegisterStep2: (error) {},
+                  loadingLogout: () {
+                    // Show loading indicator
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFFd4af37),
+                        ),
+                      ),
+                    );
+                  },
+                  successLogout: () {
+                    // Close loading dialog
+                    Navigator.of(context).pop();
+                    // Close logout confirmation dialog
+                    Navigator.of(context).pop();
+                    // Navigate to login screen
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.login,
+                      (route) => false,
+                    );
+                  },
+                  errorLogout: (error) {
+                    // Close loading dialog
+                    Navigator.of(context).pop();
+                    // Show error message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'حدث خطأ في تسجيل الخروج: ${error.message}',
+                          style: const TextStyle(
+                            fontFamily: 'Cairo',
+                          ),
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  },
+                );
+              },
+              child: TextButton(
+                onPressed: () {
+                  context.read<AuthCubit>().logout();
+                },
+                child: const Text(
+                  'تسجيل الخروج',
+                  style: TextStyle(
+                    color: Color(0xFFd4af37),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Cairo',
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

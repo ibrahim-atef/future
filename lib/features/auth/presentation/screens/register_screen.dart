@@ -75,15 +75,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
           successRegisterStep1: (RegisterResponseModel registerResponseModel) {
             Navigator.pop(context);
-            Navigator.pushNamed(
+            Navigator.pushNamedAndRemoveUntil(
               context,
-              AppRoutes.verifyCode,
-              arguments: {
-                'email': _emailController.text.trim(),
-                'type': 'register',
-                'user_id': registerResponseModel.data.userId,
-                'full_name': _fullNameController.text.trim(),
-              },
+              AppRoutes.home,
+              (route) => false,
             );
           },
         );
@@ -443,18 +438,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     text: AppStrings.signup,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        context
-                            .read<AuthCubit>()
-                            .registerStep1(RegisterRequestModel(
-                              fullName: _fullNameController.text.trim(),
-                              email: _emailController.text.trim(),
-                              mobile: _mobileController.text.trim(),
-                              password: _passwordController.text.trim(),
-                              passwordConfirmation:
-                                  _confirmPasswordController.text.trim(),
-                              deviceId: UserConstant.deviceId!,
-                              roleName: 'user',
-                            ));
+                        context.read<AuthCubit>().registerStep1(
+                            RegisterRequestModel(
+                                fullName: _fullNameController.text.trim(),
+                                email: _emailController.text.trim(),
+                                mobile: _mobileController.text.trim(),
+                                password: _passwordController.text.trim(),
+                                role: 'student'
+                                // passwordConfirmation:
+                                //     _confirmPasswordController.text.trim(),
+                                // deviceId: UserConstant.deviceId!,
+
+                                ));
                       }
                     },
                   ),

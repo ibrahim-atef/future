@@ -83,9 +83,6 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -102,9 +99,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -219,9 +213,6 @@ class __$$GetBannerLoadingImplCopyWithImpl<$Res>
   __$$GetBannerLoadingImplCopyWithImpl(_$GetBannerLoadingImpl _value,
       $Res Function(_$GetBannerLoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -339,8 +330,6 @@ class __$$GetBannerSuccessImplCopyWithImpl<$Res>
       $Res Function(_$GetBannerSuccessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -379,9 +368,7 @@ class _$GetBannerSuccessImpl implements GetBannerSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetBannerSuccessImplCopyWith<_$GetBannerSuccessImpl> get copyWith =>
@@ -468,10 +455,7 @@ abstract class GetBannerSuccess implements HomeState {
       _$GetBannerSuccessImpl;
 
   BannerResponseModel get data;
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetBannerSuccessImplCopyWith<_$GetBannerSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -493,8 +477,6 @@ class __$$GetBannerErrorImplCopyWithImpl<$Res>
       _$GetBannerErrorImpl _value, $Res Function(_$GetBannerErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -534,9 +516,7 @@ class _$GetBannerErrorImpl implements GetBannerError {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetBannerErrorImplCopyWith<_$GetBannerErrorImpl> get copyWith =>
@@ -623,10 +603,7 @@ abstract class GetBannerError implements HomeState {
       _$GetBannerErrorImpl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetBannerErrorImplCopyWith<_$GetBannerErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

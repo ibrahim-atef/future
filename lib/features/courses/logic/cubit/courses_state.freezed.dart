@@ -145,9 +145,6 @@ class _$CoursesStateCopyWithImpl<$Res, $Val extends CoursesState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -164,9 +161,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -342,9 +336,6 @@ class __$$GetBannersLoadingImplCopyWithImpl<$Res>
   __$$GetBannersLoadingImplCopyWithImpl(_$GetBannersLoadingImpl _value,
       $Res Function(_$GetBannersLoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -523,8 +514,6 @@ class __$$GetBannersSuccessImplCopyWithImpl<$Res>
       $Res Function(_$GetBannersSuccessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -563,9 +552,7 @@ class _$GetBannersSuccessImpl implements GetBannersSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetBannersSuccessImplCopyWith<_$GetBannersSuccessImpl> get copyWith =>
@@ -713,10 +700,7 @@ abstract class GetBannersSuccess implements CoursesState {
       _$GetBannersSuccessImpl;
 
   BannerResponseModel get data;
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetBannersSuccessImplCopyWith<_$GetBannersSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -738,8 +722,6 @@ class __$$GetBannersErrorImplCopyWithImpl<$Res>
       _$GetBannersErrorImpl _value, $Res Function(_$GetBannersErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -779,9 +761,7 @@ class _$GetBannersErrorImpl implements GetBannersError {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetBannersErrorImplCopyWith<_$GetBannersErrorImpl> get copyWith =>
@@ -929,10 +909,7 @@ abstract class GetBannersError implements CoursesState {
       _$GetBannersErrorImpl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetBannersErrorImplCopyWith<_$GetBannersErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -951,9 +928,6 @@ class __$$GetCoursesLoadingImplCopyWithImpl<$Res>
   __$$GetCoursesLoadingImplCopyWithImpl(_$GetCoursesLoadingImpl _value,
       $Res Function(_$GetCoursesLoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1132,8 +1106,6 @@ class __$$GetCoursesSuccessImplCopyWithImpl<$Res>
       $Res Function(_$GetCoursesSuccessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1172,9 +1144,7 @@ class _$GetCoursesSuccessImpl implements GetCoursesSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetCoursesSuccessImplCopyWith<_$GetCoursesSuccessImpl> get copyWith =>
@@ -1322,10 +1292,7 @@ abstract class GetCoursesSuccess implements CoursesState {
       _$GetCoursesSuccessImpl;
 
   GetCoursesResponseModel get data;
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetCoursesSuccessImplCopyWith<_$GetCoursesSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1347,8 +1314,6 @@ class __$$GetCoursesErrorImplCopyWithImpl<$Res>
       _$GetCoursesErrorImpl _value, $Res Function(_$GetCoursesErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1388,9 +1353,7 @@ class _$GetCoursesErrorImpl implements GetCoursesError {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetCoursesErrorImplCopyWith<_$GetCoursesErrorImpl> get copyWith =>
@@ -1538,10 +1501,7 @@ abstract class GetCoursesError implements CoursesState {
       _$GetCoursesErrorImpl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetCoursesErrorImplCopyWith<_$GetCoursesErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1562,9 +1522,6 @@ class __$$LoadMoreCoursesLoadingImplCopyWithImpl<$Res>
       _$LoadMoreCoursesLoadingImpl _value,
       $Res Function(_$LoadMoreCoursesLoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1746,8 +1703,6 @@ class __$$LoadMoreCoursesSuccessImplCopyWithImpl<$Res>
       $Res Function(_$LoadMoreCoursesSuccessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1786,9 +1741,7 @@ class _$LoadMoreCoursesSuccessImpl implements LoadMoreCoursesSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadMoreCoursesSuccessImplCopyWith<_$LoadMoreCoursesSuccessImpl>
@@ -1936,10 +1889,7 @@ abstract class LoadMoreCoursesSuccess implements CoursesState {
       _$LoadMoreCoursesSuccessImpl;
 
   GetCoursesResponseModel get data;
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadMoreCoursesSuccessImplCopyWith<_$LoadMoreCoursesSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1961,8 +1911,6 @@ class __$$LoadMoreCoursesErrorImplCopyWithImpl<$Res>
       $Res Function(_$LoadMoreCoursesErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2002,9 +1950,7 @@ class _$LoadMoreCoursesErrorImpl implements LoadMoreCoursesError {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadMoreCoursesErrorImplCopyWith<_$LoadMoreCoursesErrorImpl>
@@ -2153,10 +2099,7 @@ abstract class LoadMoreCoursesError implements CoursesState {
       _$LoadMoreCoursesErrorImpl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadMoreCoursesErrorImplCopyWith<_$LoadMoreCoursesErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -2177,9 +2120,6 @@ class __$$GetSingleCourseLoadingImplCopyWithImpl<$Res>
       _$GetSingleCourseLoadingImpl _value,
       $Res Function(_$GetSingleCourseLoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2361,8 +2301,6 @@ class __$$GetSingleCourseSuccessImplCopyWithImpl<$Res>
       $Res Function(_$GetSingleCourseSuccessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2401,9 +2339,7 @@ class _$GetSingleCourseSuccessImpl implements GetSingleCourseSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetSingleCourseSuccessImplCopyWith<_$GetSingleCourseSuccessImpl>
@@ -2551,10 +2487,7 @@ abstract class GetSingleCourseSuccess implements CoursesState {
       final GetSingleCourseResponseModel data) = _$GetSingleCourseSuccessImpl;
 
   GetSingleCourseResponseModel get data;
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetSingleCourseSuccessImplCopyWith<_$GetSingleCourseSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -2576,8 +2509,6 @@ class __$$GetSingleCourseErrorImplCopyWithImpl<$Res>
       $Res Function(_$GetSingleCourseErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2617,9 +2548,7 @@ class _$GetSingleCourseErrorImpl implements GetSingleCourseError {
   @override
   int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetSingleCourseErrorImplCopyWith<_$GetSingleCourseErrorImpl>
@@ -2768,10 +2697,7 @@ abstract class GetSingleCourseError implements CoursesState {
       _$GetSingleCourseErrorImpl;
 
   ApiErrorModel get apiErrorModel;
-
-  /// Create a copy of CoursesState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetSingleCourseErrorImplCopyWith<_$GetSingleCourseErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

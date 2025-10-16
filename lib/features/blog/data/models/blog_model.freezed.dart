@@ -26,12 +26,8 @@ mixin _$GetPostsResponseModel {
   List<PostModel> get data => throw _privateConstructorUsedError;
   PaginationModel get pagination => throw _privateConstructorUsedError;
 
-  /// Serializes this GetPostsResponseModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of GetPostsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $GetPostsResponseModelCopyWith<GetPostsResponseModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -62,8 +58,6 @@ class _$GetPostsResponseModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of GetPostsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,8 +86,6 @@ class _$GetPostsResponseModelCopyWithImpl<$Res,
     ) as $Val);
   }
 
-  /// Create a copy of GetPostsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PaginationModelCopyWith<$Res> get pagination {
@@ -131,8 +123,6 @@ class __$$GetPostsResponseModelImplCopyWithImpl<$Res>
       $Res Function(_$GetPostsResponseModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of GetPostsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -207,14 +197,12 @@ class _$GetPostsResponseModelImpl implements _GetPostsResponseModel {
                 other.pagination == pagination));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, success, message,
       const DeepCollectionEquality().hash(_data), pagination);
 
-  /// Create a copy of GetPostsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetPostsResponseModelImplCopyWith<_$GetPostsResponseModelImpl>
@@ -247,11 +235,8 @@ abstract class _GetPostsResponseModel implements GetPostsResponseModel {
   List<PostModel> get data;
   @override
   PaginationModel get pagination;
-
-  /// Create a copy of GetPostsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetPostsResponseModelImplCopyWith<_$GetPostsResponseModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -272,12 +257,8 @@ mixin _$PostModel {
   int get viewsCount => throw _privateConstructorUsedError;
   String get publishedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this PostModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of PostModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PostModelCopyWith<PostModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -309,8 +290,6 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PostModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -393,8 +372,6 @@ class __$$PostModelImplCopyWithImpl<$Res>
       _$PostModelImpl _value, $Res Function(_$PostModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PostModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -515,7 +492,7 @@ class _$PostModelImpl implements _PostModel {
                 other.publishedAt == publishedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -529,9 +506,7 @@ class _$PostModelImpl implements _PostModel {
       viewsCount,
       publishedAt);
 
-  /// Create a copy of PostModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PostModelImplCopyWith<_$PostModelImpl> get copyWith =>
@@ -578,11 +553,8 @@ abstract class _PostModel implements PostModel {
   int get viewsCount;
   @override
   String get publishedAt;
-
-  /// Create a copy of PostModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PostModelImplCopyWith<_$PostModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -602,12 +574,8 @@ mixin _$PaginationModel {
   @JsonKey(name: 'total_pages')
   int get totalPages => throw _privateConstructorUsedError;
 
-  /// Serializes this PaginationModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of PaginationModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PaginationModelCopyWith<PaginationModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -635,8 +603,6 @@ class _$PaginationModelCopyWithImpl<$Res, $Val extends PaginationModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PaginationModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -689,8 +655,6 @@ class __$$PaginationModelImplCopyWithImpl<$Res>
       _$PaginationModelImpl _value, $Res Function(_$PaginationModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PaginationModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -764,14 +728,12 @@ class _$PaginationModelImpl implements _PaginationModel {
                 other.totalPages == totalPages));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, currentPage, perPage, totalItems, totalPages);
 
-  /// Create a copy of PaginationModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PaginationModelImplCopyWith<_$PaginationModelImpl> get copyWith =>
@@ -809,11 +771,8 @@ abstract class _PaginationModel implements PaginationModel {
   @override
   @JsonKey(name: 'total_pages')
   int get totalPages;
-
-  /// Create a copy of PaginationModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PaginationModelImplCopyWith<_$PaginationModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -829,12 +788,8 @@ mixin _$GetPostDetailsResponseModel {
   String get message => throw _privateConstructorUsedError;
   PostDetailsModel get data => throw _privateConstructorUsedError;
 
-  /// Serializes this GetPostDetailsResponseModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of GetPostDetailsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $GetPostDetailsResponseModelCopyWith<GetPostDetailsResponseModel>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -863,8 +818,6 @@ class _$GetPostDetailsResponseModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of GetPostDetailsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -888,8 +841,6 @@ class _$GetPostDetailsResponseModelCopyWithImpl<$Res,
     ) as $Val);
   }
 
-  /// Create a copy of GetPostDetailsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PostDetailsModelCopyWith<$Res> get data {
@@ -924,8 +875,6 @@ class __$$GetPostDetailsResponseModelImplCopyWithImpl<$Res>
       $Res Function(_$GetPostDetailsResponseModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of GetPostDetailsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -983,13 +932,11 @@ class _$GetPostDetailsResponseModelImpl
             (identical(other.data, data) || other.data == data));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, success, message, data);
 
-  /// Create a copy of GetPostDetailsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetPostDetailsResponseModelImplCopyWith<_$GetPostDetailsResponseModelImpl>
@@ -1021,11 +968,8 @@ abstract class _GetPostDetailsResponseModel
   String get message;
   @override
   PostDetailsModel get data;
-
-  /// Create a copy of GetPostDetailsResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetPostDetailsResponseModelImplCopyWith<_$GetPostDetailsResponseModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1045,12 +989,8 @@ mixin _$PostDetailsModel {
   int get viewsCount => throw _privateConstructorUsedError;
   String get publishedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this PostDetailsModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of PostDetailsModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PostDetailsModelCopyWith<PostDetailsModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1082,8 +1022,6 @@ class _$PostDetailsModelCopyWithImpl<$Res, $Val extends PostDetailsModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PostDetailsModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1160,8 +1098,6 @@ class __$$PostDetailsModelImplCopyWithImpl<$Res>
       $Res Function(_$PostDetailsModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PostDetailsModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1273,7 +1209,7 @@ class _$PostDetailsModelImpl implements _PostDetailsModel {
                 other.publishedAt == publishedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -1286,9 +1222,7 @@ class _$PostDetailsModelImpl implements _PostDetailsModel {
       viewsCount,
       publishedAt);
 
-  /// Create a copy of PostDetailsModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PostDetailsModelImplCopyWith<_$PostDetailsModelImpl> get copyWith =>
@@ -1333,11 +1267,8 @@ abstract class _PostDetailsModel implements PostDetailsModel {
   int get viewsCount;
   @override
   String get publishedAt;
-
-  /// Create a copy of PostDetailsModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PostDetailsModelImplCopyWith<_$PostDetailsModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
