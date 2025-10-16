@@ -28,38 +28,57 @@ NotificationsData _$NotificationsDataFromJson(Map<String, dynamic> json) =>
           .map((e) => NotificationModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       unreadCount: (json['unread_count'] as num).toInt(),
+      pagination:
+          PaginationModel.fromJson(json['pagination'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$NotificationsDataToJson(NotificationsData instance) =>
     <String, dynamic>{
       'notifications': instance.notifications,
       'unread_count': instance.unreadCount,
+      'pagination': instance.pagination,
+    };
+
+PaginationModel _$PaginationModelFromJson(Map<String, dynamic> json) =>
+    PaginationModel(
+      currentPage: (json['current_page'] as num).toInt(),
+      perPage: (json['per_page'] as num).toInt(),
+      totalItems: (json['total_items'] as num).toInt(),
+      totalPages: (json['total_pages'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$PaginationModelToJson(PaginationModel instance) =>
+    <String, dynamic>{
+      'current_page': instance.currentPage,
+      'per_page': instance.perPage,
+      'total_items': instance.totalItems,
+      'total_pages': instance.totalPages,
     };
 
 NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
     NotificationModel(
       id: json['id'] as String,
-      userId: json['user_id'] as String,
+      userId: json['userId'] as String,
       title: json['title'] as String,
       message: json['message'] as String,
       type: json['type'] as String,
-      relatedId: json['related_id'] as String?,
-      imageUrl: json['image_url'] as String?,
-      isRead: json['is_read'] as bool,
-      createdAt: json['created_at'] as String,
+      relatedId: json['relatedId'] as String?,
+      imageUrl: json['imageUrl'],
+      isRead: json['isRead'] as bool,
+      createdAt: json['createdAt'] as String,
     );
 
 Map<String, dynamic> _$NotificationModelToJson(NotificationModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'user_id': instance.userId,
+      'userId': instance.userId,
       'title': instance.title,
       'message': instance.message,
       'type': instance.type,
-      'related_id': instance.relatedId,
-      'image_url': instance.imageUrl,
-      'is_read': instance.isRead,
-      'created_at': instance.createdAt,
+      'relatedId': instance.relatedId,
+      'imageUrl': instance.imageUrl,
+      'isRead': instance.isRead,
+      'createdAt': instance.createdAt,
     };
 
 MarkNotificationReadResponseModel _$MarkNotificationReadResponseModelFromJson(

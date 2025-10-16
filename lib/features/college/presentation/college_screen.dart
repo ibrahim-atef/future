@@ -4,6 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
 import 'package:future_app/core/di/di.dart';
 import 'package:future_app/core/routes/app_routes.dart';
+import 'package:future_app/core/models/banner_model.dart';
 import 'package:future_app/features/college/logic/cubit/college_cubit.dart';
 import 'package:future_app/features/college/logic/cubit/college_state.dart';
 
@@ -262,6 +263,7 @@ class _CollegeScreenState extends State<CollegeScreen> {
             itemCount: banners.length,
             allowImplicitScrolling: false,
             itemBuilder: (context, index) {
+              final banner = banners[index];
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
@@ -276,18 +278,20 @@ class _CollegeScreenState extends State<CollegeScreen> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    banners[index],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return _buildLoadingBanner();
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return _buildFallbackBanner(index);
-                    },
-                  ),
+                  child: banner.imageUrl != null && banner.imageUrl!.isNotEmpty
+                      ? Image.network(
+                          banner.imageUrl!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return _buildLoadingBanner();
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return _buildFallbackBanner(index, banner);
+                          },
+                        )
+                      : _buildFallbackBanner(index, banner),
                 ),
               );
             },
@@ -332,7 +336,7 @@ class _CollegeScreenState extends State<CollegeScreen> {
     );
   }
 
-  Widget _buildFallbackBanner(int index) {
+  Widget _buildFallbackBanner(int index, BannerModel banner) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -355,7 +359,7 @@ class _CollegeScreenState extends State<CollegeScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Banner ${index + 1}',
+              banner.title ?? 'Banner ${index + 1}',
               style: TextStyle(
                 color: Colors.white.withOpacity(0.8),
                 fontSize: 18,

@@ -28,7 +28,7 @@ class BannerResponseModel {
 @JsonSerializable()
 class BannerResponseData {
   @JsonKey(name: 'banners')
-  final List<String> banners;
+  final List<BannerModel> banners;
 
   BannerResponseData({
     required this.banners,
@@ -43,26 +43,50 @@ class BannerResponseData {
 @JsonSerializable()
 class BannerModel {
   @JsonKey(name: 'id')
-  final int? id;
+  final String? id;
 
   @JsonKey(name: 'title')
   final String? title;
 
-  @JsonKey(name: 'image')
-  final String? image;
+  @JsonKey(name: 'description')
+  final String? description;
 
-  @JsonKey(name: 'link')
-  final String? link;
+  @JsonKey(name: 'imageUrl')
+  final String? imageUrl;
+
+  @JsonKey(name: 'linkUrl')
+  final String? linkUrl;
+
+  @JsonKey(name: 'linkType')
+  final String? linkType;
+
+  @JsonKey(name: 'relatedId')
+  final String? relatedId;
 
   @JsonKey(name: 'order')
   final int? order;
 
+  @JsonKey(name: 'isActive')
+  final bool? isActive;
+
+  @JsonKey(name: 'startDate')
+  final String? startDate;
+
+  @JsonKey(name: 'endDate')
+  final String? endDate;
+
   BannerModel({
     this.id,
     this.title,
-    this.image,
-    this.link,
+    this.description,
+    this.imageUrl,
+    this.linkUrl,
+    this.linkType,
+    this.relatedId,
     this.order,
+    this.isActive,
+    this.startDate,
+    this.endDate,
   });
 
   factory BannerModel.fromJson(Map<String, dynamic> json) =>

@@ -12,7 +12,7 @@ class CollegeCubit extends Cubit<CollegeState> {
 
   // Local state for banners
   BannerResponseModel? _bannerResponse;
-  List<String> get banners => _bannerResponse?.data.banners ?? [];
+  List<BannerModel> get banners => _bannerResponse?.data.banners ?? [];
 
   // Local state for courses by category
   final Map<int, List<CourseModel>> _coursesByCategory = {};

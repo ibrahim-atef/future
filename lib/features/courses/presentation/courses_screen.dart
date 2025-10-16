@@ -4,6 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
 import '../../../core/di/di.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../../core/models/banner_model.dart';
 import '../logic/cubit/courses_cubit.dart';
 import '../logic/cubit/courses_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -537,6 +538,7 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
                 itemCount: banners.length,
                 allowImplicitScrolling: false,
                 itemBuilder: (context, index) {
+                  final banner = banners[index];
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
                     decoration: BoxDecoration(
@@ -551,65 +553,105 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: CachedNetworkImage(
-                        imageUrl: banners[index],
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        placeholder: (context, url) => Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                const Color(0xFFd4af37).withOpacity(0.5),
-                                const Color(0xFFb8860b).withOpacity(0.5),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
-                          child: const Center(
-                            child: CircularProgressIndicator(
-                              color: Color(0xFFd4af37),
-                            ),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) {
-                          // Fallback container with gradient if image fails to load
-                          return Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  const Color(0xFFd4af37).withOpacity(0.8),
-                                  const Color(0xFFb8860b).withOpacity(0.8),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                            ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.image,
-                                    size: 50,
-                                    color: Colors.white.withOpacity(0.8),
+                      child: banner.imageUrl != null &&
+                              banner.imageUrl!.isNotEmpty
+                          ? CachedNetworkImage(
+                              imageUrl: banner.imageUrl!,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              placeholder: (context, url) => Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      const Color(0xFFd4af37).withOpacity(0.5),
+                                      const Color(0xFFb8860b).withOpacity(0.5),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'Banner ${index + 1}',
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.8),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Cairo',
+                                ),
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Color(0xFFd4af37),
+                                  ),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) {
+                                // Fallback container with gradient if image fails to load
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        const Color(0xFFd4af37)
+                                            .withOpacity(0.8),
+                                        const Color(0xFFb8860b)
+                                            .withOpacity(0.8),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
                                     ),
                                   ),
-                                ],
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.image,
+                                          size: 50,
+                                          color: Colors.white.withOpacity(0.8),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          banner.title ?? 'Banner ${index + 1}',
+                                          style: TextStyle(
+                                            color:
+                                                Colors.white.withOpacity(0.8),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Cairo',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFFd4af37).withOpacity(0.8),
+                                    const Color(0xFFb8860b).withOpacity(0.8),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                              ),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.image,
+                                      size: 50,
+                                      color: Colors.white.withOpacity(0.8),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      banner.title ?? 'Banner ${index + 1}',
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(0.8),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Cairo',
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          );
-                        },
-                      ),
                     ),
                   );
                 },

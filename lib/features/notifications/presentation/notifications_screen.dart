@@ -96,6 +96,13 @@ class _NotificationsScreenContent extends StatelessWidget {
                   notifications:
                       context.read<NotificationsCubit>().notifications,
                   unreadCount: context.read<NotificationsCubit>().unreadCount,
+                  pagination: PaginationModel(
+                    currentPage: 1,
+                    perPage: 10,
+                    totalItems:
+                        context.read<NotificationsCubit>().notifications.length,
+                    totalPages: 1,
+                  ),
                 ),
               ),
               userId,
@@ -109,6 +116,13 @@ class _NotificationsScreenContent extends StatelessWidget {
                   notifications:
                       context.read<NotificationsCubit>().notifications,
                   unreadCount: context.read<NotificationsCubit>().unreadCount,
+                  pagination: PaginationModel(
+                    currentPage: 1,
+                    perPage: 10,
+                    totalItems:
+                        context.read<NotificationsCubit>().notifications.length,
+                    totalPages: 1,
+                  ),
                 ),
               ),
               userId,
@@ -132,6 +146,15 @@ class _NotificationsScreenContent extends StatelessWidget {
                     notifications:
                         context.read<NotificationsCubit>().notifications,
                     unreadCount: context.read<NotificationsCubit>().unreadCount,
+                    pagination: PaginationModel(
+                      currentPage: 1,
+                      perPage: 10,
+                      totalItems: context
+                          .read<NotificationsCubit>()
+                          .notifications
+                          .length,
+                      totalPages: 1,
+                    ),
                   ),
                 ),
                 userId,
@@ -146,6 +169,13 @@ class _NotificationsScreenContent extends StatelessWidget {
                   notifications:
                       context.read<NotificationsCubit>().notifications,
                   unreadCount: context.read<NotificationsCubit>().unreadCount,
+                  pagination: PaginationModel(
+                    currentPage: 1,
+                    perPage: 10,
+                    totalItems:
+                        context.read<NotificationsCubit>().notifications.length,
+                    totalPages: 1,
+                  ),
                 ),
               ),
               userId,
@@ -159,6 +189,13 @@ class _NotificationsScreenContent extends StatelessWidget {
                   notifications:
                       context.read<NotificationsCubit>().notifications,
                   unreadCount: context.read<NotificationsCubit>().unreadCount,
+                  pagination: PaginationModel(
+                    currentPage: 1,
+                    perPage: 10,
+                    totalItems:
+                        context.read<NotificationsCubit>().notifications.length,
+                    totalPages: 1,
+                  ),
                 ),
               ),
               userId,
@@ -182,6 +219,15 @@ class _NotificationsScreenContent extends StatelessWidget {
                     notifications:
                         context.read<NotificationsCubit>().notifications,
                     unreadCount: context.read<NotificationsCubit>().unreadCount,
+                    pagination: PaginationModel(
+                      currentPage: 1,
+                      perPage: 10,
+                      totalItems: context
+                          .read<NotificationsCubit>()
+                          .notifications
+                          .length,
+                      totalPages: 1,
+                    ),
                   ),
                 ),
                 userId,

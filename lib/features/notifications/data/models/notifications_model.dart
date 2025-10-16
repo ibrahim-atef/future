@@ -34,9 +34,13 @@ class NotificationsData {
   @JsonKey(name: 'unread_count')
   final int unreadCount;
 
+  @JsonKey(name: 'pagination')
+  final PaginationModel pagination;
+
   NotificationsData({
     required this.notifications,
     required this.unreadCount,
+    required this.pagination,
   });
 
   factory NotificationsData.fromJson(Map<String, dynamic> json) =>
@@ -46,11 +50,38 @@ class NotificationsData {
 }
 
 @JsonSerializable()
+class PaginationModel {
+  @JsonKey(name: 'current_page')
+  final int currentPage;
+
+  @JsonKey(name: 'per_page')
+  final int perPage;
+
+  @JsonKey(name: 'total_items')
+  final int totalItems;
+
+  @JsonKey(name: 'total_pages')
+  final int totalPages;
+
+  PaginationModel({
+    required this.currentPage,
+    required this.perPage,
+    required this.totalItems,
+    required this.totalPages,
+  });
+
+  factory PaginationModel.fromJson(Map<String, dynamic> json) =>
+      _$PaginationModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PaginationModelToJson(this);
+}
+
+@JsonSerializable()
 class NotificationModel {
   @JsonKey(name: 'id')
   final String id;
 
-  @JsonKey(name: 'user_id')
+  @JsonKey(name: 'userId')
   final String userId;
 
   @JsonKey(name: 'title')
@@ -62,16 +93,16 @@ class NotificationModel {
   @JsonKey(name: 'type')
   final String type;
 
-  @JsonKey(name: 'related_id')
+  @JsonKey(name: 'relatedId')
   final String? relatedId;
 
-  @JsonKey(name: 'image_url')
-  final String? imageUrl;
+  @JsonKey(name: 'imageUrl')
+  final dynamic imageUrl;
 
-  @JsonKey(name: 'is_read')
+  @JsonKey(name: 'isRead')
   final bool isRead;
 
-  @JsonKey(name: 'created_at')
+  @JsonKey(name: 'createdAt')
   final String createdAt;
 
   NotificationModel({
@@ -119,7 +150,7 @@ class NotificationModel {
     String? message,
     String? type,
     String? relatedId,
-    String? imageUrl,
+    dynamic imageUrl,
     bool? isRead,
     String? createdAt,
   }) {

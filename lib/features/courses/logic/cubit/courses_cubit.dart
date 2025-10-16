@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/features/courses/data/models/courses_model.dart';
 import 'package:future_app/features/courses/data/repos/courses_repo.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_state.dart';
+import 'package:future_app/core/models/banner_model.dart';
 
 class CoursesCubit extends Cubit<CoursesState> {
   CoursesCubit(this._coursesRepo) : super(const CoursesState.initial());
@@ -9,7 +10,7 @@ class CoursesCubit extends Cubit<CoursesState> {
   final CoursesRepo _coursesRepo;
 
   // Banners state
-  List<String> _banners = [];
+  List<BannerModel> _banners = [];
 
   // Pagination state
   int _currentPage = 1;
@@ -20,7 +21,7 @@ class CoursesCubit extends Cubit<CoursesState> {
   PaginationData? _paginationData;
 
   // Getters
-  List<String> get banners => _banners;
+  List<BannerModel> get banners => _banners;
   List<CourseModel> get allCourses => _allCourses;
   PaginationData? get paginationData => _paginationData;
   bool get hasMorePages => _hasMorePages;

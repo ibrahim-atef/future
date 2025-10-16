@@ -9,6 +9,7 @@ import 'dart:io';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/di/di.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../../core/models/banner_model.dart';
 import '../logic/cubit/home_cubit.dart';
 import '../logic/cubit/home_state.dart';
 import '../../auth/logic/cubit/auth_cubit.dart';
@@ -570,7 +571,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
     );
   }
 
-  Widget _buildBannerCarousel(List<String> banners) {
+  Widget _buildBannerCarousel(List<BannerModel> banners) {
     if (banners.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -585,6 +586,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
             itemCount: banners.length,
             allowImplicitScrolling: false,
             itemBuilder: (context, index) {
+              final banner = banners[index];
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
@@ -599,63 +601,99 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    banners[index],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        color: const Color(0xFF2a2a2a),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: const Color(0xFFd4af37),
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        ),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      // Fallback container with gradient if image fails to load
-                      return Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              const Color(0xFFd4af37).withOpacity(0.8),
-                              const Color(0xFFb8860b).withOpacity(0.8),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.image,
-                                size: 50,
-                                color: Colors.white.withOpacity(0.8),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Banner ${index + 1}',
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.8),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Cairo',
+                  child: banner.imageUrl != null && banner.imageUrl!.isNotEmpty
+                      ? Image.network(
+                          banner.imageUrl!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              color: const Color(0xFF2a2a2a),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: const Color(0xFFd4af37),
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
                                 ),
                               ),
-                            ],
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            // Fallback container with gradient if image fails to load
+                            return Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFFd4af37).withOpacity(0.8),
+                                    const Color(0xFFb8860b).withOpacity(0.8),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                              ),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.image,
+                                      size: 50,
+                                      color: Colors.white.withOpacity(0.8),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      banner.title ?? 'Banner ${index + 1}',
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(0.8),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Cairo',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color(0xFFd4af37).withOpacity(0.8),
+                                const Color(0xFFb8860b).withOpacity(0.8),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.image,
+                                  size: 50,
+                                  color: Colors.white.withOpacity(0.8),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  banner.title ?? 'Banner ${index + 1}',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Cairo',
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      );
-                    },
-                  ),
                 ),
               );
             },
