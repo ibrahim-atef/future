@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/core/di/di.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_cubit.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_state.dart';
+import 'package:future_app/features/courses/presentation/quiz_screen.dart';
 import 'package:future_app/widgets/common/custom_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -701,11 +702,14 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                       onTap: () {
                         // Handle lecture tap - Load video
                         if (lecture.type == 'quiz') {
-                          // Handle quiz navigation
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('فتح كويز: ${lecture.title}'),
-                              backgroundColor: const Color(0xFFd4af37),
+                          // Navigate to quiz screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => QuizScreen(
+                                quizId: lecture.id,
+                                quizTitle: lecture.title,
+                              ),
                             ),
                           );
                         } else if (lecture.videoUrl?.isNotEmpty == true) {

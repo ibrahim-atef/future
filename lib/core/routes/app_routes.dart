@@ -22,7 +22,7 @@ import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/edit_password_screen.dart';
 import '../../features/profile/settings_screen.dart';
-import '../../screens/quiz/quiz_screen.dart';
+import '../../features/courses/presentation/quiz_screen.dart';
 import '../../screens/quiz/quiz_result_screen.dart';
 
 class AppRoutes {

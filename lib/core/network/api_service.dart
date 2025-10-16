@@ -13,6 +13,7 @@ import 'package:future_app/features/blog/data/models/blog_model.dart';
 import 'package:future_app/features/profile/data/models/get_profile_response_model.dart';
 import 'package:future_app/features/profile/data/models/update_profile_response_model.dart';
 import 'package:future_app/features/profile/data/models/update_password_response_model.dart';
+import 'package:future_app/features/courses/data/models/quiz_models.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
@@ -145,6 +146,23 @@ abstract class ApiService {
   @PUT(ApiConstants.updatePassword)
   Future<UpdatePasswordResponseModel> updatePassword(
     @Body() UpdatePasswordRequestModel request,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
+  // start quiz
+  @GET('panel/quizzes/{quizId}/start')
+  Future<StartQuizResponseModel> startQuiz(
+    @Path('quizId') String quizId,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
+  // send quiz result
+  @POST('panel/quizzes/{quizId}/store-result')
+  Future<QuizResultResponseModel> sendQuizResult(
+    @Path('quizId') String quizId,
+    @Body() QuizResultRequestModel request,
     @Header('x-api-key') int apiKey,
     @Header('X-App-Source') String appSource,
   );

@@ -15,6 +15,8 @@ import 'package:future_app/features/college/data/repos/college_repo.dart';
 import 'package:future_app/features/college/logic/cubit/college_cubit.dart';
 import 'package:future_app/features/profile/data/repos/profile_repo.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
+import 'package:future_app/features/courses/data/repos/quiz_repo.dart';
+import 'package:future_app/features/courses/logic/cubit/quiz_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -51,4 +53,8 @@ void setupGetIt() {
   // profile
   getIt.registerLazySingleton(() => ProfileRepo(getIt()));
   getIt.registerFactory(() => ProfileCubit(getIt()));
+
+  // quiz
+  getIt.registerLazySingleton(() => QuizRepo(getIt()));
+  getIt.registerLazySingleton(() => QuizCubit(getIt()));
 }
