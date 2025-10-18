@@ -402,8 +402,8 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
               if (state is DownloadSuccess) {
                 Navigator.pop(context); // Close loading dialog
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Row(
+                  const SnackBar(
+                    content: Row(
                       children: [
                         Icon(
                           Icons.check_circle,
@@ -415,17 +415,11 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                       ],
                     ),
                     backgroundColor: Colors.green,
-                    duration: const Duration(seconds: 3),
-                    action: SnackBarAction(
-                      label: 'عرض التحميلات',
-                      textColor: Colors.white,
-                      onPressed: () {
-                        // Navigate to downloads screen
-                        Navigator.pushNamed(context, '/downloads');
-                      },
-                    ),
+                    duration: Duration(seconds: 3),
                   ),
                 );
+                // Refresh the downloads list
+                context.read<DownloadCubit>().getDownloadedVideosWithManager();
               } else if (state is DownloadError) {
                 Navigator.pop(context); // Close loading dialog
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -453,7 +447,7 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   context
                       .read<DownloadCubit>()
-                      .downloadLesson(_currentLectureId!);
+                      .downloadLessonWithManager(_currentLectureId!);
                 });
               }
 

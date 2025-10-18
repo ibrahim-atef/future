@@ -29,21 +29,43 @@ class _DownloadedVideoPlayerState extends State<DownloadedVideoPlayer> {
   }
 
   void _initializeVideo() {
-    _controller = VideoPlayerController.file(File(widget.videoPath));
+    print('Initializing video player with path: ${widget.videoPath}');
 
-    _controller!.initialize().then((_) {
-      setState(() {
-        _isLoading = false;
-        _isPlaying = false;
-      });
-    }).catchError((error) {
+    // Check if file exists
+    final file = File(widget.videoPath);
+    if (!file.existsSync()) {
+      print('Video file does not exist: ${widget.videoPath}');
       setState(() {
         _isLoading = false;
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('خطأ في تحميل الفيديو'),
+            content: Text('ملف الفيديو غير موجود'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    _controller = VideoPlayerController.file(file);
+
+    _controller!.initialize().then((_) {
+      print('Video controller initialized successfully');
+      setState(() {
+        _isLoading = false;
+        _isPlaying = false;
+      });
+    }).catchError((error) {
+      print('Error initializing video controller: $error');
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('خطأ في تحميل الفيديو: $error'),
             backgroundColor: Colors.red,
           ),
         );
@@ -115,42 +137,6 @@ class _DownloadedVideoPlayerState extends State<DownloadedVideoPlayer> {
                             color: Colors.black.withOpacity(0.3),
                             child: Column(
                               children: [
-                                // Top controls
-                                Container(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // Back button
-                                      IconButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        icon: const Icon(
-                                          Icons.arrow_back,
-                                          color: Colors.white,
-                                          size: 28,
-                                        ),
-                                      ),
-                                      // Title
-                                      Expanded(
-                                        child: Text(
-                                          widget.videoTitle,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      // Empty space for balance
-                                      const SizedBox(width: 48),
-                                    ],
-                                  ),
-                                ),
-
                                 const Spacer(),
 
                                 // Center play button
@@ -282,22 +268,55 @@ class _DownloadedVideoPlayerState extends State<DownloadedVideoPlayer> {
                     ),
                   ),
                 )
-              : const Center(
+              : Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.error_outline,
                         color: Colors.red,
                         size: 64,
                       ),
-                      SizedBox(height: 16),
-                      Text(
+                      const SizedBox(height: 16),
+                      const Text(
                         'خطأ في تحميل الفيديو',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'مسار الفيديو: ${widget.videoPath}',
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back, color: Colors.black),
+                        label: const Text(
+                          'رجوع',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFd4af37),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                       ),
                     ],

@@ -2,7 +2,7 @@ class ApiConstants {
   static const int apiKey = 5551;
   static const String appSource = "future_academy_app";
   static const String apiBaseUrl =
-      "https://future-team-law.com/wp-json/tutor-api/v1/";
+      "https://Future.anmka.com/wp-json/tutor-api/v1/";
   static const String login = "login";
   static const String logout = "logout";
   static const String registerStep1 = "register";

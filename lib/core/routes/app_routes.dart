@@ -14,7 +14,6 @@ import '../../screens/main/main_navigation_screen.dart';
 import '../../features/courses/presentation/courses_screen.dart';
 import '../../features/courses/presentation/course_detail_screen.dart';
 import '../../features/courses/presentation/lecture_player_screen.dart';
-import '../../features/downloads/downloads_screen.dart';
 import '../../features/college/presentation/college_screen.dart';
 import '../../features/college/presentation/course_videos_screen.dart';
 import '../../features/blog/presentation/blog_screen.dart';
@@ -25,6 +24,9 @@ import '../../features/profile/presentation/edit_password_screen.dart';
 import '../../features/profile/settings_screen.dart';
 import '../../features/courses/presentation/quiz_screen.dart';
 import '../../screens/quiz/quiz_result_screen.dart';
+import '../../features/downloads/presentation/offline_list_course_page.dart';
+import '../../features/downloads/presentation/offline_single_course_page.dart';
+import '../../features/downloads/presentation/offline_single_content_page.dart';
 
 class AppRoutes {
   // Route names
@@ -52,6 +54,9 @@ class AppRoutes {
   static const String quiz = '/quiz';
   static const String quizResult = '/quiz-result';
   static const String experienceOfExcellence = '/experience-of-excellence';
+  static const String offlineListCourse = '/offline-list-course';
+  static const String offlineSingleCourse = '/offline-single-course';
+  static const String offlineSingleContent = '/offline-single-content';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -141,7 +146,7 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => getIt<DownloadCubit>(),
-            child: const DownloadsScreen(),
+            child: const OfflineListCoursePage(),
           ),
           settings: settings,
         );
@@ -233,6 +238,34 @@ class AppRoutes {
       case experienceOfExcellence:
         return MaterialPageRoute(
           builder: (_) => const ExperienceOfExcellencePage(),
+          settings: settings,
+        );
+
+      case offlineListCourse:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<DownloadCubit>(),
+            child: const OfflineListCoursePage(),
+          ),
+          settings: settings,
+        );
+
+      case offlineSingleCourse:
+        final args = settings.arguments as Map<String, dynamic>?;
+        return MaterialPageRoute(
+          builder: (_) => OfflineSingleCoursePage(
+            course: args ?? {},
+          ),
+          settings: settings,
+        );
+
+      case offlineSingleContent:
+        final args = settings.arguments as Map<String, dynamic>?;
+        return MaterialPageRoute(
+          builder: (_) => OfflineSingleContentPage(
+            courseId: args?['courseId'] ?? 0,
+            content: args?['content'] ?? {},
+          ),
           settings: settings,
         );
 

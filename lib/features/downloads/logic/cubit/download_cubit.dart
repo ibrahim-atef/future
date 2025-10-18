@@ -220,4 +220,132 @@ class DownloadCubit extends Cubit<DownloadState> {
       return false;
     }
   }
+
+  /// تحميل درس باستخدام DownloadManager (من Anmka-Creation)
+  Future<void> downloadLessonWithManager(String lessonId) async {
+    emit(DownloadLoading());
+    try {
+      // التحقق من الصلاحيات أولاً
+      final hasPermission = await _downloadService.hasStoragePermission();
+      if (!hasPermission) {
+        final granted = await _downloadService.requestPermission();
+        if (!granted) {
+          emit(DownloadError('يجب منح صلاحيات التخزين لتحميل الفيديوهات'));
+          return;
+        }
+      }
+
+      // الحصول على معلومات التحميل من API
+      final response = await _downloadRepository.downloadLesson(lessonId);
+
+      print('Download response received: ${response.success}');
+      print('Download data: ${response.data.toJson()}');
+
+      if (!response.data.downloadable) {
+        emit(DownloadError('هذا الفيديو غير متاح للتحميل'));
+        return;
+      }
+
+      // التحقق من أن الفيديو لم يتم تحميله مسبقاً
+      final localPath = await _downloadService.checkLocalVideoFile(lessonId);
+      if (localPath != null) {
+        emit(DownloadError('تم تحميل هذا الفيديو مسبقاً'));
+        return;
+      }
+
+      // بدء التحميل باستخدام DownloadManager
+      final videoId =
+          await _downloadService.downloadVideoFromApiResponseWithManager(response.data);
+
+      if (videoId != null) {
+        emit(DownloadSuccess(response));
+        // تحديث قائمة التحميلات
+        await getDownloadedVideosWithManager();
+      } else {
+        emit(DownloadError('فشل في تحميل الفيديو'));
+      }
+    } catch (e) {
+      print('Download error: $e');
+      emit(DownloadError('حدث خطأ أثناء التحميل: ${e.toString()}'));
+    }
+  }
+
+  /// الحصول على الفيديوهات المحملة باستخدام DownloadManager
+  Future<void> getDownloadedVideosWithManager() async {
+    emit(GetDownloadedVideosLoading());
+    try {
+      print('Getting downloaded videos with DownloadManager...');
+
+      // يعمل بدون اتصال بالإنترنت
+      final videos = await _downloadService.getDownloadedVideosWithManager();
+      print('Found ${videos.length} downloaded videos');
+
+      for (final video in videos) {
+        print('Video: ${video.title} - ${video.localPath}');
+      }
+
+      emit(GetDownloadedVideosSuccess(videos));
+    } catch (e) {
+      print('Error getting downloaded videos: $e');
+      emit(GetDownloadedVideosError(
+          'خطأ في تحميل قائمة الفيديوهات المحملة: $e'));
+    }
+  }
+
+  /// تحميل فيديو تجريبي باستخدام DownloadManager
+  Future<void> downloadSpecificVideoWithManager() async {
+    emit(DownloadLoading());
+    try {
+      // التحقق من الصلاحيات
+      final hasPermission = await _downloadService.hasStoragePermission();
+      if (!hasPermission) {
+        final granted = await _downloadService.requestPermission();
+        if (!granted) {
+          emit(DownloadError('يجب منح صلاحيات التخزين لتحميل الفيديوهات'));
+          return;
+        }
+      }
+
+      // تحميل الفيديو التجريبي
+      final videoId = await _downloadService.downloadVideoWithManager(
+        videoUrl: 'https://future-team-law.com/wp-content/uploads/2025/10/VID-20240822-WA0001-1.mp4',
+        lessonId: '42',
+        courseId: '38',
+        title: 'test123',
+        description: 'فيديو تجريبي',
+        fileSizeMb: 22.59,
+        durationText: '2 دقيقة',
+        videoSource: 'server',
+      );
+
+      if (videoId != null) {
+        const dummyResponse = DownloadResponseModel(
+          success: true,
+          message: 'تم تحميل الفيديو بنجاح',
+          data: DownloadData(
+            lessonId: '42',
+            courseId: '38',
+            title: 'test123',
+            description: '<p>فيديو تجريبي</p>',
+            videoUrl: 'https://future-team-law.com/wp-content/uploads/2025/10/VID-20240822-WA0001-1.mp4',
+            fileSize: 23684943,
+            fileSizeMb: 22.59,
+            fileType: 'video/mp4',
+            duration: 126,
+            durationText: '2 دقيقة',
+            downloadable: true,
+            videoSource: 'server',
+            downloadNote: 'هذا الفيديو متاح للتحميل والمشاهدة أوفلاين.',
+          ),
+        );
+        emit(DownloadSuccess(dummyResponse));
+        // تحديث قائمة التحميلات
+        await getDownloadedVideosWithManager();
+      } else {
+        emit(DownloadError('فشل في تحميل الفيديو'));
+      }
+    } catch (e) {
+      emit(DownloadError('حدث خطأ أثناء التحميل: ${e.toString()}'));
+    }
+  }
 }

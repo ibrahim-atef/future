@@ -75,6 +75,7 @@ class DownloadedVideoModel {
   final String id;
   final String lessonId;
   final String courseId;
+  final String courseTitle;
   final String title;
   final String description;
   final String videoUrl;
@@ -92,6 +93,7 @@ class DownloadedVideoModel {
     required this.id,
     required this.lessonId,
     required this.courseId,
+    required this.courseTitle,
     required this.title,
     required this.description,
     required this.videoUrl,

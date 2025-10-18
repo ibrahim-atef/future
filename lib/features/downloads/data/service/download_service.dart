@@ -7,6 +7,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:future_app/core/models/download_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:future_app/core/services/download_manager.dart';
 
 class DownloadService {
   static final DownloadService _instance = DownloadService._internal();
@@ -69,6 +70,7 @@ class DownloadService {
             id TEXT PRIMARY KEY,
             lesson_id TEXT,
             course_id TEXT,
+            course_title TEXT,
             title TEXT,
             description TEXT,
             video_url TEXT,
@@ -249,6 +251,7 @@ class DownloadService {
           id: taskId,
           lessonId: downloadData.lessonId,
           courseId: downloadData.courseId,
+          courseTitle: 'كورس ${downloadData.courseId}', // يمكن تحسين هذا لاحقاً
           title: downloadData.title,
           description: downloadData.description,
           videoUrl: downloadData.videoUrl,
@@ -349,6 +352,7 @@ class DownloadService {
         'id': video.id,
         'lesson_id': video.lessonId,
         'course_id': video.courseId,
+        'course_title': video.courseTitle,
         'title': video.title,
         'description': video.description,
         'video_url': video.videoUrl,
@@ -389,6 +393,7 @@ class DownloadService {
             id: map['id'],
             lessonId: map['lesson_id'],
             courseId: map['course_id'],
+            courseTitle: map['course_title'] ?? 'كورس ${map['course_id']}',
             title: map['title'],
             description: map['description'],
             videoUrl: map['video_url'],
@@ -710,5 +715,188 @@ class DownloadService {
 
     final downloadService = DownloadService();
     downloadService.updateDownloadStatus(id, status);
+  }
+
+  /// تحميل فيديو باستخدام DownloadManager (من Anmka-Creation)
+  Future<String?> downloadVideoWithManager({
+    required String videoUrl,
+    required String lessonId,
+    required String courseId,
+    required String title,
+    String? description,
+    double? fileSizeMb,
+    String? durationText,
+    String? videoSource,
+  }) async {
+    try {
+      print('🎬 Starting video download with DownloadManager');
+      print('Video URL: $videoUrl');
+      print('Lesson ID: $lessonId');
+
+      // إنشاء اسم ملف فريد
+      String fileName =
+          'video_${lessonId}_${DateTime.now().millisecondsSinceEpoch}.mp4';
+
+      // تحميل الفيديو باستخدام DownloadManager
+      String? localPath = await DownloadManager.download(
+        videoUrl,
+        name: fileName,
+        onDownload: (progress) {
+          print('Download progress: $progress%');
+        },
+        isOpen: false,
+      );
+
+      if (localPath != null) {
+        print('✅ Video downloaded successfully to: $localPath');
+
+        // حفظ معلومات الفيديو في قاعدة البيانات
+        String videoId = DateTime.now().millisecondsSinceEpoch.toString();
+
+        await _database?.insert(
+          _tableName,
+          {
+            'id': videoId,
+            'lesson_id': lessonId,
+            'course_id': courseId,
+            'course_title': 'كورس $courseId', // يمكن تحسين هذا لاحقاً
+            'title': title,
+            'description': description ?? '',
+            'video_url': videoUrl,
+            'local_path': localPath,
+            'file_size': 0, // سيتم حسابه لاحقاً
+            'file_size_mb': fileSizeMb ?? 0.0,
+            'file_type': 'video/mp4',
+            'duration': 0,
+            'duration_text': durationText ?? '',
+            'video_source': videoSource ?? 'server',
+            'downloaded_at': DateTime.now().toIso8601String(),
+            'thumbnail_path': '',
+          },
+        );
+
+        print('✅ Video info saved to database');
+        return videoId;
+      } else {
+        print('❌ Video download failed');
+        return null;
+      }
+    } catch (e) {
+      print('❌ Error downloading video with DownloadManager: $e');
+      return null;
+    }
+  }
+
+  /// تحميل فيديو من API response باستخدام DownloadManager
+  Future<String?> downloadVideoFromApiResponseWithManager(
+      DownloadData downloadData) async {
+    return await downloadVideoWithManager(
+      videoUrl: downloadData.videoUrl,
+      lessonId: downloadData.lessonId,
+      courseId: downloadData.courseId,
+      title: downloadData.title,
+      description: downloadData.description,
+      fileSizeMb: downloadData.fileSizeMb,
+      durationText: downloadData.durationText,
+      videoSource: downloadData.videoSource,
+    );
+  }
+
+  /// التحقق من وجود ملف محمل مسبقاً باستخدام DownloadManager
+  Future<String?> checkLocalVideoFile(String lessonId) async {
+    // البحث في قاعدة البيانات أولاً
+    final result = await _database?.query(
+      _tableName,
+      where: 'lesson_id = ?',
+      whereArgs: [lessonId],
+      limit: 1,
+    );
+
+    if (result?.isNotEmpty ?? false) {
+      final localPath = result!.first['local_path'] as String;
+
+      // التحقق من وجود الملف فعلياً
+      final file = File(localPath);
+      if (await file.exists()) {
+        print('✅ Local video file exists: $localPath');
+        return localPath;
+      } else {
+        print('🚫 Local video file not found, cleaning database entry');
+        // حذف السجل من قاعدة البيانات إذا كان الملف غير موجود
+        await _database?.delete(
+          _tableName,
+          where: 'lesson_id = ?',
+          whereArgs: [lessonId],
+        );
+      }
+    }
+
+    return null;
+  }
+
+  /// الحصول على جميع الفيديوهات المحملة مع التحقق من وجودها
+  Future<List<DownloadedVideoModel>> getDownloadedVideosWithManager() async {
+    try {
+      print('Getting downloaded videos from database...');
+
+      final results = await _database?.query(_tableName);
+
+      if (results == null || results.isEmpty) {
+        print('No downloaded videos found in database');
+        return [];
+      }
+
+      print('Found ${results.length} videos in database');
+
+      List<DownloadedVideoModel> videos = [];
+
+      for (final row in results) {
+        final localPath = row['local_path'] as String;
+        final file = File(localPath);
+
+        // التحقق من وجود الملف
+        if (await file.exists()) {
+          print('✅ Video file exists: $localPath');
+
+          // حساب حجم الملف الفعلي
+          int fileSize = await file.length();
+          double fileSizeMb = fileSize / (1024 * 1024);
+
+          videos.add(DownloadedVideoModel(
+            id: row['id'] as String,
+            lessonId: row['lesson_id'] as String,
+            courseId: row['course_id'] as String,
+            courseTitle:
+                row['course_title'] as String? ?? 'كورس ${row['course_id']}',
+            title: row['title'] as String,
+            description: row['description'] as String,
+            videoUrl: row['video_url'] as String,
+            localPath: localPath,
+            fileSize: fileSize,
+            fileSizeMb: fileSizeMb,
+            fileType: row['file_type'] as String,
+            duration: row['duration'] as int,
+            durationText: row['duration_text'] as String,
+            videoSource: row['video_source'] as String,
+            downloadedAt: DateTime.parse(row['downloaded_at'] as String),
+            thumbnailPath: row['thumbnail_path'] as String? ?? '',
+          ));
+        } else {
+          print('🚫 Video file not found, removing from database: $localPath');
+          // حذف السجل إذا كان الملف غير موجود
+          await _database?.delete(
+            _tableName,
+            where: 'id = ?',
+            whereArgs: [row['id']],
+          );
+        }
+      }
+
+      print('Returning ${videos.length} valid videos');
+      return videos;
+    } catch (e) {
+      print('Error getting downloaded videos: $e');
+      return [];
+    }
   }
 }
