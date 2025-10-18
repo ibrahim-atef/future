@@ -11,6 +11,7 @@ import 'package:future_app/features/downloads/logic/cubit/download_state.dart';
 import 'package:video_player/video_player.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class LecturePlayerScreen extends StatefulWidget {
   final String courseId;
@@ -33,6 +34,7 @@ class LecturePlayerScreen extends StatefulWidget {
 class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   VideoPlayerController? _videoController;
   YoutubePlayerController? _youtubeController;
+  InAppWebViewController? _webViewController;
   bool _isLoading = true;
   bool _isPlaying = false;
   bool _showControls = true;
@@ -88,24 +90,43 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     return match?.group(1);
   }
 
+  String _getYouTubeEmbedUrl(String videoId) {
+    return 'https://www.youtube.com/embed/$videoId?autoplay=0&controls=1&showinfo=1&rel=0&modestbranding=1&enablejsapi=1';
+  }
+
+  bool _isValidYouTubeUrl(String url) {
+    final RegExp youtubeRegExp = RegExp(
+      r'(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})',
+    );
+    return youtubeRegExp.hasMatch(url);
+  }
+
   void _initializeYouTubeVideo(String videoUrl) {
     // Dispose previous YouTube controller
     _youtubeController?.dispose();
 
+    // Validate YouTube URL first
+    if (!_isValidYouTubeUrl(videoUrl)) {
+      print('Invalid YouTube URL: $videoUrl');
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('رابط يوتيوب غير صحيح'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
     final videoId = _extractYouTubeVideoId(videoUrl);
     if (videoId != null) {
-      _youtubeController = YoutubePlayerController(
-        initialVideoId: videoId,
-        flags: const YoutubePlayerFlags(
-          autoPlay: false,
-          mute: false,
-          isLive: false,
-          forceHD: false,
-          enableCaption: true,
-          showLiveFullscreenButton: true,
-        ),
-      );
+      print('Using WebView directly for YouTube video ID: $videoId');
 
+      // Use WebView directly to avoid type errors in youtube_player_flutter
       setState(() {
         _isLoading = false;
       });
@@ -736,9 +757,8 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     }
 
     if (_currentVideoType == 'youtube' && _currentVideoUrl != null) {
-      return _youtubeController != null
-          ? _buildYouTubePlayerWidget()
-          : _buildErrorWidget();
+      // Always use WebView for YouTube videos to avoid type errors
+      return _buildYouTubeWebView();
     } else if ((_currentVideoType == 'server' ||
             _currentVideoType == 'video') &&
         _currentVideoUrl != null) {
@@ -974,28 +994,76 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     );
   }
 
-  Widget _buildYouTubePlayerWidget() {
-    return Stack(
-      children: [
-        YoutubePlayer(
-          controller: _youtubeController!,
-          showVideoProgressIndicator: true,
-          progressIndicatorColor: const Color(0xFFd4af37),
-          progressColors: const ProgressBarColors(
-            playedColor: Color(0xFFd4af37),
-            handleColor: Color(0xFFd4af37),
-            backgroundColor: Colors.white24,
-            bufferedColor: Colors.white54,
+  Widget _buildYouTubeWebView() {
+    final videoId = _extractYouTubeVideoId(_currentVideoUrl ?? '');
+    if (videoId == null) {
+      return _buildErrorWidget();
+    }
+
+    final embedUrl = _getYouTubeEmbedUrl(videoId);
+    print('Loading YouTube video in WebView: $embedUrl');
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black,
+        border: Border.all(
+          color: const Color(0xFFd4af37).withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Stack(
+        children: [
+          InAppWebView(
+            initialUrlRequest: URLRequest(url: WebUri(embedUrl)),
+            initialSettings: InAppWebViewSettings(
+              mediaPlaybackRequiresUserGesture: false,
+              allowsInlineMediaPlayback: true,
+              iframeAllow: "camera; microphone",
+              iframeAllowFullscreen: true,
+              javaScriptEnabled: true,
+              domStorageEnabled: true,
+              useHybridComposition: false, // Disable to avoid type errors
+              supportZoom: false,
+              builtInZoomControls: false,
+              displayZoomControls: false,
+            ),
+            onWebViewCreated: (controller) {
+              _webViewController = controller;
+              print('WebView created successfully');
+            },
+            onLoadStart: (controller, url) {
+              print('WebView loading started: $url');
+            },
+            onLoadStop: (controller, url) {
+              print('WebView loading completed: $url');
+            },
+            onReceivedError: (controller, request, error) {
+              print('WebView Error: $error');
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('خطأ في تحميل الفيديو: ${error.description}'),
+                    backgroundColor: Colors.red,
+                    duration: const Duration(seconds: 3),
+                  ),
+                );
+              }
+            },
+            onReceivedHttpError: (controller, request, errorResponse) {
+              print('WebView HTTP Error: $errorResponse');
+            },
+            onConsoleMessage: (controller, consoleMessage) {
+              // Ignore console messages to avoid spam
+              if (consoleMessage.messageLevel == ConsoleMessageLevel.ERROR) {
+                print('WebView Console Error: ${consoleMessage.message}');
+              }
+            },
           ),
-          onReady: () {
-            // Video is ready to play
-          },
-          onEnded: (metaData) {
-            // Video ended
-          },
-          topActions: [
-            // Back button
-            IconButton(
+          // Overlay controls
+          Positioned(
+            top: 16,
+            left: 16,
+            child: IconButton(
               onPressed: () => Navigator.pop(context),
               icon: const Icon(
                 Icons.arrow_back,
@@ -1003,41 +1071,97 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                 size: 28,
               ),
             ),
-            const Spacer(),
-            // Fullscreen button
-            IconButton(
-              onPressed: () {
-                _enterFullScreen();
-              },
+          ),
+          Positioned(
+            top: 16,
+            right: 16,
+            child: IconButton(
+              onPressed: () => _enterFullScreen(),
               icon: const Icon(
                 Icons.fullscreen,
                 color: Colors.white,
                 size: 28,
               ),
             ),
-          ],
-          bottomActions: const [
-            // Current time
-            CurrentPosition(),
-            // Progress bar
-            ProgressBar(
-              isExpanded: true,
-              colors: ProgressBarColors(
-                playedColor: Color(0xFFd4af37),
-                handleColor: Color(0xFFd4af37),
-                backgroundColor: Colors.white24,
-                bufferedColor: Colors.white54,
-              ),
-            ),
-            // Remaining time
-            RemainingDuration(),
-            // Playback speed
-            PlaybackSpeedButton(),
-            // Fullscreen button
-            FullScreenButton(),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildYouTubePlayerWidget() {
+    if (_youtubeController == null) {
+      return _buildErrorWidget();
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black,
+        border: Border.all(
+          color: const Color(0xFFd4af37).withOpacity(0.3),
+          width: 1,
         ),
-      ],
+      ),
+      child: YoutubePlayer(
+        controller: _youtubeController!,
+        showVideoProgressIndicator: true,
+        progressIndicatorColor: const Color(0xFFd4af37),
+        progressColors: const ProgressBarColors(
+          playedColor: Color(0xFFd4af37),
+          handleColor: Color(0xFFd4af37),
+          backgroundColor: Colors.white24,
+          bufferedColor: Colors.white54,
+        ),
+        onReady: () {
+          print('YouTube video is ready and playing');
+        },
+        onEnded: (metaData) {
+          print('YouTube video ended');
+        },
+        topActions: [
+          // Back button
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
+          const Spacer(),
+          // Fullscreen button
+          IconButton(
+            onPressed: () {
+              _enterFullScreen();
+            },
+            icon: const Icon(
+              Icons.fullscreen,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
+        ],
+        bottomActions: const [
+          // Current time
+          CurrentPosition(),
+          // Progress bar
+          ProgressBar(
+            isExpanded: true,
+            colors: ProgressBarColors(
+              playedColor: Color(0xFFd4af37),
+              handleColor: Color(0xFFd4af37),
+              backgroundColor: Colors.white24,
+              bufferedColor: Colors.white54,
+            ),
+          ),
+          // Remaining time
+          RemainingDuration(),
+          // Playback speed
+          PlaybackSpeedButton(),
+          // Fullscreen button
+          FullScreenButton(),
+        ],
+      ),
     );
   }
 
