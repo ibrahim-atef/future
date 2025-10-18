@@ -17,6 +17,9 @@ import 'package:future_app/features/profile/data/repos/profile_repo.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
 import 'package:future_app/features/courses/data/repos/quiz_repo.dart';
 import 'package:future_app/features/courses/logic/cubit/quiz_cubit.dart';
+import 'package:future_app/features/downloads/data/repository/download_repository.dart';
+import 'package:future_app/features/downloads/data/service/download_service.dart';
+import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -57,4 +60,11 @@ void setupGetIt() {
   // quiz
   getIt.registerLazySingleton(() => QuizRepo(getIt()));
   getIt.registerLazySingleton(() => QuizCubit(getIt()));
+
+  // downloads
+  getIt.registerLazySingleton<DownloadRepository>(
+      () => DownloadRepositoryImpl(getIt()));
+  getIt.registerLazySingleton(() => DownloadService());
+  getIt.registerFactory(
+      () => DownloadCubit(getIt<DownloadRepository>(), getIt()));
 }

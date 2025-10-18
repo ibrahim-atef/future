@@ -6,6 +6,8 @@ import 'package:future_app/features/courses/logic/cubit/courses_cubit.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_state.dart';
 import 'package:future_app/features/courses/presentation/quiz_screen.dart';
 import 'package:future_app/features/courses/presentation/fullscreen_video_player.dart';
+import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
+import 'package:future_app/features/downloads/logic/cubit/download_state.dart';
 import 'package:video_player/video_player.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -38,6 +40,7 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   bool _isMuted = false;
   String? _currentVideoUrl;
   String? _currentVideoType;
+  String? _currentLectureId;
 
   @override
   void initState() {
@@ -58,11 +61,12 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     }
   }
 
-  void _loadVideo(String videoUrl, String videoType) {
+  void _loadVideo(String videoUrl, String videoType, {String? lectureId}) {
     setState(() {
       _isLoading = true;
       _currentVideoUrl = videoUrl;
       _currentVideoType = videoType;
+      _currentLectureId = lectureId;
     });
 
     if (videoType == 'youtube') {
@@ -384,70 +388,119 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   }
 
   void _startDownload() {
-    // Show loading dialog
+    if (_currentVideoUrl == null) return;
+
+    // Show loading dialog with BlocProvider
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return const AlertDialog(
-          backgroundColor: Color(0xFF2a2a2a),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFd4af37)),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'جاري تحميل الفيديو...',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
+        return BlocProvider(
+          create: (context) => getIt<DownloadCubit>(),
+          child: BlocConsumer<DownloadCubit, DownloadState>(
+            listener: (context, state) {
+              if (state is DownloadSuccess) {
+                Navigator.pop(context); // Close loading dialog
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Row(
+                      children: [
+                        Icon(
+                          Icons.check_circle,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        SizedBox(width: 8),
+                        Text('تم بدء تحميل الفيديو بنجاح'),
+                      ],
+                    ),
+                    backgroundColor: Colors.green,
+                    duration: const Duration(seconds: 3),
+                    action: SnackBarAction(
+                      label: 'عرض التحميلات',
+                      textColor: Colors.white,
+                      onPressed: () {
+                        // Navigate to downloads screen
+                        Navigator.pushNamed(context, '/downloads');
+                      },
+                    ),
+                  ),
+                );
+              } else if (state is DownloadError) {
+                Navigator.pop(context); // Close loading dialog
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      children: [
+                        const Icon(
+                          Icons.error,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(child: Text(state.message)),
+                      ],
+                    ),
+                    backgroundColor: Colors.red,
+                    duration: const Duration(seconds: 3),
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              // Start the actual download when the cubit is created
+              if (state is DownloadInitial && _currentLectureId != null) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  context
+                      .read<DownloadCubit>()
+                      .downloadLesson(_currentLectureId!);
+                });
+              }
+
+              return const AlertDialog(
+                backgroundColor: Color(0xFF2a2a2a),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xFFd4af37)),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'جاري تحضير التحميل...',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'قد تستغرق العملية بضع دقائق',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'قد تستغرق العملية بضع دقائق',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 12,
-                ),
-              ),
-            ],
+              );
+            },
           ),
         );
       },
     );
 
-    // Simulate download process
-    Future.delayed(const Duration(seconds: 3), () {
+    // If no lecture ID is available, show error
+    if (_currentLectureId == null) {
       Navigator.pop(context); // Close loading dialog
-
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Row(
-            children: [
-              Icon(
-                Icons.check_circle,
-                color: Colors.white,
-                size: 20,
-              ),
-              SizedBox(width: 8),
-              Text('تم تحميل الفيديو بنجاح'),
-            ],
-          ),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 3),
-          action: SnackBarAction(
-            label: 'عرض',
-            textColor: Colors.white,
-            onPressed: () {
-              // Navigate to downloads screen
-            },
-          ),
+        const SnackBar(
+          content: Text('خطأ: لا يمكن تحديد معرف المحاضرة'),
+          backgroundColor: Colors.red,
         ),
       );
-    });
+    }
   }
 
   void _showVideoSettings(BuildContext context) {
@@ -660,9 +713,10 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                         _buildLectureList(state),
                         const SizedBox(height: 12),
 
-                        // Download button - only show when video is loaded
+                        // Download button - only show when video is loaded and lecture ID is available
                         if (_currentVideoUrl != null &&
-                            _currentVideoType != null)
+                            _currentVideoType != null &&
+                            _currentLectureId != null)
                           _buildDownloadButton(),
 
                         const SizedBox(height: 12),
@@ -1325,8 +1379,9 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                             videoType = 'server';
                           }
 
-                          // Load the video
-                          _loadVideo(lecture.videoUrl!, videoType);
+                          // Load the video with lecture ID
+                          _loadVideo(lecture.videoUrl!, videoType,
+                              lectureId: lecture.id);
 
                           // // Show success message
                           // ScaffoldMessenger.of(context).showSnackBar(
@@ -1359,10 +1414,6 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     return const SizedBox.shrink();
   }
 }
-
-
-
-
 
 /*
 

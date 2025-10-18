@@ -24,6 +24,7 @@ dependencies:
 
   # Downloads & File Management
   flutter_downloader: ^1.11.5
+  workmanager: ^0.5.2
   flutter_localizations:
     sdk: flutter
 
@@ -42,6 +43,7 @@ dependencies:
   path_provider: ^2.1.1
   permission_handler: ^11.1.0
   pretty_dio_logger: ^1.4.0
+  path: ^1.8.3
 
   # State Management
   provider: ^6.1.1
@@ -60,19 +62,23 @@ dependencies:
   firebase_messaging: ^15.1.3
   flutter_local_notifications: ^18.0.1
 
+  # Dependency Injection
+  get_it: ^8.2.0
+  
+  # Logging
+  logger: ^2.6.1
+  
+  # Shared Preferences
+  shared_preferences: ^2.2.3
+
 dev_dependencies:
   bloc: ^9.0.1
   build_runner: ^2.4.0
-  # device_info_plus: ^12.1.0
   flutter_lints: ^3.0.0
-  # flutter_secure_storage: any
   flutter_test:
     sdk: flutter
-  get_it: ^8.2.0
   # hive_generator: ^2.0.2
   json_serializable: ^6.7.0
-  logger: ^2.6.1
-  shared_preferences: ^2.2.3
 
 flutter:
   uses-material-design: true

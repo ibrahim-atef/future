@@ -14,6 +14,7 @@ import 'package:future_app/features/profile/data/models/get_profile_response_mod
 import 'package:future_app/features/profile/data/models/update_profile_response_model.dart';
 import 'package:future_app/features/profile/data/models/update_password_response_model.dart';
 import 'package:future_app/features/courses/data/models/quiz_models.dart';
+import 'package:future_app/core/models/download_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
@@ -163,6 +164,14 @@ abstract class ApiService {
   Future<QuizResultResponseModel> sendQuizResult(
     @Path('quizId') String quizId,
     @Body() QuizResultRequestModel request,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
+  // download lesson
+  @GET('lessons/{lessonId}/download')
+  Future<DownloadResponseModel> downloadLesson(
+    @Path('lessonId') String lessonId,
     @Header('x-api-key') int apiKey,
     @Header('X-App-Source') String appSource,
   );

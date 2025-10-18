@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:future_app/screens/downloads/downloads_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:future_app/core/di/di.dart';
+import 'package:future_app/features/downloads/downloads_screen.dart';
+import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/courses/presentation/courses_screen.dart';
 import '../../features/college/presentation/college_screen.dart';
 import '../../features/blog/presentation/blog_screen.dart';
-import '../../features/profile/presentation/profile_screen.dart';
 import '../../widgets/common/bottom_navigation.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -30,15 +32,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<DownloadCubit>()),
+      ],
+      child: Scaffold(
+        body: _screens[_currentIndex],
+        bottomNavigationBar: BottomNavigation(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+        ),
       ),
     );
   }

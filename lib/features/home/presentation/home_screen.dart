@@ -323,8 +323,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   _buildFeatureCard(
                     context,
                     'تجربة الامتياز',
-                    () => Navigator.pushNamed(
-                        context, AppRoutes.experienceOfExcellence),
+                    () => Navigator.pushNamed(context, AppRoutes.college),
                     Image.asset(
                       'assets/images/4.png',
                       width: 40,

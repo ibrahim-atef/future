@@ -30,4 +30,7 @@ class ApiConstants {
 
   // Blog/Posts endpoints
   static String getPostDetails(String postId) => "posts/$postId";
+
+  // Download endpoints
+  static String downloadLesson(String lessonId) => "lessons/$lessonId/download";
 }
