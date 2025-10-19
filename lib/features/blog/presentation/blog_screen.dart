@@ -7,7 +7,8 @@ import 'package:future_app/features/blog/presentation/blog_detail_screen.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class BlogScreen extends StatefulWidget {
-  const BlogScreen({super.key});
+  const BlogScreen({super.key, required this.isBackButton});
+  final bool isBackButton;
 
   @override
   State<BlogScreen> createState() => _BlogScreenState();
@@ -67,10 +68,12 @@ class _BlogScreenState extends State<BlogScreen> {
             ),
           ),
           centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
-            onPressed: () => Navigator.pop(context),
-          ),
+          leading: widget.isBackButton
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
+                  onPressed: () => Navigator.pop(context),
+                )
+              : const SizedBox.shrink(),
         ),
         body: BlocBuilder<BlogCubit, BlogState>(
           builder: (context, state) {

@@ -116,7 +116,9 @@ class AppRoutes {
 
       case courses:
         return MaterialPageRoute(
-          builder: (_) => const CoursesScreen(),
+          builder: (_) => CoursesScreen(
+            isBackButton: settings.arguments as bool,
+          ),
           settings: settings,
         );
 
@@ -146,14 +148,18 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => getIt<DownloadCubit>(),
-            child: const OfflineListCoursePage(),
+            child: OfflineListCoursePage(
+              isBackButton: settings.arguments as bool,
+            ),
           ),
           settings: settings,
         );
 
       case college:
         return MaterialPageRoute(
-          builder: (_) => const CollegeScreen(),
+          builder: (_) => CollegeScreen(
+            isBackButton: settings.arguments as bool,
+          ),
           settings: settings,
         );
 
@@ -171,7 +177,9 @@ class AppRoutes {
 
       case blog:
         return MaterialPageRoute(
-          builder: (_) => const BlogScreen(),
+          builder: (_) => BlogScreen(
+            isBackButton: settings.arguments as bool,
+          ),
           settings: settings,
         );
 
@@ -245,7 +253,9 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => getIt<DownloadCubit>(),
-            child: const OfflineListCoursePage(),
+            child: OfflineListCoursePage(
+              isBackButton: settings.arguments as bool,
+            ),
           ),
           settings: settings,
         );

@@ -21,13 +21,18 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const CoursesScreen(),
-    const CollegeScreen(),
-    const BlogScreen(),
-    // const ProfileScreen(
-    //   inHome: false,
-    // ),
-    const OfflineListCoursePage()
+    const CoursesScreen(
+      isBackButton: false,
+    ),
+    const CollegeScreen(
+      isBackButton: false,
+    ),
+    const BlogScreen(
+      isBackButton: false,
+    ),
+    const OfflineListCoursePage(
+      isBackButton: false,
+    )
   ];
 
   @override

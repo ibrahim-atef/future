@@ -291,7 +291,8 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   _buildFeatureCard(
                     context,
                     'الكورسات',
-                    () => Navigator.pushNamed(context, AppRoutes.courses),
+                    () => Navigator.pushNamed(context, AppRoutes.courses,
+                        arguments: true),
                     Image.asset(
                       'assets/images/3.png',
                       width: 40,
@@ -302,7 +303,8 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   _buildFeatureCard(
                     context,
                     'الكلية',
-                    () => Navigator.pushNamed(context, AppRoutes.college),
+                    () => Navigator.pushNamed(context, AppRoutes.college,
+                        arguments: true),
                     Image.asset(
                       'assets/images/2.png',
                       width: 40,
@@ -313,7 +315,8 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   _buildFeatureCard(
                     context,
                     'المدونة',
-                    () => Navigator.pushNamed(context, AppRoutes.blog),
+                    () => Navigator.pushNamed(context, AppRoutes.blog,
+                        arguments: true),
                     Image.asset(
                       'assets/images/1.png',
                       width: 40,
@@ -324,7 +327,8 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                   _buildFeatureCard(
                     context,
                     'تجربة الامتياز',
-                    () => Navigator.pushNamed(context, AppRoutes.college),
+                    () => Navigator.pushNamed(context, AppRoutes.college,
+                        arguments: true),
                     Image.asset(
                       'assets/images/4.png',
                       width: 40,

@@ -7,8 +7,8 @@ import 'package:future_app/core/models/download_model.dart';
 
 class OfflineListCoursePage extends StatefulWidget {
   static const String pageName = '/offline-list-course';
-  const OfflineListCoursePage({super.key});
-
+  const OfflineListCoursePage({super.key, required this.isBackButton});
+  final bool isBackButton;
   @override
   State<OfflineListCoursePage> createState() => _OfflineListCoursePageState();
 }
@@ -59,18 +59,20 @@ class _OfflineListCoursePageState extends State<OfflineListCoursePage>
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: widget.isBackButton
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
+                onPressed: () => Navigator.pop(context),
+              )
+            : null,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.download, color: Color(0xFFd4af37)),
-            tooltip: 'تحميل فيديو تجريبي',
-            onPressed: () {
-              _showDownloadDialog(context);
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.download, color: Color(0xFFd4af37)),
+          //   tooltip: 'تحميل فيديو تجريبي',
+          //   onPressed: () {
+          //     _showDownloadDialog(context);
+          //   },
+          // ),
           IconButton(
             icon: const Icon(Icons.refresh, color: Color(0xFFd4af37)),
             onPressed: () async {

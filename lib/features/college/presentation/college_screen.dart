@@ -9,8 +9,8 @@ import 'package:future_app/features/college/logic/cubit/college_cubit.dart';
 import 'package:future_app/features/college/logic/cubit/college_state.dart';
 
 class CollegeScreen extends StatefulWidget {
-  const CollegeScreen({super.key});
-
+  const CollegeScreen({super.key, required this.isBackButton});
+  final bool isBackButton;
   @override
   State<CollegeScreen> createState() => _CollegeScreenState();
 }
@@ -88,10 +88,12 @@ class _CollegeScreenState extends State<CollegeScreen> {
             ),
           ),
           centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
-            onPressed: () => Navigator.pop(context),
-          ),
+          leading: widget.isBackButton
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
+                  onPressed: () => Navigator.pop(context),
+                )
+              : const SizedBox.shrink(),
         ),
         body: RefreshIndicator(
           color: const Color(0xFFd4af37),

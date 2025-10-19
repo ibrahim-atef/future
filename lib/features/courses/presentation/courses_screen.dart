@@ -4,7 +4,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
 import '../../../core/di/di.dart';
 import '../../../core/routes/app_routes.dart';
-import '../../../core/models/banner_model.dart';
 import '../logic/cubit/courses_cubit.dart';
 import '../logic/cubit/courses_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -12,7 +11,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../data/models/courses_model.dart';
 
 class CoursesScreen extends StatelessWidget {
-  const CoursesScreen({super.key});
+  const CoursesScreen({super.key, required this.isBackButton});
+  final bool isBackButton;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,14 @@ class CoursesScreen extends StatelessWidget {
       create: (context) => getIt<CoursesCubit>()
         ..getBanners()
         ..getCourses(),
-      child: const _CoursesScreenContent(),
+      child: _CoursesScreenContent(isBackButton: isBackButton),
     );
   }
 }
 
 class _CoursesScreenContent extends StatefulWidget {
-  const _CoursesScreenContent();
+  const _CoursesScreenContent({super.key, required this.isBackButton});
+  final bool isBackButton;
 
   @override
   State<_CoursesScreenContent> createState() => _CoursesScreenContentState();
@@ -37,7 +38,6 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
   final ScrollController _scrollController = ScrollController();
   Timer? _timer;
   int _currentIndex = 0;
-
   @override
   void initState() {
     super.initState();
@@ -106,10 +106,12 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: widget.isBackButton
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
+                onPressed: () => Navigator.pop(context),
+              )
+            : const SizedBox.shrink(),
       ),
       body: BlocListener<CoursesCubit, CoursesState>(
         listener: (context, state) {
