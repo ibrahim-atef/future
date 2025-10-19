@@ -101,7 +101,8 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
             // Show error message if profile loading fails
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('خطأ في تحميل البيانات: ${error.message}'),
+                content: Text(
+                    'خطأ في تحميل البيانات: ${error.getAllErrorsAsString()}'),
                 backgroundColor: Colors.red,
                 duration: const Duration(seconds: 3),
               ),
@@ -260,7 +261,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                         return _buildBannerCarousel(banners);
                       },
                       getBannerError: (error) =>
-                          _buildBannerError(error.message),
+                          _buildBannerError(error.getAllErrorsAsString()),
                     );
                   },
                 ),
@@ -796,7 +797,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'حدث خطأ في تسجيل الخروج: ${error.message}',
+                          'حدث خطأ في تسجيل الخروج: ${error.getAllErrorsAsString()}',
                           style: const TextStyle(
                             fontFamily: 'Cairo',
                           ),

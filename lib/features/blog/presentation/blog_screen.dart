@@ -268,8 +268,8 @@ class _BlogScreenState extends State<BlogScreen> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              error.message.isNotEmpty
-                                  ? error.message
+                              error.getAllErrorsAsString().isNotEmpty
+                                  ? error.getAllErrorsAsString()
                                   : 'حدث خطأ في تحميل المنشورات',
                               style: const TextStyle(
                                 color: Colors.white54,

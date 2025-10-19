@@ -50,7 +50,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(error.message ?? 'فشل'),
+                content: Text(error.getAllErrorsAsString() ?? 'فشل'),
                 backgroundColor: Colors.red,
               ),
             );

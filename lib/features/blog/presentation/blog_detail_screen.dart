@@ -294,8 +294,8 @@ class BlogDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        error.message.isNotEmpty
-                            ? error.message
+                        error.getAllErrorsAsString().isNotEmpty
+                            ? error.getAllErrorsAsString()
                             : 'حدث خطأ في تحميل تفاصيل المقال',
                         style: const TextStyle(
                           color: Colors.white54,

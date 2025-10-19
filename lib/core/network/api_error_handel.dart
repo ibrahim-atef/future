@@ -36,5 +36,21 @@ class ApiErrorHandler {
 }
 
 ApiErrorModel _handleError(dynamic data) {
-  return ApiErrorModel(message: data['message'] ?? "Unknown error occurred");
+  if (data is Map<String, dynamic>) {
+    // Try to parse as the new error structure
+    try {
+      return ApiErrorModel.fromJson(data);
+    } catch (e) {
+      // Fallback to old structure
+      return ApiErrorModel(
+        message: data['message'] ?? "Unknown error occurred",
+        success: data['success'],
+        errors: data['errors'],
+      );
+    }
+  } else if (data is String) {
+    return ApiErrorModel(message: data);
+  } else {
+    return ApiErrorModel(message: "Unknown error occurred");
+  }
 }

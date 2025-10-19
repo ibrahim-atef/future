@@ -60,7 +60,7 @@ class CourseDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'حدث خطأ: ${error.message}',
+                      'حدث خطأ: ${error.getAllErrorsAsString()}',
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 16,

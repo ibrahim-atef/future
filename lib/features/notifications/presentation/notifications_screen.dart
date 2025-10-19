@@ -84,7 +84,7 @@ class _NotificationsScreenContent extends StatelessWidget {
                 _buildNotificationsList(context, data, userId),
             getNotificationsError: (error) => _buildErrorState(
               context,
-              error.message,
+              error.getAllErrorsAsString(),
               userId,
             ),
             markNotificationAsReadLoading: () => _buildNotificationsList(
@@ -132,7 +132,7 @@ class _NotificationsScreenContent extends StatelessWidget {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(error.message),
+                    content: Text(error.getAllErrorsAsString()),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -205,7 +205,7 @@ class _NotificationsScreenContent extends StatelessWidget {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(error.message),
+                    content: Text(error.getAllErrorsAsString()),
                     backgroundColor: Colors.red,
                   ),
                 );

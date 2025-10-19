@@ -57,7 +57,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
           errorUpdatePassword: (error) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(error.message),
+                content: Text(error.getAllErrorsAsString()),
                 backgroundColor: Colors.red,
               ),
             );

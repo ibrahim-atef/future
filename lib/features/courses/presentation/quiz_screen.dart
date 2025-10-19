@@ -99,7 +99,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      error.message,
+                      error.getAllErrorsAsString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.grey[400],
@@ -129,7 +129,7 @@ class _QuizScreenState extends State<QuizScreen> {
               sendQuizResultSuccess: (data) => _buildQuizResult(context, data),
               sendQuizResultError: (error) => Center(
                 child: Text(
-                  'خطأ في إرسال النتيجة: ${error.message}',
+                  'خطأ في إرسال النتيجة: ${error.getAllErrorsAsString()}',
                   style: const TextStyle(color: Colors.red),
                 ),
               ),

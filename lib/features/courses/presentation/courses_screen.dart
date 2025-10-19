@@ -117,7 +117,7 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
             getCoursesError: (error) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(error.message),
+                  content: Text(error.getAllErrorsAsString()),
                   backgroundColor: Colors.red,
                 ),
               );
@@ -468,10 +468,11 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
             print('Banner URLs: ${data.data.banners}');
           },
           getBannersError: (error) {
-            print('❌ Banner error: ${error.message}');
+            print('❌ Banner error: ${error.getAllErrorsAsString()}');
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('خطأ في تحميل البنرات: ${error.message}'),
+                content: Text(
+                    'خطأ في تحميل البنرات: ${error.getAllErrorsAsString()}'),
                 backgroundColor: Colors.red,
               ),
             );

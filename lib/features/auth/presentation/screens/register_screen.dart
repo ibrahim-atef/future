@@ -58,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(error.message ?? 'فشل في إنشاء الحساب'),
+                content: Text(error.getAllErrorsAsString()),
                 backgroundColor: Colors.red,
               ),
             );

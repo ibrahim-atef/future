@@ -495,7 +495,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    error.message ?? 'حدث خطأ',
+                    error.getAllErrorsAsString() ?? 'حدث خطأ',
                     style: const TextStyle(color: Colors.red),
                   ),
                   const SizedBox(height: 16),
@@ -568,7 +568,7 @@ BlocListener<BlogCubit, BlogState>(
       postsError: (error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(error.message ?? 'حدث خطأ'),
+            content: Text(error.getAllErrorsAsString() ?? 'حدث خطأ'),
             backgroundColor: Colors.red,
           ),
         );

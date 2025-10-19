@@ -49,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           errorGetProfile: (error) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(error.message),
+                content: Text(error.getAllErrorsAsString()),
                 backgroundColor: Colors.red,
               ),
             );
@@ -71,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           errorUpdateProfile: (error) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(error.message),
+                content: Text(error.getAllErrorsAsString()),
                 backgroundColor: Colors.red,
               ),
             );
@@ -473,7 +473,7 @@ class LogoutListener extends StatelessWidget {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(error.message),
+                content: Text(error.getAllErrorsAsString()),
                 backgroundColor: Colors.red,
               ),
             );

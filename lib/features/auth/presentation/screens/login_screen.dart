@@ -43,7 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(error.message ?? 'فشل في تسجيل الدخول'),
+                content:
+                    Text(error.getAllErrorsAsString() ?? 'فشل في تسجيل الدخول'),
                 backgroundColor: Colors.red,
               ),
             );

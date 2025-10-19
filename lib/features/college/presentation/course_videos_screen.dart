@@ -58,7 +58,8 @@ class CourseVideosScreen extends StatelessWidget {
                     }
                     return _buildCoursesGrid(data.data);
                   },
-                  getCoursesError: (error) => _buildErrorState(error.message),
+                  getCoursesError: (error) =>
+                      _buildErrorState(error.getAllErrorsAsString()),
                   orElse: () => _buildSkeletonGrid(),
                 );
               },
