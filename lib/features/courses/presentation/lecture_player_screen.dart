@@ -732,7 +732,9 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                         if (_currentVideoUrl != null &&
                             _currentVideoType != null &&
                             _currentLectureId != null)
-                          _buildDownloadButton(),
+                          _currentVideoType == 'youtube'
+                              ? const SizedBox.shrink()
+                              : _buildDownloadButton(),
 
                         const SizedBox(height: 12),
                       ],

@@ -369,7 +369,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                         Expanded(
                           child: _buildWhatsAppButton(
                             'دعم المنصة',
-                            'https://wa.me/201234567890',
+                            'https://wa.me/201001203624',
                             Icons.support_agent,
                           ),
                         ),
@@ -377,7 +377,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                         Expanded(
                           child: _buildWhatsAppButton(
                             'د مينا عيد',
-                            'https://wa.me/201234567891',
+                            'https://wa.me/201556327193',
                             Icons.person,
                           ),
                         ),
