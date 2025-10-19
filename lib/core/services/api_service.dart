@@ -578,7 +578,20 @@ class ApiService {
       case DioExceptionType.receiveTimeout:
         return 'انتهت مهلة الاتصال';
       case DioExceptionType.badResponse:
-        return error.response?.data['message'] ?? 'حدث خطأ في الخادم';
+        // Try to extract the error message from the response
+        if (error.response?.data != null) {
+          final responseData = error.response!.data;
+          if (responseData is Map<String, dynamic>) {
+            // Check for common error message fields
+            final message = responseData['message'] ??
+                responseData['error'] ??
+                responseData['error_message'];
+            if (message != null && message.toString().isNotEmpty) {
+              return message.toString();
+            }
+          }
+        }
+        return 'حدث خطأ في الخادم';
       case DioExceptionType.cancel:
         return 'تم إلغاء الطلب';
       case DioExceptionType.connectionError:

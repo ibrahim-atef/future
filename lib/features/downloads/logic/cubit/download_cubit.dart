@@ -54,7 +54,15 @@ class DownloadCubit extends Cubit<DownloadState> {
       }
     } catch (e) {
       print('Download error: $e');
-      emit(DownloadError('حدث خطأ أثناء التحميل: ${e.toString()}'));
+      String errorMessage = 'حدث خطأ أثناء التحميل';
+
+      if (e is Exception) {
+        errorMessage = e.toString().replaceFirst('Exception: ', '');
+      } else {
+        errorMessage = 'حدث خطأ أثناء التحميل: ${e.toString()}';
+      }
+
+      emit(DownloadError(errorMessage));
     }
   }
 
@@ -254,8 +262,8 @@ class DownloadCubit extends Cubit<DownloadState> {
       }
 
       // بدء التحميل باستخدام DownloadManager
-      final videoId =
-          await _downloadService.downloadVideoFromApiResponseWithManager(response.data);
+      final videoId = await _downloadService
+          .downloadVideoFromApiResponseWithManager(response.data);
 
       if (videoId != null) {
         emit(DownloadSuccess(response));
@@ -266,7 +274,15 @@ class DownloadCubit extends Cubit<DownloadState> {
       }
     } catch (e) {
       print('Download error: $e');
-      emit(DownloadError('حدث خطأ أثناء التحميل: ${e.toString()}'));
+      String errorMessage = 'حدث خطأ أثناء التحميل';
+
+      if (e is Exception) {
+        errorMessage = e.toString().replaceFirst('Exception: ', '');
+      } else {
+        errorMessage = 'حدث خطأ أثناء التحميل: ${e.toString()}';
+      }
+
+      emit(DownloadError(errorMessage));
     }
   }
 
@@ -308,7 +324,8 @@ class DownloadCubit extends Cubit<DownloadState> {
 
       // تحميل الفيديو التجريبي
       final videoId = await _downloadService.downloadVideoWithManager(
-        videoUrl: 'https://future-team-law.com/wp-content/uploads/2025/10/VID-20240822-WA0001-1.mp4',
+        videoUrl:
+            'https://future-team-law.com/wp-content/uploads/2025/10/VID-20240822-WA0001-1.mp4',
         lessonId: '42',
         courseId: '38',
         title: 'test123',
@@ -327,7 +344,8 @@ class DownloadCubit extends Cubit<DownloadState> {
             courseId: '38',
             title: 'test123',
             description: '<p>فيديو تجريبي</p>',
-            videoUrl: 'https://future-team-law.com/wp-content/uploads/2025/10/VID-20240822-WA0001-1.mp4',
+            videoUrl:
+                'https://future-team-law.com/wp-content/uploads/2025/10/VID-20240822-WA0001-1.mp4',
             fileSize: 23684943,
             fileSizeMb: 22.59,
             fileType: 'video/mp4',
@@ -345,7 +363,15 @@ class DownloadCubit extends Cubit<DownloadState> {
         emit(DownloadError('فشل في تحميل الفيديو'));
       }
     } catch (e) {
-      emit(DownloadError('حدث خطأ أثناء التحميل: ${e.toString()}'));
+      String errorMessage = 'حدث خطأ أثناء التحميل';
+
+      if (e is Exception) {
+        errorMessage = e.toString().replaceFirst('Exception: ', '');
+      } else {
+        errorMessage = 'حدث خطأ أثناء التحميل: ${e.toString()}';
+      }
+
+      emit(DownloadError(errorMessage));
     }
   }
 }
