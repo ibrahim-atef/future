@@ -44,6 +44,7 @@ dependencies:
   permission_handler: ^11.1.0
   pretty_dio_logger: ^1.4.0
   path: ^1.8.3
+  image_picker: ^1.1.2
 
   # State Management
   provider: ^6.1.1

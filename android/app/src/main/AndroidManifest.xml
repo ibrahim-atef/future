@@ -5,10 +5,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     
     <!-- Storage permissions for downloads -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32" />
     
-    <!-- Android 13+ media permissions -->
+    <!-- Android 13+ (API 33+) media permissions -->
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -23,6 +25,12 @@
     
     <!-- Wake lock permission for video playback -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <!-- Camera permission -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    
+    <!-- Additional gallery access permissions -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
     
     <!-- Notification permissions -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />

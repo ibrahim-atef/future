@@ -3,6 +3,7 @@ import 'package:future_app/features/profile/data/repos/profile_repo.dart';
 import 'package:future_app/features/profile/data/models/update_profile_response_model.dart';
 import 'package:future_app/features/profile/data/models/update_password_response_model.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_state.dart';
+import 'package:dio/dio.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit(this._profileRepo) : super(const ProfileState.initialProfile());
@@ -27,6 +28,20 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> updateProfile(UpdateProfileRequestModel request) async {
     emit(const ProfileState.loadingUpdateProfile());
     final response = await _profileRepo.updateProfile(request);
+    response.when(
+      success: (data) {
+        emit(ProfileState.successUpdateProfile(data));
+      },
+      failure: (apiErrorModel) {
+        emit(ProfileState.errorUpdateProfile(apiErrorModel));
+      },
+    );
+  }
+
+  // update profile with image
+  Future<void> updateProfileWithImage(FormData formData) async {
+    emit(const ProfileState.loadingUpdateProfile());
+    final response = await _profileRepo.updateProfileWithImage(formData);
     response.when(
       success: (data) {
         emit(ProfileState.successUpdateProfile(data));

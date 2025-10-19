@@ -27,7 +27,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.fu"
-    compileSdk = 36
+    compileSdk 35
     ndkVersion "26.1.10909125"
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -46,7 +46,7 @@ android {
     defaultConfig {
         applicationId "com.example.fu"
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         consumerProguardFiles 'consumer-rules.pro'

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/core/helper/shared_pref_helper.dart';
@@ -10,6 +11,9 @@ import 'package:future_app/features/home/presentation/home_screen.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_state.dart';
 import 'package:future_app/features/profile/data/models/update_profile_response_model.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.inHome});
@@ -25,6 +29,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _mobileController = TextEditingController();
   final _teamController = TextEditingController();
   final _aboutController = TextEditingController();
+  final ImagePicker _imagePicker = ImagePicker();
+  File? _selectedImage;
 
   @override
   void dispose() {
@@ -33,6 +39,308 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _teamController.dispose();
     _aboutController.dispose();
     super.dispose();
+  }
+
+  Future<void> _showImageSourceDialog() async {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF2a2a2a),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[600],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'اختر مصدر الصورة',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildImageSourceOption(
+                      icon: Icons.photo_library,
+                      title: 'المعرض',
+                      onTap: () {
+                        Navigator.pop(context);
+                        _pickImage(ImageSource.gallery);
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildImageSourceOption(
+                      icon: Icons.camera_alt,
+                      title: 'الكاميرا',
+                      onTap: () {
+                        Navigator.pop(context);
+                        _pickImage(ImageSource.camera);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildImageSourceOption({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1a1a1a),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color(0xFFd4af37).withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              color: const Color(0xFFd4af37),
+              size: 32,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      // Debug permissions (remove this in production)
+      await _debugPermissions();
+
+      // Check and request permissions based on source
+      String permissionMessage = '';
+
+      if (source == ImageSource.camera) {
+        // For camera access
+        permissionMessage =
+            'يحتاج التطبيق إلى إذن الوصول للكاميرا لالتقاط صورة';
+
+        PermissionStatus cameraStatus = await Permission.camera.status;
+        if (cameraStatus.isGranted) {
+          // Camera permission is already granted, proceed
+        } else if (cameraStatus.isDenied) {
+          cameraStatus = await Permission.camera.request();
+          if (cameraStatus.isGranted) {
+            // Camera permission granted, proceed
+          } else if (cameraStatus.isPermanentlyDenied) {
+            _showPermissionSettingsDialog(permissionMessage);
+            return;
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(permissionMessage),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+            return;
+          }
+        } else if (cameraStatus.isPermanentlyDenied) {
+          _showPermissionSettingsDialog(permissionMessage);
+          return;
+        }
+      } else {
+        // For gallery access
+        permissionMessage = 'يحتاج التطبيق إلى إذن الوصول للمعرض لاختيار صورة';
+
+        bool hasPermission = await _requestGalleryPermissions();
+        if (!hasPermission) {
+          // Check if any permission is permanently denied
+          PermissionStatus photosStatus = await Permission.photos.status;
+          PermissionStatus storageStatus = await Permission.storage.status;
+
+          if (photosStatus.isPermanentlyDenied ||
+              storageStatus.isPermanentlyDenied) {
+            _showPermissionSettingsDialog(permissionMessage);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(permissionMessage),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+          return;
+        }
+      }
+
+      // Permissions granted, proceed with image picking
+      final XFile? image = await _imagePicker.pickImage(
+        source: source,
+        maxWidth: 512,
+        maxHeight: 512,
+        imageQuality: 80,
+      );
+
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('خطأ في اختيار الصورة: $e'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  void _showPermissionSettingsDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF2a2a2a),
+          title: const Text(
+            'إذن مطلوب',
+            style: TextStyle(
+              color: Color(0xFFd4af37),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            '$message\n\nيرجى السماح بالوصول من إعدادات التطبيق.',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                openAppSettings();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFd4af37),
+                foregroundColor: Colors.black,
+              ),
+              child: const Text('فتح الإعدادات'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Helper method to check if we have sufficient permissions for gallery access
+  Future<bool> _hasGalleryPermissions() async {
+    // Check for different permission types based on Android version
+    final photosStatus = await Permission.photos.status;
+    final storageStatus = await Permission.storage.status;
+    final mediaLibraryStatus = await Permission.mediaLibrary.status;
+
+    // Return true if any of the permissions are granted
+    return photosStatus.isGranted ||
+        storageStatus.isGranted ||
+        mediaLibraryStatus.isGranted;
+  }
+
+  // Helper method to request gallery permissions with fallback
+  Future<bool> _requestGalleryPermissions() async {
+    // Try photos permission first (Android 13+)
+    PermissionStatus photosStatus = await Permission.photos.status;
+    if (photosStatus.isGranted) {
+      return true;
+    }
+
+    if (photosStatus.isDenied) {
+      photosStatus = await Permission.photos.request();
+      if (photosStatus.isGranted) {
+        return true;
+      }
+    }
+
+    // Fallback to storage permission (Android 12 and below)
+    PermissionStatus storageStatus = await Permission.storage.status;
+    if (storageStatus.isGranted) {
+      return true;
+    }
+
+    if (storageStatus.isDenied) {
+      storageStatus = await Permission.storage.request();
+      if (storageStatus.isGranted) {
+        return true;
+      }
+    }
+
+    // Try mediaLibrary permission as last resort
+    PermissionStatus mediaLibraryStatus = await Permission.mediaLibrary.status;
+    if (mediaLibraryStatus.isGranted) {
+      return true;
+    }
+
+    if (mediaLibraryStatus.isDenied) {
+      mediaLibraryStatus = await Permission.mediaLibrary.request();
+      if (mediaLibraryStatus.isGranted) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // Debug method to check all permission statuses
+  Future<void> _debugPermissions() async {
+    print('=== Permission Status Debug ===');
+    print('Camera: ${await Permission.camera.status}');
+    print('Photos: ${await Permission.photos.status}');
+    print('Storage: ${await Permission.storage.status}');
+    print('MediaLibrary: ${await Permission.mediaLibrary.status}');
+    print('===============================');
   }
 
   @override
@@ -57,6 +365,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           successUpdateProfile: (data) {
             SharedPrefHelper.setData(
                 SharedPrefKeys.userName, _nameController.text.trim());
+            // Clear selected image after successful update
+            setState(() {
+              _selectedImage = null;
+            });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(data.message),
@@ -137,36 +449,77 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   successGetProfile: (data) => Column(
                     children: [
                       // Profile Avatar
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(40),
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 3,
+                      Stack(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 3,
+                              ),
+                            ),
+                            child: _selectedImage != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(40),
+                                    child: Image.file(
+                                      _selectedImage!,
+                                      fit: BoxFit.cover,
+                                      width: 80,
+                                      height: 80,
+                                    ),
+                                  )
+                                : data.data.avatar.isNotEmpty
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(40),
+                                        child: Image.network(
+                                          data.data.avatar,
+                                          fit: BoxFit.cover,
+                                          width: 80,
+                                          height: 80,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  const Icon(
+                                            Icons.person,
+                                            size: 40,
+                                            color: Color(0xFFd4af37),
+                                          ),
+                                        ),
+                                      )
+                                    : const Icon(
+                                        Icons.person,
+                                        size: 40,
+                                        color: Color(0xFFd4af37),
+                                      ),
                           ),
-                        ),
-                        child: data.data.avatar.isNotEmpty
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(40),
-                                child: Image.network(
-                                  data.data.avatar,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      const Icon(
-                                    Icons.person,
-                                    size: 40,
-                                    color: Color(0xFFd4af37),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: _showImageSourceDialog,
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFd4af37),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 2,
                                   ),
                                 ),
-                              )
-                            : const Icon(
-                                Icons.person,
-                                size: 40,
-                                color: Color(0xFFd4af37),
+                                child: const Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                  size: 12,
+                                ),
                               ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 12),
                       Text(
@@ -190,22 +543,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   orElse: () => Column(
                     children: [
                       // Profile Avatar
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(40),
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 3,
+                      Stack(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 3,
+                              ),
+                            ),
+                            child: _selectedImage != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(40),
+                                    child: Image.file(
+                                      _selectedImage!,
+                                      fit: BoxFit.cover,
+                                      width: 80,
+                                      height: 80,
+                                    ),
+                                  )
+                                : const Icon(
+                                    Icons.person,
+                                    size: 40,
+                                    color: Color(0xFFd4af37),
+                                  ),
                           ),
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Color(0xFFd4af37),
-                        ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: _showImageSourceDialog,
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFd4af37),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                  size: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 12),
                       const Text(
@@ -443,14 +834,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
-      final request = UpdateProfileRequestModel(
-        fullName: _nameController.text.trim(),
-        mobile: _mobileController.text.trim(),
-        bio: _nameController.text.trim(), // Use the same name for bio
-        about: _aboutController.text.trim(),
-      );
+      // Check if there's a selected image
+      if (_selectedImage != null) {
+        // Create FormData for profile update with image
+        final formData = FormData.fromMap({
+          'fullName': _nameController.text.trim(),
+          'mobile': _mobileController.text.trim(),
+          'bio': _nameController.text.trim(), // Use the same name for bio
+          'about': _aboutController.text.trim(),
+          'avatar': MultipartFile.fromFileSync(
+            _selectedImage!.path,
+            filename: 'avatar.jpg',
+          ),
+        });
 
-      context.read<ProfileCubit>().updateProfile(request);
+        context.read<ProfileCubit>().updateProfileWithImage(formData);
+      } else {
+        // Update profile without image
+        final request = UpdateProfileRequestModel(
+          fullName: _nameController.text.trim(),
+          mobile: _mobileController.text.trim(),
+          bio: _nameController.text.trim(), // Use the same name for bio
+          about: _aboutController.text.trim(),
+        );
+
+        context.read<ProfileCubit>().updateProfile(request);
+      }
     }
   }
 }

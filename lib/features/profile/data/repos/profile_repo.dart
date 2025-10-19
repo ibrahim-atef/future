@@ -5,6 +5,7 @@ import 'package:future_app/core/network/api_service.dart';
 import 'package:future_app/features/profile/data/models/get_profile_response_model.dart';
 import 'package:future_app/features/profile/data/models/update_profile_response_model.dart';
 import 'package:future_app/features/profile/data/models/update_password_response_model.dart';
+import 'package:dio/dio.dart';
 import 'dart:developer';
 
 class ProfileRepo {
@@ -32,6 +33,23 @@ class ProfileRepo {
     try {
       final response = await _apiService.updateProfile(
         request,
+        ApiConstants.apiKey,
+        ApiConstants.appSource,
+      );
+      return ApiResult.success(response);
+    } catch (e) {
+      log(e.toString());
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
+
+  // update profile with image
+  Future<ApiResult<UpdateProfileResponseModel>> updateProfileWithImage(
+    FormData formData,
+  ) async {
+    try {
+      final response = await _apiService.updateProfileWithImage(
+        formData,
         ApiConstants.apiKey,
         ApiConstants.appSource,
       );

@@ -24,3 +24,7 @@
 # InAppWebView
 -keep class com.pichillilorenzo.flutter_inappwebview.** { *; }
 -dontwarn com.pichillilorenzo.flutter_inappwebview.**
+
+# Image Picker
+-keep class io.flutter.plugins.imagepicker.** { *; }
+-dontwarn io.flutter.plugins.imagepicker.**

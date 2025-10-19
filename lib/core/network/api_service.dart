@@ -143,6 +143,14 @@ abstract class ApiService {
     @Header('X-App-Source') String appSource,
   );
 
+  // update profile settings with image
+  @PUT(ApiConstants.profileSetting)
+  Future<UpdateProfileResponseModel> updateProfileWithImage(
+    @Body() FormData formData,
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
+  );
+
   // update password
   @PUT(ApiConstants.updatePassword)
   Future<UpdatePasswordResponseModel> updatePassword(

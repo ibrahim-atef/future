@@ -643,6 +643,47 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<UpdateProfileResponseModel> updateProfileWithImage(
+    FormData formData,
+    int apiKey,
+    String appSource,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': apiKey,
+      r'X-App-Source': appSource,
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = formData;
+    final _options = _setStreamType<UpdateProfileResponseModel>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'panel/profile-setting',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late UpdateProfileResponseModel _value;
+    try {
+      _value = UpdateProfileResponseModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<UpdatePasswordResponseModel> updatePassword(
     UpdatePasswordRequestModel request,
     int apiKey,
