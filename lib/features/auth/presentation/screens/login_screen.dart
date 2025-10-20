@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/core/notification/notification_service.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
@@ -43,8 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content:
-                    Text(error.getAllErrorsAsString() ?? 'فشل في تسجيل الدخول'),
+                content: Text(error.getAllErrorsAsString()),
                 backgroundColor: Colors.red,
               ),
             );
@@ -128,14 +126,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 40),
 
-                  // Email Field
+                  // Email/Phone Field
                   TextFormField(
                     controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
-                      labelText: AppStrings.email,
-                      prefixIcon: const Icon(Icons.email_outlined),
+                      labelText: 'البريد الإلكتروني أو رقم الهاتف',
+                      hintText: 'أدخل بريدك الإلكتروني أو رقم هاتفك',
+                      prefixIcon: const Icon(Icons.person_outlined),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -151,11 +150,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'يرجى إدخال البريد الإلكتروني';
+                        return 'يرجى إدخال البريد الإلكتروني أو رقم الهاتف';
                       }
-                      if (!value.contains('@')) {
-                        return 'يرجى إدخال بريد إلكتروني صحيح';
+
+                      // التحقق من البريد الإلكتروني
+                      if (value.contains('@')) {
+                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(value)) {
+                          return 'يرجى إدخال بريد إلكتروني صحيح';
+                        }
                       }
+                      // التحقق من رقم الهاتف
+                      else {
+                        // إزالة المسافات والرموز الخاصة
+                        String cleanPhone =
+                            value.replaceAll(RegExp(r'[^\d]'), '');
+                        if (cleanPhone.length < 10 || cleanPhone.length > 15) {
+                          return 'يرجى إدخال رقم هاتف صحيح';
+                        }
+                      }
+
                       return null;
                     },
                   ),

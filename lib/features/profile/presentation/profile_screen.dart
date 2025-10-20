@@ -11,6 +11,7 @@ import 'package:future_app/features/home/presentation/home_screen.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_state.dart';
 import 'package:future_app/features/profile/data/models/update_profile_response_model.dart';
+import 'package:future_app/screens/main/main_navigation_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -377,7 +378,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const MainNavigationScreen()),
                 (route) => false);
           },
           errorUpdateProfile: (error) {
