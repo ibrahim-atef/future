@@ -1,9 +1,13 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:future_app/features/downloads/presentation/downloaded_video_player.dart';
+import 'package:future_app/features/courses/presentation/widgets/full_screen_video_player.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_state.dart';
 import 'package:future_app/core/models/download_model.dart';
+import 'package:video_player/video_player.dart';
 
 class OfflineListCoursePage extends StatefulWidget {
   static const String pageName = '/offline-list-course';
@@ -382,17 +386,9 @@ class _OfflineListCoursePageState extends State<OfflineListCoursePage>
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            // Navigate directly to video player
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DownloadedVideoPlayer(
-                  videoPath: video.localPath,
-                  videoTitle: video.title,
-                ),
-              ),
-            );
+          onTap: () async {
+            // Navigate directly to full screen video player
+            await _openFullScreenVideoPlayer(context, video);
           },
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -505,6 +501,46 @@ class _OfflineListCoursePageState extends State<OfflineListCoursePage>
         ),
       ),
     );
+  }
+
+  Future<void> _openFullScreenVideoPlayer(
+      BuildContext context, DownloadedVideoModel video) async {
+    // إنشاء VideoPlayerController للفيديو المحلي
+    final controller = VideoPlayerController.file(File(video.localPath));
+
+    try {
+      // تهيئة الفيديو
+      await controller.initialize();
+
+      // فتح شاشة كاملة
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FullScreenVideoPlayerWidget(
+            controller,
+            name: video.title,
+          ),
+        ),
+      );
+
+      // إعادة تعيين الاتجاه للعمودي عند العودة
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+    } catch (error) {
+      print('Error opening full screen video: $error');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('خطأ في فتح الفيديو: $error'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      // تنظيف الـ controller
+      controller.dispose();
+    }
   }
 
   void _showDownloadDialog(BuildContext context) {

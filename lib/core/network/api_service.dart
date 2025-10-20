@@ -144,7 +144,8 @@ abstract class ApiService {
   );
 
   // update profile settings with image
-  @PUT(ApiConstants.profileSetting)
+  @POST(ApiConstants.profileSettingImages)
+  @MultiPart()
   Future<UpdateProfileResponseModel> updateProfileWithImage(
     @Body() FormData formData,
     @Header('x-api-key') int apiKey,

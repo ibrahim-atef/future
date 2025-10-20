@@ -12,6 +12,7 @@ class ApiConstants {
   static const String posts = "posts";
   static const String profileSetting = "panel/profile-setting";
   static const String updatePassword = "panel/profile-setting/password";
+  static const String profileSettingImages = "panel/profile-setting/images";
 
   // Get single course by ID
   static String getSingleCourse(String id) => "courses/$id";

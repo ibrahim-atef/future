@@ -7,7 +7,6 @@ import 'package:future_app/core/routes/app_routes.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_state.dart';
 import 'package:future_app/features/auth/presentation/screens/login_screen.dart';
-import 'package:future_app/features/home/presentation/home_screen.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_state.dart';
 import 'package:future_app/features/profile/data/models/update_profile_response_model.dart';
@@ -838,12 +837,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (_formKey.currentState!.validate()) {
       // Check if there's a selected image
       if (_selectedImage != null) {
-        // Create FormData for profile update with image
+        // Create FormData with only avatar file for images endpoint
         final formData = FormData.fromMap({
-          'fullName': _nameController.text.trim(),
-          'mobile': _mobileController.text.trim(),
-          'bio': _nameController.text.trim(), // Use the same name for bio
-          'about': _aboutController.text.trim(),
           'avatar': MultipartFile.fromFileSync(
             _selectedImage!.path,
             filename: 'avatar.jpg',
@@ -856,7 +851,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         final request = UpdateProfileRequestModel(
           fullName: _nameController.text.trim(),
           mobile: _mobileController.text.trim(),
-          bio: _nameController.text.trim(), // Use the same name for bio
+          bio: _nameController.text.trim(),
           about: _aboutController.text.trim(),
         );
 

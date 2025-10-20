@@ -657,13 +657,13 @@ class _ApiService implements ApiService {
     _headers.removeWhere((k, v) => v == null);
     final _data = formData;
     final _options = _setStreamType<UpdateProfileResponseModel>(Options(
-      method: 'PUT',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          'panel/profile-setting',
+          'panel/profile-setting/images',
           queryParameters: queryParameters,
           data: _data,
         )

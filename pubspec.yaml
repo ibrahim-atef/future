@@ -57,6 +57,7 @@ dependencies:
   # Media Players
   video_player: ^2.8.1
   youtube_player_flutter: ^9.0.0
+  flutter_svg: ^2.0.10+1
   device_info_plus: ^9.0.0
   flutter_secure_storage: ^8.0.0
   firebase_core: ^3.15.2
@@ -71,6 +72,7 @@ dependencies:
   
   # Shared Preferences
   shared_preferences: ^2.2.3
+  chewie: 1.7.4
 
 dev_dependencies:
   bloc: ^9.0.1

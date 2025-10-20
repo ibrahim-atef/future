@@ -5,13 +5,11 @@ import 'package:future_app/core/di/di.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_cubit.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_state.dart';
 import 'package:future_app/features/courses/presentation/quiz_screen.dart';
-import 'package:future_app/features/courses/presentation/fullscreen_video_player.dart';
+import 'package:future_app/features/courses/presentation/widgets/course_video_player.dart';
+import 'package:future_app/features/courses/presentation/widgets/pod_video_player.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_state.dart';
-import 'package:video_player/video_player.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class LecturePlayerScreen extends StatefulWidget {
   final String courseId;
@@ -32,14 +30,7 @@ class LecturePlayerScreen extends StatefulWidget {
 }
 
 class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
-  VideoPlayerController? _videoController;
-  YoutubePlayerController? _youtubeController;
-  InAppWebViewController? _webViewController;
   bool _isLoading = true;
-  bool _isPlaying = false;
-  bool _showControls = true;
-  double _volume = 1.0;
-  bool _isMuted = false;
   String? _currentVideoUrl;
   String? _currentVideoType;
   String? _currentLectureId;
@@ -65,21 +56,11 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
 
   void _loadVideo(String videoUrl, String videoType, {String? lectureId}) {
     setState(() {
-      _isLoading = true;
+      _isLoading = false; // New widgets handle their own loading
       _currentVideoUrl = videoUrl;
       _currentVideoType = videoType;
       _currentLectureId = lectureId;
     });
-
-    if (videoType == 'youtube') {
-      _initializeYouTubeVideo(videoUrl);
-    } else if (videoType == 'server' || videoType == 'video') {
-      _initializeServerVideo(videoUrl);
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-    }
   }
 
   String? _extractYouTubeVideoId(String url) {
@@ -101,50 +82,6 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     return youtubeRegExp.hasMatch(url);
   }
 
-  void _initializeYouTubeVideo(String videoUrl) {
-    // Dispose previous YouTube controller
-    _youtubeController?.dispose();
-
-    // Validate YouTube URL first
-    if (!_isValidYouTubeUrl(videoUrl)) {
-      print('Invalid YouTube URL: $videoUrl');
-      setState(() {
-        _isLoading = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('رابط يوتيوب غير صحيح'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-      return;
-    }
-
-    final videoId = _extractYouTubeVideoId(videoUrl);
-    if (videoId != null) {
-      print('Using WebView directly for YouTube video ID: $videoId');
-
-      // Use WebView directly to avoid type errors in youtube_player_flutter
-      setState(() {
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('خطأ في استخراج معرف فيديو يوتيوب'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
-
   Future<void> _openYouTubeVideo() async {
     if (_currentVideoUrl == null) return;
 
@@ -163,38 +100,8 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     }
   }
 
-  void _initializeServerVideo(String videoUrl) {
-    // Dispose previous controller
-    _videoController?.dispose();
-
-    _videoController = VideoPlayerController.networkUrl(
-      Uri.parse(videoUrl),
-    );
-
-    _videoController!.initialize().then((_) {
-      setState(() {
-        _isLoading = false;
-        _isPlaying = false;
-      });
-    }).catchError((error) {
-      setState(() {
-        _isLoading = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('خطأ في تحميل الفيديو'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    });
-  }
-
   @override
   void dispose() {
-    _videoController?.dispose();
-    _youtubeController?.dispose();
     super.dispose();
   }
 
@@ -208,19 +115,14 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
 
   // Enter fullscreen mode
   void _enterFullScreen() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FullscreenVideoPlayer(
-          videoController: _videoController,
-          youtubeController: _youtubeController,
-          videoType: _currentVideoType ?? 'video',
-          videoTitle: widget.courseTitle,
-          videoUrl: _currentVideoUrl,
-        ),
-        fullscreenDialog: true,
-      ),
-    );
+    if (_currentVideoType == 'youtube' && _currentVideoUrl != null) {
+      // For YouTube videos, the fullscreen is handled by PodVideoPlayerDev internally
+      return;
+    } else if (_currentVideoType == 'server' || _currentVideoType == 'video') {
+      // For server videos, use the CourseVideoPlayer's built-in fullscreen functionality
+      // The fullscreen is handled internally by CourseVideoPlayer
+      return;
+    }
   }
 
   // Exit fullscreen mode
@@ -229,7 +131,6 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
-  // Show video settings dialog
   // Build download button
   Widget _buildDownloadButton() {
     return Container(
@@ -518,102 +419,6 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     }
   }
 
-  void _showVideoSettings(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: const Color(0xFF2a2a2a),
-          title: const Text(
-            'إعدادات الفيديو',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Quality selection
-              ListTile(
-                leading: const Icon(Icons.hd, color: Color(0xFFd4af37)),
-                title: const Text(
-                  'جودة الفيديو',
-                  style: TextStyle(color: Colors.white),
-                ),
-                subtitle: const Text(
-                  'تلقائي',
-                  style: TextStyle(color: Colors.white70),
-                ),
-                onTap: () {
-                  // Implement quality selection
-                  Navigator.pop(context);
-                },
-              ),
-
-              // Volume control
-              ListTile(
-                leading: Icon(
-                  _isMuted ? Icons.volume_off : Icons.volume_up,
-                  color: const Color(0xFFd4af37),
-                ),
-                title: const Text(
-                  'مستوى الصوت',
-                  style: TextStyle(color: Colors.white),
-                ),
-                subtitle: Slider(
-                  value: _isMuted ? 0.0 : _volume,
-                  min: 0.0,
-                  max: 1.0,
-                  activeColor: const Color(0xFFd4af37),
-                  inactiveColor: Colors.white24,
-                  onChanged: (value) {
-                    setState(() {
-                      _volume = value;
-                      _isMuted = value == 0.0;
-                      _videoController?.setVolume(value);
-                    });
-                  },
-                ),
-              ),
-
-              // Auto-play next video
-              SwitchListTile(
-                secondary:
-                    const Icon(Icons.play_arrow, color: Color(0xFFd4af37)),
-                title: const Text(
-                  'التشغيل التلقائي',
-                  style: TextStyle(color: Colors.white),
-                ),
-                subtitle: const Text(
-                  'تشغيل الفيديو التالي تلقائياً',
-                  style: TextStyle(color: Colors.white70),
-                ),
-                value: false, // You can implement this feature
-                activeColor: const Color(0xFFd4af37),
-                onChanged: (bool value) {
-                  // Implement auto-play logic
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'إغلاق',
-                style: TextStyle(
-                  color: Color(0xFFd4af37),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -648,7 +453,6 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                   // Video Player Section
                   Container(
                     width: double.infinity,
-                    height: 250,
                     color: Colors.black,
                     child: _buildVideoPlayer(),
                   ),
@@ -759,454 +563,25 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     }
 
     if (_currentVideoType == 'youtube' && _currentVideoUrl != null) {
-      // Always use WebView for YouTube videos to avoid type errors
-      return _buildYouTubeWebView();
+      // Use PodVideoPlayerDev for YouTube videos
+      return PodVideoPlayerDev(
+        _currentVideoUrl!,
+        'youtube',
+        name: widget.courseTitle,
+      );
     } else if ((_currentVideoType == 'server' ||
             _currentVideoType == 'video') &&
         _currentVideoUrl != null) {
-      return _videoController != null && _videoController!.value.isInitialized
-          ? _buildServerVideoPlayer()
-          : _buildErrorWidget();
+      // Use CourseVideoPlayer for server videos
+      return CourseVideoPlayer(
+        _currentVideoUrl!,
+        '', // imageCover - empty for now
+        name: widget.courseTitle,
+        isLoadNetwork: true,
+      );
     } else {
       return _buildNoVideoWidget();
     }
-  }
-
-  Widget _buildServerVideoPlayer() {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _showControls = !_showControls;
-        });
-      },
-      child: Container(
-        color: Colors.black,
-        child: Stack(
-          children: [
-            Center(
-              child: AspectRatio(
-                aspectRatio: _videoController!.value.aspectRatio,
-                child: VideoPlayer(_videoController!),
-              ),
-            ),
-
-            // Controls Overlay
-            if (_showControls)
-              Container(
-                color: Colors.black.withOpacity(0.3),
-                child: Column(
-                  children: [
-                    // Top controls
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Back button
-                          IconButton(
-                            onPressed: () => Navigator.pop(context),
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                              size: 28,
-                            ),
-                          ),
-                          // Title
-                          Expanded(
-                            child: Text(
-                              widget.courseTitle,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          // Fullscreen button
-                          IconButton(
-                            onPressed: () {
-                              _enterFullScreen();
-                            },
-                            icon: const Icon(
-                              Icons.fullscreen,
-                              color: Colors.white,
-                              size: 28,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const Spacer(),
-
-                    // Center play button
-                    Center(
-                      child: FloatingActionButton(
-                        onPressed: () {
-                          setState(() {
-                            if (_isPlaying) {
-                              _videoController!.pause();
-                            } else {
-                              _videoController!.play();
-                            }
-                            _isPlaying = !_isPlaying;
-                          });
-                        },
-                        backgroundColor: const Color(0xFFd4af37),
-                        child: Icon(
-                          _isPlaying ? Icons.pause : Icons.play_arrow,
-                          color: Colors.black,
-                          size: 32,
-                        ),
-                      ),
-                    ),
-
-                    const Spacer(),
-
-                    // Bottom controls
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          // Progress bar
-                          VideoProgressIndicator(
-                            _videoController!,
-                            allowScrubbing: true,
-                            colors: const VideoProgressColors(
-                              playedColor: Color(0xFFd4af37),
-                              bufferedColor: Colors.white54,
-                              backgroundColor: Colors.white24,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-
-                          // Bottom row controls
-                          Row(
-                            children: [
-                              // Play/Pause button
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if (_isPlaying) {
-                                      _videoController!.pause();
-                                    } else {
-                                      _videoController!.play();
-                                    }
-                                    _isPlaying = !_isPlaying;
-                                  });
-                                },
-                                icon: Icon(
-                                  _isPlaying ? Icons.pause : Icons.play_arrow,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
-
-                              // Volume control
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isMuted = !_isMuted;
-                                    _videoController!
-                                        .setVolume(_isMuted ? 0.0 : _volume);
-                                  });
-                                },
-                                icon: Icon(
-                                  _isMuted ? Icons.volume_off : Icons.volume_up,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
-
-                              // Time display
-                              Expanded(
-                                child: Text(
-                                  '${_formatDuration(_videoController!.value.position)} / ${_formatDuration(_videoController!.value.duration)}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-
-                              // Speed control
-                              PopupMenuButton<double>(
-                                icon: const Icon(
-                                  Icons.speed,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                                itemBuilder: (context) => [
-                                  const PopupMenuItem(
-                                    value: 0.5,
-                                    child: Text('0.5x'),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 0.75,
-                                    child: Text('0.75x'),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 1.0,
-                                    child: Text('1x'),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 1.25,
-                                    child: Text('1.25x'),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 1.5,
-                                    child: Text('1.5x'),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 2.0,
-                                    child: Text('2x'),
-                                  ),
-                                ],
-                                onSelected: (speed) {
-                                  _videoController!.setPlaybackSpeed(speed);
-                                },
-                              ),
-
-                              // Quality/Settings button
-                              IconButton(
-                                onPressed: () {
-                                  _showVideoSettings(context);
-                                },
-                                icon: const Icon(
-                                  Icons.settings,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildYouTubeWebView() {
-    final videoId = _extractYouTubeVideoId(_currentVideoUrl ?? '');
-    if (videoId == null) {
-      return _buildErrorWidget();
-    }
-
-    final embedUrl = _getYouTubeEmbedUrl(videoId);
-    print('Loading YouTube video in WebView: $embedUrl');
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black,
-        border: Border.all(
-          color: const Color(0xFFd4af37).withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: Stack(
-        children: [
-          InAppWebView(
-            initialUrlRequest: URLRequest(url: WebUri(embedUrl)),
-            initialSettings: InAppWebViewSettings(
-              mediaPlaybackRequiresUserGesture: false,
-              allowsInlineMediaPlayback: true,
-              iframeAllow: "camera; microphone",
-              iframeAllowFullscreen: true,
-              javaScriptEnabled: true,
-              domStorageEnabled: true,
-              useHybridComposition: false, // Disable to avoid type errors
-              supportZoom: false,
-              builtInZoomControls: false,
-              displayZoomControls: false,
-            ),
-            onWebViewCreated: (controller) {
-              _webViewController = controller;
-              print('WebView created successfully');
-            },
-            onLoadStart: (controller, url) {
-              print('WebView loading started: $url');
-            },
-            onLoadStop: (controller, url) {
-              print('WebView loading completed: $url');
-            },
-            onReceivedError: (controller, request, error) {
-              print('WebView Error: $error');
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('خطأ في تحميل الفيديو: ${error.description}'),
-                    backgroundColor: Colors.red,
-                    duration: const Duration(seconds: 3),
-                  ),
-                );
-              }
-            },
-            onReceivedHttpError: (controller, request, errorResponse) {
-              print('WebView HTTP Error: $errorResponse');
-            },
-            onConsoleMessage: (controller, consoleMessage) {
-              // Ignore console messages to avoid spam
-              if (consoleMessage.messageLevel == ConsoleMessageLevel.ERROR) {
-                print('WebView Console Error: ${consoleMessage.message}');
-              }
-            },
-          ),
-          // Overlay controls
-          Positioned(
-            top: 16,
-            left: 16,
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-                size: 28,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 16,
-            right: 16,
-            child: IconButton(
-              onPressed: () => _enterFullScreen(),
-              icon: const Icon(
-                Icons.fullscreen,
-                color: Colors.white,
-                size: 28,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildYouTubePlayerWidget() {
-    if (_youtubeController == null) {
-      return _buildErrorWidget();
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black,
-        border: Border.all(
-          color: const Color(0xFFd4af37).withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: YoutubePlayer(
-        controller: _youtubeController!,
-        showVideoProgressIndicator: true,
-        progressIndicatorColor: const Color(0xFFd4af37),
-        progressColors: const ProgressBarColors(
-          playedColor: Color(0xFFd4af37),
-          handleColor: Color(0xFFd4af37),
-          backgroundColor: Colors.white24,
-          bufferedColor: Colors.white54,
-        ),
-        onReady: () {
-          print('YouTube video is ready and playing');
-        },
-        onEnded: (metaData) {
-          print('YouTube video ended');
-        },
-        topActions: [
-          // Back button
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: 28,
-            ),
-          ),
-          const Spacer(),
-          // Fullscreen button
-          IconButton(
-            onPressed: () {
-              _enterFullScreen();
-            },
-            icon: const Icon(
-              Icons.fullscreen,
-              color: Colors.white,
-              size: 28,
-            ),
-          ),
-        ],
-        bottomActions: const [
-          // Current time
-          CurrentPosition(),
-          // Progress bar
-          ProgressBar(
-            isExpanded: true,
-            colors: ProgressBarColors(
-              playedColor: Color(0xFFd4af37),
-              handleColor: Color(0xFFd4af37),
-              backgroundColor: Colors.white24,
-              bufferedColor: Colors.white54,
-            ),
-          ),
-          // Remaining time
-          RemainingDuration(),
-          // Playback speed
-          PlaybackSpeedButton(),
-          // Fullscreen button
-          FullScreenButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildYouTubePlayer() {
-    return GestureDetector(
-      onTap: _openYouTubeVideo,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.black,
-          border: Border.all(
-            color: const Color(0xFFd4af37).withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        child: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.play_circle_outline,
-              size: 80,
-              color: Color(0xFFd4af37),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'اضغط لفتح الفيديو في يوتيوب',
-              style: TextStyle(
-                color: Color(0xFFd4af37),
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'سيتم فتح الفيديو في تطبيق يوتيوب',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget _buildErrorWidget() {
