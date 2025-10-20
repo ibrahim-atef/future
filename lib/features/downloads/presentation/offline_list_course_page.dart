@@ -229,25 +229,25 @@ class _OfflineListCoursePageState extends State<OfflineListCoursePage>
               ),
             ),
             const SizedBox(height: 32),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pushNamed(context, '/courses');
-              },
-              icon: const Icon(Icons.school, color: Colors.black),
-              label: const Text(
-                'تصفح الكورسات',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFd4af37),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
+            // ElevatedButton.icon(
+            //   onPressed: () {
+            //     Navigator.pushNamed(context, '/courses');
+            //   },
+            //   icon: const Icon(Icons.school, color: Colors.black),
+            //   label: const Text(
+            //     'تصفح الكورسات',
+            //     style:
+            //         TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            //   ),
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: const Color(0xFFd4af37),
+            //     padding:
+            //         const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -14,6 +14,8 @@ import 'package:future_app/screens/main/main_navigation_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.inHome});
@@ -31,6 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _aboutController = TextEditingController();
   final ImagePicker _imagePicker = ImagePicker();
   File? _selectedImage;
+  String _avatarCacheBuster = '';
 
   @override
   void dispose() {
@@ -210,14 +213,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // Permissions granted, proceed with image picking
       final XFile? image = await _imagePicker.pickImage(
         source: source,
-        maxWidth: 512,
-        maxHeight: 512,
-        imageQuality: 80,
+        imageQuality: 90,
       );
 
       if (image != null) {
+        // Copy to a temp, accessible path to avoid content:// issues from gallery
+        final bytes = await image.readAsBytes();
+        final tempDir = await getTemporaryDirectory();
+        final ext =
+            p.extension(image.path).isEmpty ? '.jpg' : p.extension(image.path);
+        final targetPath = p.join(
+          tempDir.path,
+          'avatar_${DateTime.now().millisecondsSinceEpoch}$ext',
+        );
+        final saved = await File(targetPath).writeAsBytes(bytes, flush: true);
         setState(() {
-          _selectedImage = File(image.path);
+          _selectedImage = saved;
         });
       }
     } catch (e) {
@@ -368,6 +379,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // Clear selected image after successful update
             setState(() {
               _selectedImage = null;
+              _avatarCacheBuster =
+                  DateTime.now().millisecondsSinceEpoch.toString();
             });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -477,7 +490,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ? ClipRRect(
                                         borderRadius: BorderRadius.circular(40),
                                         child: Image.network(
-                                          data.data.avatar,
+                                          _avatarCacheBuster.isEmpty
+                                              ? data.data.avatar
+                                              : '${data.data.avatar}?v=$_avatarCacheBuster',
                                           fit: BoxFit.cover,
                                           width: 80,
                                           height: 80,
@@ -704,31 +719,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                       const SizedBox(height: 20),
 
-                      // Save Button
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _saveProfile,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF2a2a2a),
-                            foregroundColor: const Color(0xFFd4af37),
-                            side: const BorderSide(
-                              color: Color(0xFFd4af37),
-                              width: 1,
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                      // Save Buttons: Profile and Image separately
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: _saveProfile,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF2a2a2a),
+                                foregroundColor: const Color(0xFFd4af37),
+                                side: const BorderSide(
+                                  color: Color(0xFFd4af37),
+                                  width: 1,
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Text(
+                                'حفظ البيانات',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
-                          child: const Text(
-                            'حفظ التغييرات',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: _saveProfileImage,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFd4af37),
+                                foregroundColor: Colors.black,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Text(
+                                'تحديث الصورة',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -835,29 +876,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
-      // Check if there's a selected image
-      if (_selectedImage != null) {
-        // Create FormData with only avatar file for images endpoint
-        final formData = FormData.fromMap({
-          'avatar': MultipartFile.fromFileSync(
-            _selectedImage!.path,
-            filename: 'avatar.jpg',
-          ),
-        });
+      // Update profile without image
+      final request = UpdateProfileRequestModel(
+        fullName: _nameController.text.trim(),
+        mobile: _mobileController.text.trim(),
+        bio: _nameController.text.trim(),
+        about: _aboutController.text.trim(),
+      );
 
-        context.read<ProfileCubit>().updateProfileWithImage(formData);
-      } else {
-        // Update profile without image
-        final request = UpdateProfileRequestModel(
-          fullName: _nameController.text.trim(),
-          mobile: _mobileController.text.trim(),
-          bio: _nameController.text.trim(),
-          about: _aboutController.text.trim(),
-        );
-
-        context.read<ProfileCubit>().updateProfile(request);
-      }
+      context.read<ProfileCubit>().updateProfile(request);
     }
+  }
+
+  void _saveProfileImage() {
+    if (_selectedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('من فضلك اختر صورة أولاً'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    final formData = FormData.fromMap({
+      'avatar': MultipartFile.fromFileSync(
+        _selectedImage!.path,
+        filename: 'avatar.jpg',
+      ),
+    });
+
+    context.read<ProfileCubit>().updateProfileWithImage(formData);
   }
 }
 
