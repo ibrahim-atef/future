@@ -17,13 +17,8 @@ class CoursesRepo {
     int? categoryId,
   }) async {
     try {
-      final response = await _apiService.getCourses(
-        ApiConstants.apiKey,
-        ApiConstants.appSource,
-        page,
-        limit,
-        categoryId,
-      );
+      final response = await _apiService.getCourses(ApiConstants.apiKey,
+          ApiConstants.appSource, page, limit, categoryId, null);
       return ApiResult.success(response);
     } catch (e) {
       log(e.toString());

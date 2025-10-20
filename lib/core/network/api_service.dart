@@ -69,6 +69,7 @@ abstract class ApiService {
     @Query('page') int page,
     @Query('limit') int limit,
     @Query('category_id') int? categoryId,
+    @Query('filters_levels') int? filtersLevels,
   );
 
   // get single course by ID
