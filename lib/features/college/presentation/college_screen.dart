@@ -79,9 +79,11 @@ class _CollegeScreenState extends State<CollegeScreen> {
         appBar: AppBar(
           backgroundColor: const Color(0xFF1a1a1a),
           elevation: 0,
-          title: const Text(
-            'الكلية - كل حاجة الكلية في مكان واحد',
-            style: TextStyle(
+          title: Text(
+            widget.isBackButton
+                ? "تجربة الامتياز - جرب الشرح مجانا"
+                : 'الكلية - كل حاجة الكلية في مكان واحد',
+            style: const TextStyle(
               color: Color(0xFFd4af37),
               fontSize: 18,
               fontWeight: FontWeight.bold,
