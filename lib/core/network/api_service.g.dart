@@ -660,6 +660,7 @@ class _ApiService implements ApiService {
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,

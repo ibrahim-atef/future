@@ -9,11 +9,14 @@ class LoginRequestModel {
   @JsonKey(name: 'device_id')
   String deviceId;
 
-  LoginRequestModel({
-    required this.username,
-    required this.password,
-    required this.deviceId,
-  });
+  @JsonKey(name: 'access_id')
+  String accessId;
+
+  LoginRequestModel(
+      {required this.username,
+      required this.password,
+      required this.deviceId,
+      required this.accessId});
 
   factory LoginRequestModel.fromJson(Map<String, dynamic> json) =>
       _$LoginRequestModelFromJson(json);
