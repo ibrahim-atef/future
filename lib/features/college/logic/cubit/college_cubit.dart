@@ -50,7 +50,7 @@ GET /courses?category_id=24
 
   */
 
-  Future<void> getCourses(int? categoryId, int filtersLevels) async {
+  Future<void> getCourses(int? categoryId, int? filtersLevels) async {
     log('🚀 CollegeCubit: Starting getCourses for category: $categoryId');
     emit(const CollegeState.getCoursesLoading());
     final response = await _collegeRepo.getCourses(

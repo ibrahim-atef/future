@@ -23,7 +23,6 @@ class CourseVideosScreen extends StatefulWidget {
 }
 
 class _CourseVideosScreenState extends State<CourseVideosScreen> {
-  String selectedGrade = '17';
   late CollegeCubit _collegeCubit;
 
   @override
@@ -31,7 +30,7 @@ class _CourseVideosScreenState extends State<CourseVideosScreen> {
     return BlocProvider(
       create: (context) {
         _collegeCubit = getIt<CollegeCubit>();
-        _collegeCubit.getCourses(widget.categoryId, int.parse(selectedGrade));
+        _collegeCubit.getCourses(widget.categoryId, null);
         return _collegeCubit;
       },
       child: Scaffold(
@@ -55,126 +54,26 @@ class _CourseVideosScreenState extends State<CourseVideosScreen> {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            await _collegeCubit.getCourses(
-                widget.categoryId, int.parse(selectedGrade));
+            await _collegeCubit.getCourses(widget.categoryId, null);
           },
           color: const Color(0xFFd4af37),
-          child: Column(
-            children: [
-              // Grade Filter Section
-              _buildGradeFilter(),
-              // Courses Content
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: BlocBuilder<CollegeCubit, CollegeState>(
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        getCoursesLoading: () => _buildSkeletonGrid(),
-                        getCoursesSuccess: (data) {
-                          return _buildCoursesGrid(data.data);
-                        },
-                        getCoursesError: (error) =>
-                            _buildErrorState(error.getAllErrorsAsString()),
-                        orElse: () => _buildSkeletonGrid(),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGradeFilter() {
-    final grades = [
-      {'id': '17', 'name': 'الفرقة الأولى'},
-      {'id': '18', 'name': 'الفرقة الثانية'},
-      {'id': '19', 'name': 'الفرقة الثالثة'},
-      {'id': '20', 'name': 'الفرقة الرابعة'},
-    ];
-
-    return Container(
-      margin: const EdgeInsets.all(16.0),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      decoration: BoxDecoration(
-        color: const Color(0xFF2a2a2a),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(0xFFd4af37).withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Icon(
-                Icons.filter_list,
-                color: Color(0xFFd4af37),
-                size: 20,
-              ),
-              SizedBox(width: 8),
-              Text(
-                'فلتر الفرقة',
-                style: TextStyle(
-                  color: Color(0xFFd4af37),
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: grades.map((grade) {
-                final isSelected = selectedGrade == grade['id'];
-                return GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      selectedGrade = grade['id']!;
-                    });
-                    // Call getCourses with the new grade
-                    await _collegeCubit.getCourses(
-                        widget.categoryId, int.parse(selectedGrade));
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: BlocBuilder<CollegeCubit, CollegeState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  getCoursesLoading: () => _buildSkeletonGrid(),
+                  getCoursesSuccess: (data) {
+                    return _buildCoursesGrid(data.data);
                   },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? const Color(0xFFd4af37)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: const Color(0xFFd4af37),
-                        width: 1,
-                      ),
-                    ),
-                    child: Text(
-                      grade['name'] as String,
-                      style: TextStyle(
-                        color:
-                            isSelected ? Colors.black : const Color(0xFFd4af37),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
+                  getCoursesError: (error) =>
+                      _buildErrorState(error.getAllErrorsAsString()),
+                  orElse: () => _buildSkeletonGrid(),
                 );
-              }).toList(),
+              },
             ),
           ),
-        ],
+        ),
       ),
     );
   }
