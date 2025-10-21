@@ -27,7 +27,7 @@ class CollegeRepo {
 
   // Get college courses by category (1=future, 2=books, 3=tables)
   Future<ApiResult<GetCoursesResponseModel>> getCourses({
-    required int categoryId,
+    int? categoryId,
     required int filtersLevels,
     int page = 1,
     int limit = 100,

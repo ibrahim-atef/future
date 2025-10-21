@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/core/di/di.dart';
+import 'package:future_app/features/emtyaz/emtyaz_scree.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
 import 'package:future_app/screens/experience_of_excellence/experience_of_excellence_page.dart';
@@ -57,6 +58,7 @@ class AppRoutes {
   static const String offlineListCourse = '/offline-list-course';
   static const String offlineSingleCourse = '/offline-single-course';
   static const String offlineSingleContent = '/offline-single-content';
+  static const String emtyazScreen = '/emtyaz-screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -207,6 +209,11 @@ class AppRoutes {
               inHome: settings.arguments as bool,
             ),
           ),
+          settings: settings,
+        );
+      case emtyazScreen:
+        return MaterialPageRoute(
+          builder: (_) => const EmtyazScreen(),
           settings: settings,
         );
 
