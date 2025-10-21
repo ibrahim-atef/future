@@ -227,52 +227,52 @@ class CourseDetailScreen extends StatelessWidget {
           const SizedBox(height: 20),
 
           // Course Info Cards
-          Row(
-            children: [
-              Expanded(
-                child: _buildInfoCard(
-                  context,
-                  icon: Icons.signal_cellular_alt,
-                  label: 'المستوى',
-                  value: course.level,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildInfoCard(
-                  context,
-                  icon: Icons.language,
-                  label: 'اللغة',
-                  value: course.language,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: _buildInfoCard(
-                  context,
-                  icon: Icons.people,
-                  label: 'الطلاب',
-                  value: '${course.studentsCount}',
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildInfoCard(
-                  context,
-                  icon: Icons.star,
-                  label: 'التقييم',
-                  value: course.rating > 0
-                      ? course.rating.toStringAsFixed(1)
-                      : 'لا يوجد',
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: _buildInfoCard(
+          //         context,
+          //         icon: Icons.signal_cellular_alt,
+          //         label: 'المستوى',
+          //         value: course.level,
+          //       ),
+          //     ),
+          //     const SizedBox(width: 12),
+          //     Expanded(
+          //       child: _buildInfoCard(
+          //         context,
+          //         icon: Icons.language,
+          //         label: 'اللغة',
+          //         value: course.language,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // const SizedBox(height: 12),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: _buildInfoCard(
+          //         context,
+          //         icon: Icons.people,
+          //         label: 'الطلاب',
+          //         value: '${course.studentsCount}',
+          //       ),
+          //     ),
+          //     const SizedBox(width: 12),
+          //     Expanded(
+          //       child: _buildInfoCard(
+          //         context,
+          //         icon: Icons.star,
+          //         label: 'التقييم',
+          //         value: course.rating > 0
+          //             ? course.rating.toStringAsFixed(1)
+          //             : 'لا يوجد',
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // const SizedBox(height: 20),
 
           // Price
           // Container(
@@ -324,46 +324,46 @@ class CourseDetailScreen extends StatelessWidget {
           // const SizedBox(height: 20),
 
           // Categories
-          if (course.categories.isNotEmpty) ...[
-            const Text(
-              'التصنيفات',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: course.categories
-                  .map(
-                    (category) => Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2a2a2a),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xFFd4af37).withOpacity(0.3),
-                        ),
-                      ),
-                      child: Text(
-                        category,
-                        style: const TextStyle(
-                          color: Color(0xFFd4af37),
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-            const SizedBox(height: 20),
-          ],
+          // if (course.categories.isNotEmpty) ...[
+          //   const Text(
+          //     'التصنيفات',
+          //     style: TextStyle(
+          //       color: Colors.white,
+          //       fontSize: 18,
+          //       fontWeight: FontWeight.bold,
+          //     ),
+          //   ),
+          //   const SizedBox(height: 12),
+          //   Wrap(
+          //     spacing: 8,
+          //     runSpacing: 8,
+          //     children: course.categories
+          //         .map(
+          //           (category) => Container(
+          //             padding: const EdgeInsets.symmetric(
+          //               horizontal: 16,
+          //               vertical: 8,
+          //             ),
+          //             decoration: BoxDecoration(
+          //               color: const Color(0xFF2a2a2a),
+          //               borderRadius: BorderRadius.circular(20),
+          //               border: Border.all(
+          //                 color: const Color(0xFFd4af37).withOpacity(0.3),
+          //               ),
+          //             ),
+          //             child: Text(
+          //               category,
+          //               style: const TextStyle(
+          //                 color: Color(0xFFd4af37),
+          //                 fontSize: 14,
+          //               ),
+          //             ),
+          //           ),
+          //         )
+          //         .toList(),
+          //   ),
+          //   const SizedBox(height: 20),
+          // ],
 
           // Description
           const Text(
@@ -390,7 +390,8 @@ class CourseDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          // const SizedBox(height: 24),
+          const SizedBox(height: 200),
 
           // Enroll Button
           SizedBox(
@@ -434,7 +435,7 @@ class CourseDetailScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "start now",
+                      "ابدأ الآن",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

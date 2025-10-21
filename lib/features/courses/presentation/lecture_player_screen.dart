@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/core/di/di.dart';
+import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_cubit.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_state.dart';
 import 'package:future_app/features/courses/presentation/quiz_screen.dart';
@@ -568,6 +569,7 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
         _currentVideoUrl!,
         'youtube',
         name: widget.courseTitle,
+        key: ValueKey(_currentVideoUrl), // Add unique key to force rebuild
       );
     } else if ((_currentVideoType == 'server' ||
             _currentVideoType == 'video') &&
@@ -576,8 +578,9 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
       return CourseVideoPlayer(
         _currentVideoUrl!,
         '', // imageCover - empty for now
-        name: widget.courseTitle,
+        name: UserConstant.userName ?? "",
         isLoadNetwork: true,
+        key: ValueKey(_currentVideoUrl), // Add unique key to force rebuild
       );
     } else {
       return _buildNoVideoWidget();

@@ -360,27 +360,6 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
                           ),
                         ),
                       ),
-                    if (course.isFree)
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Text(
-                            'مجاني',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
                   ],
                 ),
               ),
@@ -398,58 +377,58 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
                       course.title,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 13,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     Text(
                       course.teacherName,
                       style: const TextStyle(
                         color: Colors.white70,
-                        fontSize: 11,
+                        fontSize: 12,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (course.studentsCount > 0)
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.people,
-                                size: 14,
-                                color: Color(0xFFd4af37),
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '${course.studentsCount}',
-                                style: const TextStyle(
-                                  color: Color(0xFFd4af37),
-                                  fontSize: 11,
-                                ),
-                              ),
-                            ],
-                          ),
-                        if (course.level.isNotEmpty)
-                          Flexible(
-                            child: Text(
-                              course.level,
-                              style: const TextStyle(
-                                color: Color(0xFFd4af37),
-                                fontSize: 10,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                      ],
-                    ),
+                    // const Spacer(),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     if (course.studentsCount > 0)
+                    //       Row(
+                    //         children: [
+                    //           const Icon(
+                    //             Icons.people,
+                    //             size: 14,
+                    //             color: Color(0xFFd4af37),
+                    //           ),
+                    //           const SizedBox(width: 4),
+                    //           Text(
+                    //             '${course.studentsCount}',
+                    //             style: const TextStyle(
+                    //               color: Color(0xFFd4af37),
+                    //               fontSize: 11,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     if (course.level.isNotEmpty)
+                    //       Flexible(
+                    //         child: Text(
+                    //           course.level,
+                    //           style: const TextStyle(
+                    //             color: Color(0xFFd4af37),
+                    //             fontSize: 10,
+                    //           ),
+                    //           maxLines: 1,
+                    //           overflow: TextOverflow.ellipsis,
+                    //         ),
+                    //       ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
