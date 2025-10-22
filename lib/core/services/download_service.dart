@@ -11,7 +11,7 @@ class DownloadService {
 
   Future<void> init() async {
     await FlutterDownloader.initialize(debug: true);
-    
+
     // Register callback for download updates
     FlutterDownloader.registerCallback(downloadCallback);
   }
@@ -20,7 +20,7 @@ class DownloadService {
   static void downloadCallback(String id, int status, int progress) {
     // Handle download status updates
     final downloadStatus = DownloadTaskStatus.values[status];
-    
+
     // Update stored download info
     final downloadInfo = StorageService.getDownloadInfo(id);
     if (downloadInfo != null) {
@@ -32,8 +32,70 @@ class DownloadService {
 
   Future<bool> requestPermissions() async {
     if (Platform.isAndroid) {
-      final status = await Permission.storage.request();
-      return status.isGranted;
+      print('DownloadService: Requesting permissions for Android...');
+
+      // For Android 13+ (API 33+), we don't need storage permissions for app's own directory
+      // The app can write to its own external storage directory without permissions
+      try {
+        // Test if we can access the external storage directory
+        final directory = await getExternalStorageDirectory();
+        if (directory != null) {
+          // Try to create a test file to verify write access
+          final testFile = File('${directory.path}/test_write_permission.tmp');
+          try {
+            await testFile.writeAsString('test');
+            await testFile.delete();
+            print('DownloadService: External storage directory accessible');
+            return true;
+          } catch (e) {
+            print('DownloadService: Cannot write to external storage: $e');
+          }
+        }
+      } catch (e) {
+        print('DownloadService: Error accessing external storage: $e');
+      }
+
+      // If we can't access external storage, try to request permissions
+      // For Android 11+ (API 30+), try manage external storage
+      var manageStatus = await Permission.manageExternalStorage.status;
+      print('DownloadService: Manage external storage status: $manageStatus');
+
+      if (manageStatus.isGranted) {
+        print('DownloadService: Manage external storage already granted');
+        return true;
+      }
+
+      // Try storage permission for older Android versions
+      var status = await Permission.storage.status;
+      print('DownloadService: Storage permission status: $status');
+
+      if (status.isGranted) {
+        print('DownloadService: Storage permission already granted');
+        return true;
+      }
+
+      if (status.isDenied) {
+        print('DownloadService: Requesting storage permission...');
+        status = await Permission.storage.request();
+        print('DownloadService: Storage permission result: $status');
+
+        if (status.isGranted) {
+          return true;
+        }
+      }
+
+      // For Android 11+ (API 30+), try manage external storage
+      if (status.isPermanentlyDenied || status.isDenied) {
+        print('DownloadService: Trying manage external storage...');
+        manageStatus = await Permission.manageExternalStorage.request();
+        print('DownloadService: Manage external storage result: $manageStatus');
+        return manageStatus.isGranted;
+      }
+
+      print(
+          'DownloadService: No permission granted, but continuing with app directory');
+      // Even without permissions, we can still use the app's own directory
+      return true;
     }
     return true; // iOS doesn't need storage permission for app directory
   }
@@ -80,6 +142,8 @@ class DownloadService {
         fileName: fileName,
         showNotification: true,
         openFileFromNotification: true,
+        requiresStorageNotLow: true,
+        saveInPublicStorage: true,
       );
 
       if (taskId != null) {
@@ -104,6 +168,7 @@ class DownloadService {
 
       return null;
     } catch (e) {
+      print('DownloadService Error: $e');
       throw Exception('خطأ في التحميل: ${e.toString()}');
     }
   }
@@ -118,7 +183,7 @@ class DownloadService {
 
   Future<List<Map<String, dynamic>>> getDownloadedFiles() async {
     final downloads = StorageService.getAllDownloads();
-    
+
     // Filter only completed downloads
     return downloads.where((download) {
       final status = download['status'] as String?;
@@ -128,7 +193,9 @@ class DownloadService {
 
   Future<List<Map<String, dynamic>>> getDownloadsByType(String fileType) async {
     final downloads = await getDownloadedFiles();
-    return downloads.where((download) => download['fileType'] == fileType).toList();
+    return downloads
+        .where((download) => download['fileType'] == fileType)
+        .toList();
   }
 
   Future<bool> deleteDownload(String downloadId) async {
@@ -142,14 +209,14 @@ class DownloadService {
             await file.delete();
           }
         }
-        
+
         // Remove from storage
         await StorageService.removeDownloadInfo(downloadId);
-        
+
         // Cancel download task if still running
         await FlutterDownloader.cancel(taskId: downloadId);
       }
-      
+
       return true;
     } catch (e) {
       return false;
@@ -158,21 +225,21 @@ class DownloadService {
 
   Future<void> clearAllDownloads() async {
     final downloads = StorageService.getAllDownloads();
-    
+
     for (final download in downloads) {
       final downloadId = download['id'] as String?;
       if (downloadId != null) {
         await deleteDownload(downloadId);
       }
     }
-    
+
     await StorageService.clearAllDownloads();
   }
 
   Future<int> getTotalDownloadSize() async {
     final downloads = await getDownloadedFiles();
     int totalSize = 0;
-    
+
     for (final download in downloads) {
       final filePath = download['filePath'] as String?;
       if (filePath != null) {
@@ -183,14 +250,16 @@ class DownloadService {
         }
       }
     }
-    
+
     return totalSize;
   }
 
   String formatFileSize(int bytes) {
     if (bytes < 1024) return '$bytes B';
     if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
-    if (bytes < 1024 * 1024 * 1024) return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    if (bytes < 1024 * 1024 * 1024) {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    }
     return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
   }
 
@@ -207,5 +276,3 @@ class DownloadService {
     await StorageService.removeDownloadInfo(taskId);
   }
 }
-
-
