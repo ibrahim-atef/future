@@ -8,6 +8,7 @@ import 'package:future_app/features/courses/logic/cubit/courses_state.dart';
 import 'package:future_app/features/courses/presentation/quiz_screen.dart';
 import 'package:future_app/features/courses/presentation/widgets/course_video_player.dart';
 import 'package:future_app/features/courses/presentation/widgets/pod_video_player.dart';
+import 'package:future_app/features/courses/presentation/widgets/pdf_viewer_widget.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_state.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -210,6 +211,187 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
         const SnackBar(
           content: Text('سيتم فتح الفيديو في يوتيوب للتحميل'),
           backgroundColor: Color(0xFFd4af37),
+        ),
+      );
+    }
+  }
+
+  void _downloadPDF_DELETED() {
+    if (_currentVideoUrl == null) return;
+
+    // Show download dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF2a2a2a),
+          title: const Text(
+            'حفظ الملف',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'هل تريد حفظ هذا الملف على الجهاز؟',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1a1a1a),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: const Color(0xFFd4af37).withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Color(0xFFd4af37),
+                      size: 20,
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'سيتم حفظ الملف في مجلد التحميلات',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(
+                  color: Colors.white70,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _startPDFDownload();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFd4af37),
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'حفظ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _startPDFDownload() {
+    if (_currentVideoUrl == null) return;
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          backgroundColor: Color(0xFF2a2a2a),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFd4af37)),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'جاري حفظ الملف...',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'قد تستغرق العملية بضع دقائق',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    // Start PDF download
+    _downloadPDFFile();
+  }
+
+  Future<void> _downloadPDFFile() async {
+    try {
+      // This will be handled by the PDFViewerWidget
+      // The PDFViewerWidget already has download functionality
+      Navigator.pop(context); // Close loading dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.white,
+                size: 20,
+              ),
+              SizedBox(width: 8),
+              Text('تم بدء تحميل الملف بنجاح'),
+            ],
+          ),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 3),
+        ),
+      );
+    } catch (e) {
+      Navigator.pop(context); // Close loading dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(
+                Icons.error,
+                color: Colors.white,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Expanded(child: Text('خطأ في تحميل الملف: ${e.toString()}')),
+            ],
+          ),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
         ),
       );
     }
@@ -482,7 +664,7 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Video Type Info
+                        // Content Type Info
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
@@ -496,17 +678,23 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                           child: Row(
                             children: [
                               Icon(
-                                widget.videoType == 'youtube'
+                                _currentVideoType == 'youtube'
                                     ? Icons.play_circle
-                                    : Icons.video_library,
+                                    : _currentVideoType == 'pdf' ||
+                                            _currentVideoType == 'assignment'
+                                        ? Icons.picture_as_pdf
+                                        : Icons.video_library,
                                 color: const Color(0xFFd4af37),
                                 size: 20,
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                widget.videoType == 'youtube'
+                                _currentVideoType == 'youtube'
                                     ? 'فيديو من يوتيوب'
-                                    : 'فيديو من الخادم',
+                                    : _currentVideoType == 'pdf' ||
+                                            _currentVideoType == 'assignment'
+                                        ? 'ملف PDF'
+                                        : 'فيديو من الخادم',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -533,7 +721,7 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                         _buildLectureList(state),
                         const SizedBox(height: 12),
 
-                        // Download button - only show when video is loaded and lecture ID is available
+                        // Download button - only show when content is loaded and lecture ID is available
                         if (_currentVideoUrl != null &&
                             _currentVideoType != null &&
                             _currentLectureId != null)
@@ -817,7 +1005,10 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                             ? Icons.play_circle
                             : lecture.type == 'quiz'
                                 ? Icons.quiz
-                                : Icons.video_library,
+                                : lecture.type == 'pdf' ||
+                                        lecture.type == 'assignment'
+                                    ? Icons.picture_as_pdf
+                                    : Icons.video_library,
                         color: const Color(0xFFd4af37),
                       ),
                       title: Text(
@@ -856,7 +1047,7 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                         color: Color(0xFFd4af37),
                       ),
                       onTap: () {
-                        // Handle lecture tap - Load video
+                        // Handle lecture tap - Load content
                         if (lecture.type == 'quiz') {
                           // Navigate to quiz screen
                           Navigator.push(
@@ -868,6 +1059,34 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                               ),
                             ),
                           );
+                        } else if ((lecture.type == 'pdf' ||
+                                lecture.type == 'assignment') &&
+                            (lecture.pdfUrl?.isNotEmpty == true ||
+                                lecture.description?.isNotEmpty == true)) {
+                          // Handle PDF/Assignment lecture - Open in separate screen
+                          String pdfUrl = lecture.pdfUrl?.isNotEmpty == true
+                              ? lecture.pdfUrl!
+                              : lecture.description ?? '';
+
+                          if (pdfUrl.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PDFViewerWidget(
+                                  pdfUrl: pdfUrl,
+                                  title: lecture.title,
+                                  isDownloadable: lecture.isDownloadable,
+                                ),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('لا يوجد رابط للملف'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
                         } else if (lecture.videoUrl?.isNotEmpty == true) {
                           // Determine video type based on lecture data
                           String videoType = 'video';
@@ -889,10 +1108,10 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                           //   ),
                           // );
                         } else {
-                          // No video available
+                          // No content available
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('لا يوجد فيديو متاح لهذه المحاضرة'),
+                              content: Text('لا يوجد محتوى متاح لهذه المحاضرة'),
                               backgroundColor: Colors.red,
                             ),
                           );
