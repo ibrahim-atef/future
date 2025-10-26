@@ -1,6 +1,7 @@
 class AppConstants {
   // App Info
   static const String appName = 'فيوتشر';
+  static const String appName2 = 'فيوتشر تيم حقوق';
   static const String appSubtitle = 'كل شيء هنا... معمول علشانك';
 
   // API Configuration

@@ -33,7 +33,8 @@ class BottomNavigation extends StatelessWidget {
               _buildNavItem(Icons.play_circle, 'الكورسات', 1),
               _buildNavItem(Icons.school, 'الكلية', 2),
               _buildNavItem(Icons.article, 'المدونة', 3),
-              _buildNavItem(Icons.person, 'البروفايل', 4),
+              // _buildNavItem(Icons.person, 'البروفايل', 4),
+              _buildNavItem(Icons.download, 'التحميلات', 4),
             ],
           ),
         ),
@@ -43,7 +44,7 @@ class BottomNavigation extends StatelessWidget {
 
   Widget _buildNavItem(IconData icon, String label, int index) {
     final isActive = currentIndex == index;
-    
+
     return GestureDetector(
       onTap: () => onTap(index),
       child: Column(

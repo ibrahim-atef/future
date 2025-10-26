@@ -40,7 +40,8 @@ class AppTheme {
         elevation: 4,
         shadowColor: AppColors.shadowColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
         ),
       ),
 
@@ -133,7 +134,8 @@ class AppTheme {
         titleTextStyle: AppTypography.h2,
         contentTextStyle: AppTypography.bodyMedium,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
         ),
       ),
 

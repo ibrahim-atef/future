@@ -21,27 +21,32 @@ class AuthScreen extends StatelessWidget {
               Center(
                 child: Column(
                   children: [
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFd4af37),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFFd4af37).withOpacity(0.3),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.school,
-                        size: 50,
-                        color: Colors.black,
-                      ),
+                    // Container(
+                    //   width: 100,
+                    //   height: 100,
+                    //   decoration: BoxDecoration(
+                    //     color: const Color(0xFFd4af37),
+                    //     borderRadius: BorderRadius.circular(20),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //         color: const Color(0xFFd4af37).withOpacity(0.3),
+                    //         blurRadius: 20,
+                    //         offset: const Offset(0, 10),
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   child: const Icon(
+                    //     Icons.school,
+                    //     size: 50,
+                    //     color: Colors.black,
+                    //   ),
+                    // ),
+                    Image.asset(
+                      'assets/images/logo.png',
+                      width: 200,
+                      height: 200,
                     ),
-                    const SizedBox(height: 30),
+                    // const SizedBox(height: 30),
                     const Text(
                       'فيوتشر',
                       style: TextStyle(
@@ -85,17 +90,17 @@ class AuthScreen extends StatelessWidget {
               const SizedBox(height: 40),
 
               // Skip Button
-              TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
-                child: const Text(
-                  'تخطي - الدخول كزائر',
-                  style: TextStyle(
-                    color: Color(0xFFd4af37),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+              // TextButton(
+              //   onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
+              //   child: const Text(
+              //     'تخطي - الدخول كزائر',
+              //     style: TextStyle(
+              //       color: Color(0xFFd4af37),
+              //       fontSize: 16,
+              //       fontWeight: FontWeight.w600,
+              //     ),
+              //   ),
+              // ),
 
               const SizedBox(height: 40),
 
