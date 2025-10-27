@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC68dwx5BbO21XwGy-8UDePVAkUCWINpm4',
-    appId: '1:836839374831:android:a858e80a5e0709955ac01a',
+    appId: '1:836839374831:android:b0982b20a873bc785ac01a',
     messagingSenderId: '836839374831',
     projectId: 'sallah-d2a52',
     databaseURL: 'https://sallah-d2a52-default-rtdb.firebaseio.com',
@@ -60,12 +60,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB-YZkcLnx7FdC-RR-8WJLXvcwPZ92B85I',
-    appId: '1:836839374831:ios:d9834b4d79dea0255ac01a',
+    appId: '1:836839374831:ios:90f130b397f4cec65ac01a',
     messagingSenderId: '836839374831',
     projectId: 'sallah-d2a52',
     databaseURL: 'https://sallah-d2a52-default-rtdb.firebaseio.com',
     storageBucket: 'sallah-d2a52.firebasestorage.app',
     androidClientId: '836839374831-rq800586u9v087mukvfak02t51n1qh0o.apps.googleusercontent.com',
-    iosBundleId: 'com.example.fu',
+    iosBundleId: 'com.anmka.future',
   );
+
 }
