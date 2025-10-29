@@ -25,7 +25,9 @@ class AppRoutes {
   // Route names
   static const String splash = '/';
   static const String login = '/login';
+  static const String loginForm = '/login-form';
   static const String register = '/register';
+  static const String registerForm = '/register-form';
   static const String forgotPassword = '/forgot-password';
   static const String verifyCode = '/verify-code';
   static const String home = '/home';
@@ -57,11 +59,23 @@ class AppRoutes {
               settings: settings,
             );
 
-      case register:
-        return MaterialPageRoute(
-          builder: (_) => const RegisterScreen(),
-          settings: settings,
-        );
+          case loginForm:
+            return MaterialPageRoute(
+              builder: (_) => const LoginScreen(),
+              settings: settings,
+            );
+
+          case register:
+            return MaterialPageRoute(
+              builder: (_) => const RegisterScreen(),
+              settings: settings,
+            );
+
+          case registerForm:
+            return MaterialPageRoute(
+              builder: (_) => const RegisterScreen(),
+              settings: settings,
+            );
 
       case forgotPassword:
         return MaterialPageRoute(
@@ -105,8 +119,9 @@ class AppRoutes {
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
           builder: (_) => LecturePlayerScreen(
-            lecture: args?['lecture'],
             courseTitle: args?['courseTitle'] ?? '',
+            videoUrl: args?['videoUrl'] ?? '',
+            videoType: args?['videoType'] ?? 'youtube',
           ),
           settings: settings,
         );

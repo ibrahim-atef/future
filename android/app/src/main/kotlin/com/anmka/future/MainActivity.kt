@@ -1,4 +1,4 @@
-package com.example.fu
+package com.anmka.future
 
 import io.flutter.embedding.android.FlutterActivity
 

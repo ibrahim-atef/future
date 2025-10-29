@@ -1,5 +1,8 @@
 # Flutter InAppWebView - Android BackEvent
 # The BackEvent class is only available in Android API 34+
+-keep class android.window.BackEvent { *; }
+-keep class android.window.BackAnimationController { *; }
+-keep class android.window.** { *; }
 -dontwarn android.window.**
 -ignorewarnings
 

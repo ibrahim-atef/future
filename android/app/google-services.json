@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:836839374831:android:b0982b20a873bc785ac01a",
+        "android_client_info": {
+          "package_name": "com.anmka.future"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836839374831-lu12kt0m0mug5r6tb7lealbajk16a48q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC68dwx5BbO21XwGy-8UDePVAkUCWINpm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836839374831-lu12kt0m0mug5r6tb7lealbajk16a48q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "836839374831-u09ckqaqs4psur2bhvv8kek33366e9ct.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.foodies.customer.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:836839374831:android:a858e80a5e0709955ac01a",
         "android_client_info": {
           "package_name": "com.example.fu"

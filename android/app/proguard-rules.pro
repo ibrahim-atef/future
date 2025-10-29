@@ -1,30 +1,88 @@
-# Flutter Secure Storage
--keep class com.it_nomads.fluttersecurestorage.** { *; }
-
-# Device Info Plus
--keep class dev.fluttercommunity.plus.deviceinfo.** { *; }
-
-# Keep native methods
--keepclasseswithmembernames,includedescriptorclasses class * {
-    native <methods>;
-}
-
-# Flutter InAppWebView - Android BackEvent
-# The BackEvent class is only available in Android API 34+
-# We need to suppress warnings for backward compatibility
+# ================================
+# Android 14+ BackEvent Fix
+# ================================
+-keep class android.window.BackEvent { *; }
+-keep class android.window.BackAnimationController { *; }
+-dontwarn android.window.BackEvent
+-dontwarn android.window.BackAnimationController
 -dontwarn android.window.**
--ignorewarnings
 
-# Flutter embedding - keep all classes to avoid R8 issues
--keep class io.flutter.** { *; }
--keep class io.flutter.embedding.** { *; }
--keep interface io.flutter.** { *; }
--dontwarn io.flutter.embedding.android.**
+# ================================
+# Flutter Core
+# ================================
+-keep class io.flutter.app.** { *; }
+-keep class io.flutter.plugin.**  { *; }
+-keep class io.flutter.util.**  { *; }
+-keep class io.flutter.view.**  { *; }
+-keep class io.flutter.**  { *; }
+-keep class io.flutter.plugins.**  { *; }
 
-# InAppWebView
+# ================================
+# Flutter InAppWebView
+# ================================
 -keep class com.pichillilorenzo.flutter_inappwebview.** { *; }
--dontwarn com.pichillilorenzo.flutter_inappwebview.**
+-keep class io.flutter.plugins.webviewflutter.** { *; }
 
-# Image Picker
--keep class io.flutter.plugins.imagepicker.** { *; }
--dontwarn io.flutter.plugins.imagepicker.**
+# Fix R8 BackEvent issue (Android 14+)
+-dontwarn android.window.**
+-keep class android.window.** { *; }
+
+# ================================
+# Firebase & Google Services
+# ================================
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.firebase.**
+-dontwarn com.google.android.gms.**
+
+# ================================
+# Syncfusion PDF
+# ================================
+-keep class com.syncfusion.** { *; }
+-dontwarn com.syncfusion.**
+
+# ================================
+# Video Player
+# ================================
+-keep class io.flutter.plugins.videoplayer.** { *; }
+
+# ================================
+# Gson (for JSON serialization)
+# ================================
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn sun.misc.**
+-keep class com.google.gson.** { *; }
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+# ================================
+# Retrofit & OkHttp
+# ================================
+-keepattributes Signature, InnerClasses, EnclosingMethod
+-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn javax.annotation.**
+-dontwarn kotlin.Unit
+-dontwarn retrofit2.KotlinExtensions
+-dontwarn retrofit2.KotlinExtensions$*
+-if interface * { @retrofit2.http.* <methods>; }
+-keep,allowobfuscation interface <1>
+
+# OkHttp
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# ================================
+# Enums, Models, & General Keep Rules
+# ================================
+-keep class * extends java.lang.Enum { *; }
+-keepattributes *Annotation*
+-keepattributes InnerClasses
+-keepattributes EnclosingMethod
