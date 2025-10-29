@@ -14,7 +14,7 @@ class _ApiService implements ApiService {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://Future.anmka.com/wp-json/tutor-api/v1/';
+    baseUrl ??= 'https://future-academy-courses.com/wp-json/tutor-api/v1/';
   }
 
   final Dio _dio;

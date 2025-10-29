@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:future_app/core/di/di.dart';
@@ -24,6 +25,7 @@ import 'core/notification/notification_service.dart';
 import 'package:future_app/features/downloads/data/service/download_service.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:screen_protector/screen_protector.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +60,9 @@ void main() async {
   // Initialize Download Service
   await DownloadService().initialize();
 
+  // Initialize Screen Protector
+  await _initializeScreenProtector();
+
   // device id
   UserConstant.deviceId = await DeviceInfoHelper.getDeviceId();
   // Initialize Dependency Injection
@@ -68,8 +73,39 @@ void main() async {
   runApp(const FutureApp());
 }
 
-class FutureApp extends StatelessWidget {
+/// Initialize screen protection on Android/iOS
+Future<void> _initializeScreenProtector() async {
+  try {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      debugPrint('🛡️ Enabling Android screen protection...');
+      await ScreenProtector.protectDataLeakageOn();
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+      debugPrint('🛡️ Enabling iOS screenshot prevention...');
+      await ScreenProtector.preventScreenshotOn();
+    }
+  } catch (e) {
+    debugPrint('❌ ScreenProtector init error: $e');
+  }
+}
+
+class FutureApp extends StatefulWidget {
   const FutureApp({super.key});
+
+  @override
+  State<FutureApp> createState() => _FutureAppState();
+}
+
+class _FutureAppState extends State<FutureApp> {
+  @override
+  void dispose() {
+    // Disable screen protection when leaving
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      ScreenProtector.protectDataLeakageOff();
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+      ScreenProtector.preventScreenshotOff();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
