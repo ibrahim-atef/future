@@ -82,7 +82,7 @@ class NotificationModel {
   final String id;
 
   @JsonKey(name: 'userId')
-  final String userId;
+  final String? userId;
 
   @JsonKey(name: 'title')
   final String title;
@@ -105,9 +105,12 @@ class NotificationModel {
   @JsonKey(name: 'createdAt')
   final String createdAt;
 
+  @JsonKey(name: 'course_id')
+  final String? courseId;
+
   NotificationModel({
     required this.id,
-    required this.userId,
+    this.userId,
     required this.title,
     required this.message,
     required this.type,
@@ -115,6 +118,7 @@ class NotificationModel {
     this.imageUrl,
     required this.isRead,
     required this.createdAt,
+    this.courseId,
   });
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
@@ -153,6 +157,7 @@ class NotificationModel {
     dynamic imageUrl,
     bool? isRead,
     String? createdAt,
+    String? courseId,
   }) {
     return NotificationModel(
       id: id ?? this.id,
@@ -164,6 +169,7 @@ class NotificationModel {
       imageUrl: imageUrl ?? this.imageUrl,
       isRead: isRead ?? this.isRead,
       createdAt: createdAt ?? this.createdAt,
+      courseId: courseId ?? this.courseId,
     );
   }
 }

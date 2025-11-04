@@ -185,6 +185,7 @@ class _ApiService implements ApiService {
   Future<BannerResponseModel> getBanners(
     int apiKey,
     String appSource,
+    String filter,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -201,7 +202,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'banners',
+          'banners/${filter}',
           queryParameters: queryParameters,
           data: _data,
         )

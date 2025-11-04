@@ -58,7 +58,7 @@ Map<String, dynamic> _$PaginationModelToJson(PaginationModel instance) =>
 NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
     NotificationModel(
       id: json['id'] as String,
-      userId: json['userId'] as String,
+      userId: json['userId'] as String?,
       title: json['title'] as String,
       message: json['message'] as String,
       type: json['type'] as String,
@@ -66,6 +66,7 @@ NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
       imageUrl: json['imageUrl'],
       isRead: json['isRead'] as bool,
       createdAt: json['createdAt'] as String,
+      courseId: json['course_id'] as String?,
     );
 
 Map<String, dynamic> _$NotificationModelToJson(NotificationModel instance) =>
@@ -79,6 +80,7 @@ Map<String, dynamic> _$NotificationModelToJson(NotificationModel instance) =>
       'imageUrl': instance.imageUrl,
       'isRead': instance.isRead,
       'createdAt': instance.createdAt,
+      'course_id': instance.courseId,
     };
 
 MarkNotificationReadResponseModel _$MarkNotificationReadResponseModelFromJson(

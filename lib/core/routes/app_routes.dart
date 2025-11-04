@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/core/di/di.dart';
-import 'package:future_app/features/emtyaz/emtyaz_scree.dart';
+import 'package:future_app/features/emtyaz/emtyaz_screen.dart';
 import 'package:future_app/features/profile/logic/cubit/profile_cubit.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
 import 'package:future_app/screens/experience_of_excellence/experience_of_excellence_page.dart';

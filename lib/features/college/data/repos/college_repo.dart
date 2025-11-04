@@ -17,6 +17,7 @@ class CollegeRepo {
       final response = await _apiService.getBanners(
         ApiConstants.apiKey,
         ApiConstants.appSource,
+        'college',
       );
       return ApiResult.success(response);
     } catch (e) {

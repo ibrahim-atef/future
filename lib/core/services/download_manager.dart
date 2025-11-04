@@ -19,26 +19,50 @@ class DownloadManager {
     String? authToken,
   }) async {
     try {
-      // طلب صلاحيات التخزين
-      PermissionStatus storageStatus = await Permission.storage.request();
+      // التحقق من الصلاحيات أولاً (بدون طلب)
+      bool hasPermission = false;
       
-      if (!storageStatus.isGranted) {
-        // محاولة طلب صلاحيات أخرى للأندرويد 13+
-        if (Platform.isAndroid) {
-          PermissionStatus photosStatus = await Permission.photos.request();
-          PermissionStatus videosStatus = await Permission.videos.request();
+      if (Platform.isAndroid) {
+        // التحقق من الصلاحيات الموجودة
+        final storageStatus = await Permission.storage.status;
+        final photosStatus = await Permission.photos.status;
+        final videosStatus = await Permission.videos.status;
+        
+        hasPermission = storageStatus.isGranted || 
+                       photosStatus.isGranted || 
+                       videosStatus.isGranted;
+        
+        // إذا لم تكن الصلاحيات موجودة، نحاول طلبها
+        if (!hasPermission) {
+          debugPrint('📱 Checking storage permissions...');
           
-          if (!photosStatus.isGranted && !videosStatus.isGranted) {
-            debugPrint('❌ Permission denied: Cannot download without storage permission');
-            return null;
+          // طلب صلاحيات التخزين
+          final storageStatusAfter = await Permission.storage.request();
+          
+          if (!storageStatusAfter.isGranted) {
+            // محاولة طلب صلاحيات أخرى للأندرويد 13+
+            final photosStatusAfter = await Permission.photos.request();
+            final videosStatusAfter = await Permission.videos.request();
+            
+            hasPermission = photosStatusAfter.isGranted || videosStatusAfter.isGranted;
+          } else {
+            hasPermission = true;
           }
-        } else {
-          debugPrint('❌ Permission denied: Cannot download without storage permission');
-          return null;
         }
+        
+        // حتى لو لم تكن الصلاحيات موجودة، يمكننا استخدام مجلد التطبيق الخاص
+        // الذي لا يحتاج صلاحيات على Android 13+
+        if (!hasPermission) {
+          debugPrint('⚠️ No storage permissions, but will use app directory (no permission needed)');
+        } else {
+          debugPrint('✅ Storage permissions granted');
+        }
+      } else {
+        // iOS لا يحتاج صلاحيات لمجلد التطبيق
+        hasPermission = true;
       }
 
-      // الحصول على مسار التخزين الداخلي للتطبيق
+      // الحصول على مسار التخزين الداخلي للتطبيق (لا يحتاج صلاحيات)
       String directory = (await getApplicationSupportDirectory()).path;
       String fileName = name ?? url.split('/').last;
       String fullPath = '$directory/$fileName';

@@ -170,7 +170,9 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
     return BlocBuilder<CoursesCubit, CoursesState>(
       builder: (context, state) {
         final cubit = context.read<CoursesCubit>();
-        final courses = cubit.allCourses;
+        // Filter to show only paid courses (not free)
+        final courses =
+            cubit.allCourses.where((course) => !course.isFree).toList();
         final isLoading = state is GetCoursesLoading;
 
         if (isLoading) {
@@ -183,7 +185,7 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
             child: Padding(
               padding: EdgeInsets.all(32.0),
               child: Text(
-                'لا توجد كورسات متاحة',
+                'لا توجد كورسات مدفوعة متاحة',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,

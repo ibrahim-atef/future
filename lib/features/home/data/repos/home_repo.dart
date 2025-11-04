@@ -15,6 +15,7 @@ class HomeRepo {
       final response = await _apiService.getBanners(
         ApiConstants.apiKey,
         ApiConstants.appSource,
+        'home',
       );
       return ApiResult.success(response);
     } catch (e) {

@@ -99,68 +99,157 @@ class DownloadService {
         print('Android SDK version: ${androidInfo.version.sdkInt}');
 
         if (androidInfo.version.sdkInt >= 33) {
-          // Android 13+ - Request media permissions
-          print('Requesting Android 13+ media permissions');
-          final videoStatus = await Permission.videos.request();
-          final audioStatus = await Permission.audio.request();
-          final photoStatus = await Permission.photos.request();
+          // Android 13+ - Check first if permissions are already granted
+          print('Checking Android 13+ media permissions status');
+          final videoStatus = await Permission.videos.status;
+          final audioStatus = await Permission.audio.status;
+          final photoStatus = await Permission.photos.status;
 
-          print('Video permission: $videoStatus');
-          print('Audio permission: $audioStatus');
-          print('Photo permission: $photoStatus');
+          print('Video permission status: $videoStatus');
+          print('Audio permission status: $audioStatus');
+          print('Photo permission status: $photoStatus');
 
-          final granted = videoStatus == PermissionStatus.granted ||
+          // If any permission is already granted, return true
+          if (videoStatus == PermissionStatus.granted ||
               audioStatus == PermissionStatus.granted ||
-              photoStatus == PermissionStatus.granted;
+              photoStatus == PermissionStatus.granted) {
+            print('Media permissions already granted');
+            return true;
+          }
+
+          // Only request if not granted
+          print('Requesting Android 13+ media permissions');
+          final videoStatusAfter = await Permission.videos.request();
+          final audioStatusAfter = await Permission.audio.request();
+          final photoStatusAfter = await Permission.photos.request();
+
+          print('Video permission after request: $videoStatusAfter');
+          print('Audio permission after request: $audioStatusAfter');
+          print('Photo permission after request: $photoStatusAfter');
+
+          final granted = videoStatusAfter == PermissionStatus.granted ||
+              audioStatusAfter == PermissionStatus.granted ||
+              photoStatusAfter == PermissionStatus.granted;
 
           print('Media permissions granted: $granted');
 
-          // Also try storage permission as fallback
+          // For Android 13+, we can still use app's own directory without permissions
           if (!granted) {
-            print('Trying storage permission as fallback');
-            final storageStatus = await Permission.storage.request();
-            print('Storage permission: $storageStatus');
-            return storageStatus == PermissionStatus.granted;
+            print('Media permissions not granted, but can use app directory');
+            // Test if we can write to app's external directory
+            try {
+              final directory = await getExternalStorageDirectory();
+              if (directory != null) {
+                final testFile = File('${directory.path}/test_write.tmp');
+                await testFile.writeAsString('test');
+                await testFile.delete();
+                print(
+                    'Can write to app directory, continuing without permissions');
+                return true;
+              }
+            } catch (e) {
+              print('Cannot write to app directory: $e');
+            }
           }
 
           return granted;
         } else if (androidInfo.version.sdkInt >= 30) {
-          // Android 11-12 - Request manage external storage
-          print('Requesting manage external storage permission');
+          // Android 11-12 - Check manage external storage first
+          print('Checking manage external storage permission status');
           final manageStorageStatus =
-              await Permission.manageExternalStorage.request();
-          print('Manage external storage: $manageStorageStatus');
+              await Permission.manageExternalStorage.status;
+          print('Manage external storage status: $manageStorageStatus');
 
           if (manageStorageStatus == PermissionStatus.granted) {
+            print('Manage external storage already granted');
+            return true;
+          }
+
+          // Check storage permission
+          final storageStatus = await Permission.storage.status;
+          if (storageStatus == PermissionStatus.granted) {
+            print('Storage permission already granted');
+            return true;
+          }
+
+          // Only request if not granted
+          print('Requesting manage external storage permission');
+          final manageStorageStatusAfter =
+              await Permission.manageExternalStorage.request();
+          print(
+              'Manage external storage after request: $manageStorageStatusAfter');
+
+          if (manageStorageStatusAfter == PermissionStatus.granted) {
             return true;
           }
 
           // Fallback to regular storage permission
           print('Falling back to regular storage permission');
-          final storageStatus = await Permission.storage.request();
-          print('Storage permission: $storageStatus');
-          return storageStatus == PermissionStatus.granted;
+          final storageStatusAfter = await Permission.storage.request();
+          print('Storage permission after request: $storageStatusAfter');
+
+          // Even if not granted, we can use app's own directory
+          if (storageStatusAfter != PermissionStatus.granted) {
+            print('Storage permission not granted, but can use app directory');
+            try {
+              final directory = await getExternalStorageDirectory();
+              if (directory != null) {
+                final testFile = File('${directory.path}/test_write.tmp');
+                await testFile.writeAsString('test');
+                await testFile.delete();
+                print(
+                    'Can write to app directory, continuing without permissions');
+                return true;
+              }
+            } catch (e) {
+              print('Cannot write to app directory: $e');
+            }
+          }
+
+          return storageStatusAfter == PermissionStatus.granted;
         } else {
-          // Android 10 and below - Request storage permission
+          // Android 10 and below - Check storage permission first
+          print('Checking Android 10- storage permission status');
+          final storageStatus = await Permission.storage.status;
+          print('Storage permission status: $storageStatus');
+
+          if (storageStatus == PermissionStatus.granted) {
+            print('Storage permission already granted');
+            return true;
+          }
+
+          // Only request if not granted
           print('Requesting Android 10- storage permission');
-          final storageStatus = await Permission.storage.request();
-          print('Storage permission: $storageStatus');
-          return storageStatus == PermissionStatus.granted;
+          final storageStatusAfter = await Permission.storage.request();
+          print('Storage permission after request: $storageStatusAfter');
+          return storageStatusAfter == PermissionStatus.granted;
         }
       }
       print('iOS - no explicit permission needed for app documents');
       return true; // iOS doesn't need explicit permission for app documents
     } catch (e) {
       print('Error requesting permission: $e');
-      // Try basic storage permission as last resort
-      try {
-        final storageStatus = await Permission.storage.request();
-        print('Last resort storage permission: $storageStatus');
-        return storageStatus == PermissionStatus.granted;
-      } catch (e2) {
-        print('Last resort permission also failed: $e2');
-        return false;
+      // For Android 13+, try to use app directory without permissions
+      if (Platform.isAndroid) {
+        try {
+          final androidInfo = await DeviceInfoPlugin().androidInfo;
+          if (androidInfo.version.sdkInt >= 33) {
+            print('Trying to use app directory without permissions');
+            final directory = await getExternalStorageDirectory();
+            if (directory != null) {
+              final testFile = File('${directory.path}/test_write.tmp');
+              await testFile.writeAsString('test');
+              await testFile.delete();
+              print(
+                  'Can write to app directory, continuing without permissions');
+              return true;
+            }
+          }
+        } catch (e2) {
+          print('Cannot use app directory: $e2');
+        }
       }
+      return false;
     }
   }
 
@@ -182,15 +271,21 @@ class DownloadService {
         throw Exception('Video URL is empty');
       }
 
-      // Request permission
-      print('Requesting storage permissions...');
-      final hasPermission = await requestPermission();
+      // Check permission first (without requesting)
+      print('Checking storage permissions...');
+      final hasPermission = await hasStoragePermission();
       if (!hasPermission) {
-        print('Storage permission denied');
-        throw Exception(
-            'Storage permission denied. Please grant storage access to download videos.');
+        // Only request if not already granted
+        print('Storage permission not granted, requesting...');
+        final granted = await requestPermission();
+        if (!granted) {
+          print('Storage permission denied, but will try to use app directory');
+        } else {
+          print('Storage permission granted after request');
+        }
+      } else {
+        print('Storage permission already granted');
       }
-      print('Storage permission granted');
 
       // Create downloads directory
       print('Setting up download directory...');
@@ -213,6 +308,14 @@ class DownloadService {
         throw Exception('Cannot write to download directory: $e');
       }
 
+      // Check if we're using app's private directory (doesn't need public storage)
+      final appDocDir = await getApplicationDocumentsDirectory();
+      final isPrivateDirectory = directory.path.startsWith(appDocDir.path);
+      final shouldSaveInPublicStorage = hasPermission && !isPrivateDirectory;
+
+      print('Using private directory: $isPrivateDirectory');
+      print('Save in public storage: $shouldSaveInPublicStorage');
+
       // Ensure flutter_downloader is initialized before using it
       try {
         final tasks = await FlutterDownloader.loadTasks();
@@ -232,7 +335,7 @@ class DownloadService {
         showNotification: true,
         openFileFromNotification: false,
         requiresStorageNotLow: false,
-        saveInPublicStorage: true,
+        saveInPublicStorage: shouldSaveInPublicStorage,
         headers: {
           'User-Agent':
               'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36',
@@ -300,28 +403,62 @@ class DownloadService {
   // Get downloads directory (private to the app)
   Future<Directory> _getDownloadsDirectory() async {
     try {
-      // Try to get external storage directory first (more accessible)
       Directory? directory;
 
       if (Platform.isAndroid) {
-        // For Android, try external storage first
+        // Check if we have permissions first
+        final hasPermission = await hasStoragePermission();
+
+        if (hasPermission) {
+          // Try to get external storage directory (more accessible)
+          try {
+            directory = await getExternalStorageDirectory();
+            if (directory != null) {
+              // Try to create a subdirectory in Download folder
+              final downloadsDir =
+                  Directory(join(directory.path, 'Download', 'FutureApp'));
+              try {
+                if (!await downloadsDir.exists()) {
+                  await downloadsDir.create(recursive: true);
+                }
+                // Test write access
+                final testFile =
+                    File(join(downloadsDir.path, 'test_write.tmp'));
+                await testFile.writeAsString('test');
+                await testFile.delete();
+                print('Using external storage directory: ${downloadsDir.path}');
+                return downloadsDir;
+              } catch (e) {
+                print('Cannot write to external Download folder: $e');
+                // Fall through to use app's own directory
+              }
+            }
+          } catch (e) {
+            print(
+                'External storage not available, falling back to app documents: $e');
+          }
+        }
+
+        // Use app's own external directory (no permissions needed on Android 13+)
+        // or app documents directory
         try {
           directory = await getExternalStorageDirectory();
           if (directory != null) {
+            // Use app's own directory under external storage
             final downloadsDir =
-                Directory(join(directory.path, 'Download', 'FutureApp'));
+                Directory(join(directory.path, 'downloaded_videos'));
             if (!await downloadsDir.exists()) {
               await downloadsDir.create(recursive: true);
             }
+            print('Using app external directory: ${downloadsDir.path}');
             return downloadsDir;
           }
         } catch (e) {
-          print(
-              'External storage not available, falling back to app documents: $e');
+          print('Cannot access external storage directory: $e');
         }
       }
 
-      // Fallback to application documents directory
+      // Fallback to application documents directory (always works)
       directory = await getApplicationDocumentsDirectory();
       final downloadsDir = Directory(join(directory.path, 'downloaded_videos'));
 
@@ -329,6 +466,7 @@ class DownloadService {
         await downloadsDir.create(recursive: true);
       }
 
+      print('Using app documents directory: ${downloadsDir.path}');
       return downloadsDir;
     } catch (e) {
       print('Error getting downloads directory: $e');
@@ -340,6 +478,7 @@ class DownloadService {
         await downloadsDir.create(recursive: true);
       }
 
+      print('Using ultimate fallback directory: ${downloadsDir.path}');
       return downloadsDir;
     }
   }
@@ -612,28 +751,72 @@ class DownloadService {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
 
       if (androidInfo.version.sdkInt >= 33) {
-        // Android 13+ - Check media permissions
+        // Android 13+ - Check media permissions first
         final videoStatus = await Permission.videos.status;
         final audioStatus = await Permission.audio.status;
         final photoStatus = await Permission.photos.status;
 
-        return videoStatus == PermissionStatus.granted ||
+        final hasMediaPermission = videoStatus == PermissionStatus.granted ||
             audioStatus == PermissionStatus.granted ||
             photoStatus == PermissionStatus.granted;
+
+        if (hasMediaPermission) {
+          print('Android 13+: Media permissions granted');
+          return true;
+        }
+
+        // For Android 13+, we can use app's own directory without permissions
+        // Test if we can write to app's external directory
+        try {
+          final directory = await getExternalStorageDirectory();
+          if (directory != null) {
+            final testFile = File('${directory.path}/test_write.tmp');
+            await testFile.writeAsString('test');
+            await testFile.delete();
+            print(
+                'Android 13+: Can write to app directory without permissions');
+            return true;
+          }
+        } catch (e) {
+          print('Android 13+: Cannot write to app directory: $e');
+        }
+
+        return false;
       } else if (androidInfo.version.sdkInt >= 30) {
         // Android 11-12 - Check manage external storage
         final manageStorageStatus =
             await Permission.manageExternalStorage.status;
         if (manageStorageStatus == PermissionStatus.granted) {
+          print('Android 11-12: Manage external storage granted');
           return true;
         }
 
         // Fallback to regular storage permission
         final storageStatus = await Permission.storage.status;
-        return storageStatus == PermissionStatus.granted;
+        if (storageStatus == PermissionStatus.granted) {
+          print('Android 11-12: Storage permission granted');
+          return true;
+        }
+
+        // Try app directory as fallback
+        try {
+          final directory = await getExternalStorageDirectory();
+          if (directory != null) {
+            final testFile = File('${directory.path}/test_write.tmp');
+            await testFile.writeAsString('test');
+            await testFile.delete();
+            print('Android 11-12: Can write to app directory');
+            return true;
+          }
+        } catch (e) {
+          print('Android 11-12: Cannot write to app directory: $e');
+        }
+
+        return false;
       } else {
         // Android 10 and below - Check storage permission
         final storageStatus = await Permission.storage.status;
+        print('Android 10-: Storage permission status: $storageStatus');
         return storageStatus == PermissionStatus.granted;
       }
     }

@@ -59,6 +59,7 @@ abstract class ApiService {
   Future<BannerResponseModel> getBanners(
     @Header('x-api-key') int apiKey,
     @Header('X-App-Source') String appSource,
+    @Path('filter') String filter,
   );
 
   // get courses with pagination

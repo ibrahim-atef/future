@@ -7,7 +7,7 @@ class ApiConstants {
   static const String logout = "logout";
   static const String registerStep1 = "register";
   static const String registerStep2 = "register/step/2";
-  static const String banners = "banners";
+  static const String banners = "banners/{filter}";
   static const String courses = "courses";
   static const String posts = "posts";
   static const String profileSetting = "panel/profile-setting";

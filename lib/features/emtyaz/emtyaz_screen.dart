@@ -20,6 +20,7 @@ class EmtyazScreen extends StatefulWidget {
 class _EmtyazScreenState extends State<EmtyazScreen> {
   String selectedGrade = '17';
   late CollegeCubit _collegeCubit;
+  List<CourseModel> _freeCoursesList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,18 @@ class _EmtyazScreenState extends State<EmtyazScreen> {
                       return state.maybeWhen(
                         getCoursesLoading: () => _buildSkeletonGrid(),
                         getCoursesSuccess: (data) {
-                          return _buildCoursesGrid(data.data);
+                          // Filter and store free courses
+                          _freeCoursesList = data.data
+                              .where((course) =>
+                                  course.price == 0 || course.isFree)
+                              .toList();
+
+                          // Show empty state if no free courses
+                          if (_freeCoursesList.isEmpty) {
+                            return _buildEmptyState();
+                          }
+
+                          return _buildCoursesGrid(_freeCoursesList);
                         },
                         getCoursesError: (error) =>
                             _buildErrorState(error.getAllErrorsAsString()),
@@ -222,6 +234,10 @@ class _EmtyazScreenState extends State<EmtyazScreen> {
   }
 
   Widget _buildCoursesGrid(List<CourseModel> courses) {
+    if (courses.isEmpty) {
+      return _buildEmptyState();
+    }
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -369,23 +385,23 @@ class _EmtyazScreenState extends State<EmtyazScreen> {
                           children: [
                             Text(
                               course.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
                               ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
                             Text(
                               course.teacherName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 11,
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                             ),
                             const Spacer(),
                             Row(
@@ -453,11 +469,21 @@ class _EmtyazScreenState extends State<EmtyazScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'لا توجد كورسات متاحة',
+              'لا توجد كورسات مجانية متاحة لهذه الفرقة',
               style: TextStyle(
                 color: Colors.white.withOpacity(0.7),
                 fontSize: 16,
               ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'جرب فرقة أخرى',
+              style: TextStyle(
+                color: const Color(0xFFd4af37).withOpacity(0.7),
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

@@ -33,6 +33,7 @@ class CoursesRepo {
       final response = await _apiService.getBanners(
         ApiConstants.apiKey,
         ApiConstants.appSource,
+        'courses',
       );
       log('✅ CoursesRepo: Banner API success - ${response.data.banners.length} banners');
       log('Banner URLs: ${response.data.banners}');
