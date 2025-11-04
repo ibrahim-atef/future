@@ -214,11 +214,11 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
           ],
           bottomActions: [
             // Current time
-            const CurrentPosition(),
+            CurrentPosition(),
             // Progress bar
-            const ProgressBar(
+            ProgressBar(
               isExpanded: true,
-              colors: ProgressBarColors(
+              colors: const ProgressBarColors(
                 playedColor: Color(0xFFd4af37),
                 handleColor: Color(0xFFd4af37),
                 backgroundColor: Colors.white24,
@@ -226,7 +226,7 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
               ),
             ),
             // Remaining time
-            const RemainingDuration(),
+            RemainingDuration(),
             // Playback speed
             const PlaybackSpeedButton(),
             // Settings button
@@ -241,7 +241,7 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
               ),
             ),
             // Fullscreen button
-            const FullScreenButton(),
+            FullScreenButton(),
           ],
         ),
       );

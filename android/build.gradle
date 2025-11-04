@@ -23,9 +23,39 @@ subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 subprojects {
-    project.evaluationDependsOn(":app")
+    // Fix for missing namespace in dependencies (e.g., flutter_inappwebview)
+    // This hook runs when the Android library plugin is applied
+    project.plugins.withId('com.android.library') {
+        // Configure the android block to set namespace
+        project.android {
+            // Set namespace if not already set
+            if (namespace == null || namespace.toString().trim().isEmpty()) {
+                // Try to extract namespace from AndroidManifest.xml
+                def manifestFile = project.file("src/main/AndroidManifest.xml")
+                if (manifestFile.exists()) {
+                    try {
+                        def manifestText = manifestFile.text
+                        def packageMatch = manifestText =~ /package=["']([^"']+)["']/
+                        if (packageMatch) {
+                            namespace = packageMatch[0][1]
+                            println "✅ Set namespace for ${project.name}: ${namespace}"
+                        }
+                    } catch (Exception e) {
+                        // Ignore parsing errors
+                    }
+                }
+                // If still null, set default for flutter_inappwebview
+                if ((namespace == null || namespace.toString().trim().isEmpty()) && 
+                    (project.name == 'flutter_inappwebview' || project.path.contains('flutter_inappwebview'))) {
+                    namespace = "com.pichillilorenzo.flutter_inappwebview"
+                    println "✅ Set default namespace for ${project.name}: ${namespace}"
+                }
+            }
+        }
+    }
 }
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+

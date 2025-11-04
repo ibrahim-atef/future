@@ -57,7 +57,7 @@ dependencies:
 
   # Media Players
   video_player: ^2.8.1
-  youtube_player_flutter: ^9.0.0
+  youtube_player_flutter: 
   flutter_svg: ^2.0.10+1
   device_info_plus: ^9.0.0
   flutter_secure_storage: ^8.0.0
