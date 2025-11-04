@@ -24,11 +24,40 @@ class PDFViewerWidget extends StatefulWidget {
 class _PDFViewerWidgetState extends State<PDFViewerWidget> {
   final DownloadService _downloadService = DownloadService();
   bool _isDownloading = false;
+  String? _cleanedPdfUrl;
 
   @override
   void initState() {
-    print('pdfUrl: ${widget.pdfUrl}');
     super.initState();
+    _cleanedPdfUrl = _extractUrlFromHtml(widget.pdfUrl);
+    print('Original pdfUrl: ${widget.pdfUrl}');
+    print('Cleaned pdfUrl: $_cleanedPdfUrl');
+  }
+
+  /// استخراج الرابط من النص HTML
+  String _extractUrlFromHtml(String? htmlText) {
+    if (htmlText == null || htmlText.isEmpty) {
+      return '';
+    }
+
+    // إزالة HTML tags
+    String cleaned = htmlText
+        .replaceAll(RegExp(r'<[^>]*>'), '') // إزالة جميع HTML tags
+        .trim();
+
+    // البحث عن رابط HTTP أو HTTPS
+    final urlRegex = RegExp(
+      r'https?://[^\s<>\"]+',
+      caseSensitive: false,
+    );
+
+    final match = urlRegex.firstMatch(cleaned);
+    if (match != null) {
+      return match.group(0) ?? cleaned;
+    }
+
+    // إذا لم نجد رابط، نعيد النص المطهر
+    return cleaned;
   }
 
   Future<bool> _requestStoragePermission() async {
@@ -167,17 +196,18 @@ class _PDFViewerWidgetState extends State<PDFViewerWidget> {
       fileName = '$fileName.pdf';
 
       // التأكد من أن الـ URL صحيح
-      if (widget.pdfUrl.isEmpty) {
+      final pdfUrl = _cleanedPdfUrl ?? '';
+      if (pdfUrl.isEmpty) {
         throw Exception('رابط الملف غير صحيح');
       }
 
       print('Starting download for: ${widget.title}');
-      print('URL: ${widget.pdfUrl}');
+      print('URL: $pdfUrl');
       print('FileName: $fileName');
 
       // بدء التحميل مباشرة
       final result = await _downloadService.downloadFile(
-        url: widget.pdfUrl,
+        url: pdfUrl,
         fileName: fileName,
         fileType: 'PDF',
         title: widget.title,
@@ -243,9 +273,13 @@ class _PDFViewerWidgetState extends State<PDFViewerWidget> {
         ],
       ),
       body: Container(
-        child: SfPdfViewer.network(
-          widget.pdfUrl,
-        ),
+        child: _cleanedPdfUrl != null && _cleanedPdfUrl!.isNotEmpty
+            ? SfPdfViewer.network(
+                _cleanedPdfUrl!,
+              )
+            : const Center(
+                child: Text('رابط الملف غير صحيح'),
+              ),
       ),
     );
   }
