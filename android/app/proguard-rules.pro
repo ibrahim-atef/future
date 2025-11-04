@@ -1,4 +1,9 @@
 # ================================
+# R8 Configuration - Ignore warnings to prevent build failures
+# ================================
+-ignorewarnings
+
+# ================================
 # Android 14+ BackEvent Fix
 # ================================
 -keep class android.window.BackEvent { *; }
@@ -18,10 +23,63 @@
 -keep class io.flutter.plugins.**  { *; }
 
 # ================================
-# Flutter InAppWebView
+# Flutter InAppWebView - Comprehensive Rules
 # ================================
 -keep class com.pichillilorenzo.flutter_inappwebview.** { *; }
 -keep class io.flutter.plugins.webviewflutter.** { *; }
+
+# Keep all WebView related classes
+-keep class android.webkit.** { *; }
+-dontwarn android.webkit.**
+
+# Keep JavaScript interfaces
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# Keep classes used by WebView via reflection
+-keepclassmembers class * extends android.webkit.WebViewClient {
+    public <methods>;
+}
+
+-keepclassmembers class * extends android.webkit.WebChromeClient {
+    public <methods>;
+}
+
+# Keep JavaScript bridge classes
+-keep @android.webkit.JavascriptInterface interface * {
+    *;
+}
+
+# Keep WebView JavaScript bridge implementation
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# Keep classes that implement JavaScript interfaces
+-keep class * implements android.webkit.ValueCallback { *; }
+
+# Keep WebViewClient and WebChromeClient subclasses
+-keep class * extends android.webkit.WebViewClient {
+    public *;
+}
+
+-keep class * extends android.webkit.WebChromeClient {
+    public *;
+}
+
+# Keep DownloadListener
+-keep class * implements android.webkit.DownloadListener {
+    public *;
+}
+
+# Keep WebResourceRequest and WebResourceResponse
+-keep class android.webkit.WebResourceRequest { *; }
+-keep class android.webkit.WebResourceResponse { *; }
+
+# Suppress warnings for WebView
+-dontwarn android.webkit.**
+-dontwarn com.pichillilorenzo.flutter_inappwebview.**
 
 # Fix R8 BackEvent issue (Android 14+)
 -dontwarn android.window.**

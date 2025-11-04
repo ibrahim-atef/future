@@ -23,6 +23,23 @@ subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 subprojects {
+    project.afterEvaluate {
+        // Fix for flutter_inappwebview R8 compilation issues
+        if (project.name == 'flutter_inappwebview' || project.path.contains('flutter_inappwebview')) {
+            if (project.plugins.hasPlugin('com.android.library')) {
+                project.android {
+                    buildTypes {
+                        release {
+                            minifyEnabled false
+                            shrinkResources false
+                        }
+                    }
+                }
+                println "✅ Disabled minification for ${project.name} to fix R8 issues"
+            }
+        }
+    }
+    
     // Fix for missing namespace in dependencies (e.g., flutter_inappwebview)
     // This hook runs when the Android library plugin is applied
     project.plugins.withId('com.android.library') {
