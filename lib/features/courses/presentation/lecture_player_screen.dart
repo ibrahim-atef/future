@@ -115,6 +115,45 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
+  // Helper function to extract PDF URL from HTML href attribute
+  String? _extractPdfUrlFromHtml(String? htmlContent) {
+    if (htmlContent == null || htmlContent.isEmpty) {
+      return null;
+    }
+
+    // Try to extract href from <a> tag
+    // Pattern matches: href="..." or href='...'
+    final RegExp hrefRegExpWithDoubleQuote = RegExp(
+      r'href="([^"]+)"',
+      caseSensitive: false,
+    );
+
+    final RegExp hrefRegExpWithSingleQuote = RegExp(
+      r"href='([^']+)'",
+      caseSensitive: false,
+    );
+
+    // Try double quotes first
+    var match = hrefRegExpWithDoubleQuote.firstMatch(htmlContent);
+    if (match != null && match.groupCount >= 1) {
+      final url = match.group(1);
+      if (url != null && url.isNotEmpty) {
+        return url;
+      }
+    }
+
+    // Try single quotes
+    match = hrefRegExpWithSingleQuote.firstMatch(htmlContent);
+    if (match != null && match.groupCount >= 1) {
+      final url = match.group(1);
+      if (url != null && url.isNotEmpty) {
+        return url;
+      }
+    }
+
+    return null;
+  }
+
   // Enter fullscreen mode
   void _enterFullScreen() {
     if (_currentVideoType == 'youtube' && _currentVideoUrl != null) {
@@ -1064,9 +1103,23 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                             (lecture.pdfUrl?.isNotEmpty == true ||
                                 lecture.description?.isNotEmpty == true)) {
                           // Handle PDF/Assignment lecture - Open in separate screen
-                          String pdfUrl = lecture.pdfUrl?.isNotEmpty == true
-                              ? lecture.pdfUrl!
-                              : lecture.description ?? '';
+                          String pdfUrl = '';
+
+                          // First try to use pdfUrl if available
+                          if (lecture.pdfUrl?.isNotEmpty == true) {
+                            pdfUrl = lecture.pdfUrl!;
+                          } else if (lecture.description?.isNotEmpty == true) {
+                            // Try to extract PDF URL from HTML href attribute
+                            final extractedUrl =
+                                _extractPdfUrlFromHtml(lecture.description);
+                            if (extractedUrl != null &&
+                                extractedUrl.isNotEmpty) {
+                              pdfUrl = extractedUrl;
+                            } else {
+                              // Fallback to description if no href found
+                              pdfUrl = lecture.description!;
+                            }
+                          }
 
                           if (pdfUrl.isNotEmpty) {
                             Navigator.push(

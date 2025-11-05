@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/services/download_service.dart';
 
 class PDFViewerWidget extends StatefulWidget {
@@ -164,6 +165,47 @@ class _PDFViewerWidgetState extends State<PDFViewerWidget> {
         false;
   }
 
+  Future<void> _openPDFExternally() async {
+    final pdfUrl = _cleanedPdfUrl ?? '';
+    if (pdfUrl.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('رابط الملف غير صحيح'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      final Uri url = Uri.parse(pdfUrl);
+      if (await canLaunchUrl(url)) {
+        // فتح الرابط في المتصفح فقط بدون تحميل
+        await launchUrl(
+          url,
+        );
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('لا يمكن فتح الملف خارج التطبيق'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('خطأ في فتح الملف: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   Future<void> _downloadPDF() async {
     setState(() {
       _isDownloading = true;
@@ -251,25 +293,43 @@ class _PDFViewerWidgetState extends State<PDFViewerWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        backgroundColor: const Color(0xFF1a1a1a),
+        title: Text(
+          widget.title,
+          style: const TextStyle(
+            color: Color(0xFFd4af37),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: [
-          widget.isDownloadable
-              ? IconButton(
-                  icon: _isDownloading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      : const Icon(Icons.download),
-                  onPressed: _isDownloading ? null : _downloadPDF,
-                  tooltip: 'تحميل الملف',
-                )
-              : const SizedBox.shrink(),
+          // زر فتح PDF خارج التطبيق
+          IconButton(
+            icon: const Icon(Icons.open_in_new, color: Color(0xFFd4af37)),
+            onPressed: _openPDFExternally,
+            tooltip: 'فتح الملف خارج التطبيق',
+          ),
+          // زر التحميل
+          // if (widget.isDownloadable)
+          //   IconButton(
+          //     icon: _isDownloading
+          //         ? const SizedBox(
+          //             width: 20,
+          //             height: 20,
+          //             child: CircularProgressIndicator(
+          //               strokeWidth: 2,
+          //               valueColor:
+          //                   AlwaysStoppedAnimation<Color>(Color(0xFFd4af37)),
+          //             ),
+          //           )
+          //         : const Icon(Icons.download, color: Color(0xFFd4af37)),
+          //     onPressed: _isDownloading ? null : _downloadPDF,
+          //     tooltip: 'تحميل الملف',
+          //   ),
         ],
       ),
       body: Container(
