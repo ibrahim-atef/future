@@ -41,35 +41,7 @@ class _NotificationsScreenContent extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        actions: [
-          BlocBuilder<NotificationsCubit, NotificationsState>(
-            builder: (context, state) {
-              final cubit = context.read<NotificationsCubit>();
-              final hasUnread = cubit.unreadCount > 0;
-
-              return hasUnread
-                  ? TextButton.icon(
-                      onPressed: () {
-                        cubit.markAllAsRead(userId);
-                      },
-                      icon: const Icon(
-                        Icons.done_all,
-                        size: 18,
-                        color: Color(0xFFd4af37),
-                      ),
-                      label: const Text(
-                        'الكل كمقروء',
-                        style: TextStyle(
-                          color: Color(0xFFd4af37),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink();
-            },
-          ),
-        ],
+        actions: const [],
       ),
       body: BlocBuilder<NotificationsCubit, NotificationsState>(
         builder: (context, state) {
@@ -410,11 +382,10 @@ class _NotificationsScreenContent extends StatelessWidget {
             onTap: isLoading
                 ? null
                 : () {
-                    if (!notification.isRead) {
-                      context
-                          .read<NotificationsCubit>()
-                          .markNotificationAsRead(notification.id, userId);
-                    }
+                    // Mark notification as read when tapped
+                    context
+                        .read<NotificationsCubit>()
+                        .markNotificationAsRead(notification.id, userId);
                     _handleNotificationTap(context, notification);
                   },
             child: Padding(
