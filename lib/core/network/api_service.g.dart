@@ -396,7 +396,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<MarkNotificationReadResponseModel> markNotificationAsRead(
+  Future<void> markNotificationAsRead(
     String notificationId,
     int apiKey,
     String appSource,
@@ -409,7 +409,7 @@ class _ApiService implements ApiService {
     };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<MarkNotificationReadResponseModel>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -425,15 +425,7 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late MarkNotificationReadResponseModel _value;
-    try {
-      _value = MarkNotificationReadResponseModel.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
+    await _dio.fetch<void>(_options);
   }
 
   @override

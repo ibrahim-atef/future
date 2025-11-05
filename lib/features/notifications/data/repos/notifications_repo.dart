@@ -29,8 +29,7 @@ class NotificationsRepo {
   }
 
   // Mark notification as read
-  Future<ApiResult<MarkNotificationReadResponseModel>> markNotificationAsRead(
-      String notificationId) async {
+  Future<ApiResult> markNotificationAsRead(String notificationId) async {
     try {
       log('🌐 NotificationsRepo: Calling markNotificationAsRead API for notificationId: $notificationId');
       final response = await _apiService.markNotificationAsRead(
@@ -39,7 +38,7 @@ class NotificationsRepo {
         ApiConstants.appSource,
       );
       log('✅ NotificationsRepo: Mark notification as read API success');
-      return ApiResult.success(response);
+      return const ApiResult.success(null);
     } catch (e) {
       log('❌ NotificationsRepo: Mark notification as read API error: ${e.toString()}');
       return ApiResult.failure(ApiErrorHandler.handle(e));

@@ -90,7 +90,8 @@ MarkNotificationReadResponseModel _$MarkNotificationReadResponseModelFromJson(
       message: json['message'] as String,
       data: json['data'] == null
           ? null
-          : NotificationModel.fromJson(json['data'] as Map<String, dynamic>),
+          : MarkNotificationReadData.fromJson(
+              json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MarkNotificationReadResponseModelToJson(
@@ -99,6 +100,22 @@ Map<String, dynamic> _$MarkNotificationReadResponseModelToJson(
       'success': instance.success,
       'message': instance.message,
       'data': instance.data,
+    };
+
+MarkNotificationReadData _$MarkNotificationReadDataFromJson(
+        Map<String, dynamic> json) =>
+    MarkNotificationReadData(
+      notificationId: json['notification_id'] as String? ?? '',
+      isRead: json['isRead'] as bool? ?? false,
+      readAt: json['read_at'] as String?,
+    );
+
+Map<String, dynamic> _$MarkNotificationReadDataToJson(
+        MarkNotificationReadData instance) =>
+    <String, dynamic>{
+      'notification_id': instance.notificationId,
+      'isRead': instance.isRead,
+      'read_at': instance.readAt,
     };
 
 DeleteNotificationResponseModel _$DeleteNotificationResponseModelFromJson(

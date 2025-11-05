@@ -184,7 +184,7 @@ class MarkNotificationReadResponseModel {
   final String message;
 
   @JsonKey(name: 'data')
-  final NotificationModel? data;
+  final MarkNotificationReadData? data;
 
   MarkNotificationReadResponseModel({
     required this.success,
@@ -198,6 +198,29 @@ class MarkNotificationReadResponseModel {
 
   Map<String, dynamic> toJson() =>
       _$MarkNotificationReadResponseModelToJson(this);
+}
+
+@JsonSerializable()
+class MarkNotificationReadData {
+  @JsonKey(name: 'notification_id', defaultValue: '')
+  final String notificationId;
+
+  @JsonKey(name: 'isRead', defaultValue: false)
+  final bool isRead;
+
+  @JsonKey(name: 'read_at')
+  final String? readAt;
+
+  MarkNotificationReadData({
+    required this.notificationId,
+    required this.isRead,
+    this.readAt,
+  });
+
+  factory MarkNotificationReadData.fromJson(Map<String, dynamic> json) =>
+      _$MarkNotificationReadDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MarkNotificationReadDataToJson(this);
 }
 
 // ==================== Delete Notification Response ====================

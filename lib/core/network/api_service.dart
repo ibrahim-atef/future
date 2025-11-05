@@ -99,7 +99,7 @@ abstract class ApiService {
 
   // mark notification as read
   @POST('notifications/{notificationId}/read')
-  Future<MarkNotificationReadResponseModel> markNotificationAsRead(
+  Future<void> markNotificationAsRead(
     @Path('notificationId') String notificationId,
     @Header('x-api-key') int apiKey,
     @Header('X-App-Source') String appSource,
