@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/features/notifications/data/models/notifications_model.dart';
 import 'package:future_app/features/notifications/data/repos/notifications_repo.dart';
 import 'package:future_app/features/notifications/logic/cubit/notifications_state.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'dart:developer';
 
 class NotificationsCubit extends Cubit<NotificationsState> {
@@ -49,9 +50,9 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         log('✅ NotificationsCubit: Mark notification as read success');
         // Update local state
         _updateNotificationReadStatus(notificationId, true);
+        getUserNotifications(userId);
         emit(NotificationsState.markNotificationAsReadSuccess(data));
         // Refresh notifications to get updated list
-        getUserNotifications(userId);
       },
       failure: (apiErrorModel) {
         log('❌ NotificationsCubit: Mark notification as read failed - ${apiErrorModel.message}');
@@ -107,6 +108,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       _notifications[index] = _notifications[index].copyWith(isRead: isRead);
       if (isRead) {
         _unreadCount = (_unreadCount - 1).clamp(0, _notifications.length);
+        _updateAppBadge(_unreadCount);
       }
     }
   }
@@ -120,7 +122,28 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       _notifications.removeAt(index);
       if (wasUnread) {
         _unreadCount = (_unreadCount - 1).clamp(0, _notifications.length);
+        _updateAppBadge(_unreadCount);
       }
+    }
+  }
+
+  // Update app badge count
+  Future<void> _updateAppBadge(int count) async {
+    try {
+      final isSupported = await FlutterAppBadger.isAppBadgeSupported();
+      if (isSupported) {
+        if (count > 0) {
+          await FlutterAppBadger.updateBadgeCount(count);
+          log('✅ App badge updated: $count');
+        } else {
+          await FlutterAppBadger.removeBadge();
+          log('✅ App badge removed');
+        }
+      } else {
+        log('ℹ️ App badge not supported on this device');
+      }
+    } catch (e) {
+      log('❌ Error updating app badge: $e');
     }
   }
 
