@@ -6,6 +6,7 @@ import 'package:future_app/features/notifications/logic/cubit/notifications_cubi
 import 'package:future_app/features/notifications/logic/cubit/notifications_state.dart';
 import 'package:future_app/features/notifications/data/models/notifications_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
@@ -283,66 +284,83 @@ class _NotificationsScreenContent extends StatelessWidget {
     String userId, {
     bool isLoading = false,
   }) {
-    return Dismissible(
+    return Slidable(
       key: Key(notification.id),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF2a2a2a), Color(0xFFd32f2f)],
-            begin: Alignment.centerRight,
-            end: Alignment.centerLeft,
+      startActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          // Read action (Blue) - only show if notification is unread
+          if (!notification.isRead)
+            SlidableAction(
+              onPressed: (_) {
+                if (!isLoading) {
+                  context
+                      .read<NotificationsCubit>()
+                      .markNotificationAsRead(notification.id, userId);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text(
+                        'تم تحديد التنبيه كمقروء',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: const Color(0xFF2a2a2a),
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  );
+                }
+              },
+              backgroundColor: const Color(0xFF2196F3),
+              foregroundColor: Colors.white,
+              icon: Icons.mark_email_read,
+              label: 'قراءة',
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                bottomLeft: Radius.circular(16),
+              ),
+            ),
+          // Delete action (Red)
+          SlidableAction(
+            onPressed: (_) {
+              if (!isLoading) {
+                // Immediately remove from local state
+                context
+                    .read<NotificationsCubit>()
+                    .removeNotificationFromList(notification.id);
+                // Then call delete API
+                context
+                    .read<NotificationsCubit>()
+                    .deleteNotification(notification.id, userId);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text(
+                      'تم حذف التنبيه',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: const Color(0xFF2a2a2a),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                );
+              }
+            },
+            backgroundColor: const Color(0xFFd32f2f),
+            foregroundColor: Colors.white,
+            icon: Icons.delete_outline,
+            label: 'حذف',
+            borderRadius: notification.isRead
+                ? const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    bottomLeft: Radius.circular(16),
+                  )
+                : BorderRadius.zero,
           ),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 20),
-        child: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.delete_outline,
-              color: Colors.white,
-              size: 28,
-            ),
-            SizedBox(height: 4),
-            Text(
-              'حذف',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
-      onDismissed: (direction) {
-        if (!isLoading) {
-          // Immediately remove from local state to prevent Dismissible error
-          context
-              .read<NotificationsCubit>()
-              .removeNotificationFromList(notification.id);
-          // Then call delete API
-          context
-              .read<NotificationsCubit>()
-              .deleteNotification(notification.id, userId);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text(
-                'تم حذف التنبيه',
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: const Color(0xFF2a2a2a),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-          );
-        }
-      },
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
@@ -726,40 +744,364 @@ class _NotificationsScreenContent extends StatelessWidget {
 
   void _handleNotificationTap(
       BuildContext context, NotificationModel notification) {
-    // TODO: Implement navigation based on notification type and relatedId
-    // For now, just show a snackbar with better styling
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(
-              _getNotificationIcon(notification.type),
-              color: Colors.white,
-              size: 20,
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.7),
+      builder: (context) =>
+          _NotificationDetailsDialog(notification: notification),
+    );
+  }
+}
+
+class _NotificationDetailsDialog extends StatelessWidget {
+  final NotificationModel notification;
+
+  const _NotificationDetailsDialog({required this.notification});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.all(20),
+      child: Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.85,
+        ),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF1a1a1a), Color(0xFF2a2a2a)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: const Color(0xFFd4af37).withOpacity(0.3),
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                'تم فتح التنبيه: ${notification.title}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    _getNotificationColor(notification.type).withOpacity(0.2),
+                    _getNotificationColor(notification.type).withOpacity(0.1),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                  topRight: Radius.circular(24),
+                ),
+              ),
+              child: Row(
+                children: [
+                  // Icon
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          _getNotificationColor(notification.type)
+                              .withOpacity(0.3),
+                          _getNotificationColor(notification.type)
+                              .withOpacity(0.2),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: _getNotificationColor(notification.type)
+                            .withOpacity(0.4),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Icon(
+                      _getNotificationIcon(notification.type),
+                      color: _getNotificationColor(notification.type),
+                      size: 30,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  // Title and Type
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          notification.title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _getNotificationColor(notification.type)
+                                .withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: _getNotificationColor(notification.type)
+                                  .withOpacity(0.4),
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            _getNotificationTypeLabel(notification.type),
+                            style: TextStyle(
+                              color: _getNotificationColor(notification.type),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Close button
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      color: Colors.white70,
+                      size: 24,
+                    ),
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.white.withOpacity(0.1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Content
+            Flexible(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Message
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.1),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        notification.message.isEmpty
+                            ? 'لا يوجد رسالة'
+                            : notification.message,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 16,
+                          height: 1.6,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    // Details Section
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.white.withOpacity(0.05),
+                            Colors.white.withOpacity(0.02),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.1),
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildDetailRow(
+                            icon: Icons.access_time,
+                            label: 'التاريخ والوقت',
+                            value: _formatDateTime(notification.createdAt),
+                            iconColor: const Color(0xFFd4af37),
+                          ),
+                          if (notification.relatedId != null &&
+                              notification.relatedId!.isNotEmpty) ...[
+                            const SizedBox(height: 12),
+                            _buildDetailRow(
+                              icon: Icons.link,
+                              label: 'معرف ذو صلة',
+                              value: notification.relatedId!,
+                              iconColor: const Color(0xFF2196F3),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ],
         ),
-        backgroundColor: const Color(0xFF2a2a2a),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: const Color(0xFFd4af37).withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        margin: const EdgeInsets.all(16),
       ),
     );
+  }
+
+  Widget _buildDetailRow({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color iconColor,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: iconColor.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: Icon(
+            icon,
+            color: iconColor,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.6),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  IconData _getNotificationIcon(String type) {
+    switch (type) {
+      case 'course':
+        return Icons.school_outlined;
+      case 'blog':
+        return Icons.article_outlined;
+      case 'download':
+        return Icons.download_outlined;
+      case 'system':
+      default:
+        return Icons.notifications_active_outlined;
+    }
+  }
+
+  Color _getNotificationColor(String type) {
+    switch (type) {
+      case 'course':
+        return const Color(0xFFd4af37); // Gold
+      case 'blog':
+        return const Color(0xFFFF9800); // Orange
+      case 'download':
+        return const Color(0xFF4CAF50); // Green
+      case 'system':
+      default:
+        return const Color(0xFF2196F3); // Blue
+    }
+  }
+
+  String _getNotificationTypeLabel(String type) {
+    switch (type) {
+      case 'course':
+        return 'كورس';
+      case 'blog':
+        return 'مدونة';
+      case 'download':
+        return 'تحميل';
+      case 'system':
+      default:
+        return 'عام';
+    }
+  }
+
+  String _formatDateTime(String dateTimeString) {
+    try {
+      final dateTime = DateTime.parse(dateTimeString);
+      final year = dateTime.year;
+      final month = dateTime.month;
+      final day = dateTime.day;
+      final hour = dateTime.hour;
+      final minute = dateTime.minute;
+
+      final months = [
+        'يناير',
+        'فبراير',
+        'مارس',
+        'أبريل',
+        'مايو',
+        'يونيو',
+        'يوليو',
+        'أغسطس',
+        'سبتمبر',
+        'أكتوبر',
+        'نوفمبر',
+        'ديسمبر'
+      ];
+
+      return '$day ${months[month - 1]} $year في ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return dateTimeString;
+    }
   }
 }
