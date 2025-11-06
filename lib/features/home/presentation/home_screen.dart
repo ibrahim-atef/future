@@ -16,6 +16,8 @@ import '../../auth/logic/cubit/auth_cubit.dart';
 import '../../auth/logic/cubit/auth_state.dart';
 import '../../profile/logic/cubit/profile_cubit.dart';
 import '../../profile/logic/cubit/profile_state.dart';
+import '../../notifications/logic/cubit/notifications_cubit.dart';
+import '../../notifications/logic/cubit/notifications_state.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -27,6 +29,7 @@ class HomeScreen extends StatelessWidget {
         BlocProvider(create: (context) => getIt<HomeCubit>()..getBanners()),
         BlocProvider(create: (context) => getIt<AuthCubit>()),
         BlocProvider(create: (context) => getIt<ProfileCubit>()..getProfile()),
+        BlocProvider(create: (context) => getIt<NotificationsCubit>()),
       ],
       child: const _HomeScreenContent(),
     );
@@ -66,6 +69,19 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
         await SharedPrefHelper.getString(SharedPrefKeys.userId);
     UserConstant.userName =
         await SharedPrefHelper.getString(SharedPrefKeys.userName);
+
+    // Load notifications after user data is loaded
+    if (mounted &&
+        UserConstant.userId != null &&
+        UserConstant.userId!.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context
+              .read<NotificationsCubit>()
+              .getUserNotifications(UserConstant.userId!);
+        }
+      });
+    }
   }
 
   void _startAutoScroll(int bannersCount) {
@@ -126,12 +142,62 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           ),
           centerTitle: true,
           actions: [
-            IconButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, AppRoutes.notifications),
-              icon: const Icon(Icons.notifications),
-              color: const Color(0xFFd4af37),
-              iconSize: 30,
+            BlocBuilder<NotificationsCubit, NotificationsState>(
+              builder: (context, state) {
+                final unreadCount =
+                    context.read<NotificationsCubit>().unreadCount;
+                return Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        await Navigator.pushNamed(
+                            context, AppRoutes.notifications);
+                        // Refresh notifications when returning from notifications screen
+                        if (mounted &&
+                            UserConstant.userId != null &&
+                            UserConstant.userId!.isNotEmpty) {
+                          context
+                              .read<NotificationsCubit>()
+                              .getUserNotifications(UserConstant.userId!);
+                        }
+                      },
+                      icon: const Icon(Icons.notifications),
+                      color: const Color(0xFFd4af37),
+                      iconSize: 30,
+                    ),
+                    if (unreadCount > 0)
+                      Positioned(
+                        right: 8,
+                        top: 8,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color(0xFF1a1a1a),
+                              width: 2,
+                            ),
+                          ),
+                          constraints: const BoxConstraints(
+                            minWidth: 18,
+                            minHeight: 18,
+                          ),
+                          child: Text(
+                            unreadCount > 99 ? '99+' : unreadCount.toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
             IconButton(
               onPressed: () => _showLogoutDialog(context),
