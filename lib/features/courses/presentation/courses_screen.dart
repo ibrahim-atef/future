@@ -90,6 +90,26 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
     }
   }
 
+  double _calculateBannerHeight(BuildContext context, double maxWidth) {
+    final mediaQuery = MediaQuery.of(context);
+    final orientation = mediaQuery.orientation;
+    final bool isTablet = mediaQuery.size.shortestSide >= 600;
+
+    double bannerHeight;
+    if (isTablet) {
+      bannerHeight = orientation == Orientation.landscape
+          ? mediaQuery.size.height * 0.5
+          : mediaQuery.size.height * 0.35;
+    } else {
+      bannerHeight = orientation == Orientation.landscape
+          ? mediaQuery.size.height * 0.55
+          : maxWidth * 0.5;
+    }
+
+    final double maxAllowedHeight = isTablet ? 360 : 280;
+    return bannerHeight.clamp(200.0, maxAllowedHeight).toDouble();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -477,92 +497,147 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
 
         // Show placeholder if no banners
         if (banners.isEmpty && !isLoading) {
-          return Container(
-            height: 200,
-            margin: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFF2a2a2a),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: const Color(0xFFd4af37).withOpacity(0.3),
-                width: 1,
-              ),
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.image_not_supported_outlined,
-                    size: 60,
-                    color: const Color(0xFFd4af37).withOpacity(0.5),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final bannerHeight =
+                  _calculateBannerHeight(context, constraints.maxWidth);
+              return Container(
+                height: bannerHeight,
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2a2a2a),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: const Color(0xFFd4af37).withOpacity(0.3),
+                    width: 1,
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'لا توجد بنرات متاحه',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.image_not_supported_outlined,
+                        size: 60,
+                        color: const Color(0xFFd4af37).withOpacity(0.5),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'لا توجد بنرات متاحه',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         }
 
-        return Column(
-          children: [
-            SizedBox(
-              height: 200,
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: _onPageChanged,
-                itemCount: banners.length,
-                allowImplicitScrolling: false,
-                itemBuilder: (context, index) {
-                  final banner = banners[index];
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFd4af37).withOpacity(0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final bannerHeight =
+                _calculateBannerHeight(context, constraints.maxWidth);
+
+            return Column(
+              children: [
+                SizedBox(
+                  height: bannerHeight,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: _onPageChanged,
+                    itemCount: banners.length,
+                    allowImplicitScrolling: false,
+                    itemBuilder: (context, index) {
+                      final banner = banners[index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFd4af37).withOpacity(0.3),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: banner.imageUrl != null &&
-                              banner.imageUrl!.isNotEmpty
-                          ? CachedNetworkImage(
-                              imageUrl: banner.imageUrl!,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              placeholder: (context, url) => Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      const Color(0xFFd4af37).withOpacity(0.5),
-                                      const Color(0xFFb8860b).withOpacity(0.5),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: banner.imageUrl != null &&
+                                  banner.imageUrl!.isNotEmpty
+                              ? CachedNetworkImage(
+                                  imageUrl: banner.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  placeholder: (context, url) => Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          const Color(0xFFd4af37)
+                                              .withOpacity(0.5),
+                                          const Color(0xFFb8860b)
+                                              .withOpacity(0.5),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    ),
+                                    child: const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFFd4af37),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Color(0xFFd4af37),
-                                  ),
-                                ),
-                              ),
-                              errorWidget: (context, url, error) {
-                                // Fallback container with gradient if image fails to load
-                                return Container(
+                                  errorWidget: (context, url, error) {
+                                    // Fallback container with gradient if image fails to load
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            const Color(0xFFd4af37)
+                                                .withOpacity(0.8),
+                                            const Color(0xFFb8860b)
+                                                .withOpacity(0.8),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.image,
+                                              size: 50,
+                                              color:
+                                                  Colors.white.withOpacity(0.8),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              banner.title ??
+                                                  'Banner ${index + 1}',
+                                              style: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.8),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Cairo',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                )
+                              : Container(
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
@@ -599,112 +674,84 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
                                       ],
                                     ),
                                   ),
-                                );
-                              },
-                            )
-                          : Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    const Color(0xFFd4af37).withOpacity(0.8),
-                                    const Color(0xFFb8860b).withOpacity(0.8),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
                                 ),
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.image,
-                                      size: 50,
-                                      color: Colors.white.withOpacity(0.8),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      banner.title ?? 'Banner ${index + 1}',
-                                      style: TextStyle(
-                                        color: Colors.white.withOpacity(0.8),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Cairo',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 12),
-            // Page Indicators
-            if (banners.isNotEmpty)
-              SmoothPageIndicator(
-                controller: _pageController,
-                count: banners.length,
-                effect: WormEffect(
-                  activeDotColor: const Color(0xFFd4af37),
-                  dotColor: const Color(0xFFd4af37).withOpacity(0.3),
-                  dotHeight: 8,
-                  dotWidth: 8,
-                  spacing: 8,
-                  type: WormType.thinUnderground,
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-          ],
+                const SizedBox(height: 12),
+                // Page Indicators
+                if (banners.isNotEmpty)
+                  SmoothPageIndicator(
+                    controller: _pageController,
+                    count: banners.length,
+                    effect: WormEffect(
+                      activeDotColor: const Color(0xFFd4af37),
+                      dotColor: const Color(0xFFd4af37).withOpacity(0.3),
+                      dotHeight: 8,
+                      dotWidth: 8,
+                      spacing: 8,
+                      type: WormType.thinUnderground,
+                    ),
+                  ),
+              ],
+            );
+          },
         );
       },
     );
   }
 
   Widget _buildSkeletonBanner() {
-    return Skeletonizer(
-      enabled: true,
-      effect: const ShimmerEffect(
-        baseColor: Color(0xFF2a2a2a),
-        highlightColor: Color(0xFF3a3a3a),
-        duration: Duration(seconds: 1),
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: 200,
-            margin: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFF2a2a2a),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Center(
-              child: Icon(
-                Icons.image,
-                size: 60,
-                color: Colors.white.withOpacity(0.3),
-              ),
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bannerHeight =
+            _calculateBannerHeight(context, constraints.maxWidth);
+        return Skeletonizer(
+          enabled: true,
+          effect: const ShimmerEffect(
+            baseColor: Color(0xFF2a2a2a),
+            highlightColor: Color(0xFF3a3a3a),
+            duration: Duration(seconds: 1),
           ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              3,
-              (index) => Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF2a2a2a),
-                  shape: BoxShape.circle,
+          child: Column(
+            children: [
+              Container(
+                height: bannerHeight,
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2a2a2a),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.image,
+                    size: 60,
+                    color: Colors.white.withOpacity(0.3),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  3,
+                  (index) => Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2a2a2a),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

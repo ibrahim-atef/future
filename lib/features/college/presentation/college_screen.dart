@@ -62,6 +62,26 @@ class _CollegeScreenState extends State<CollegeScreen> {
     return banners.isNotEmpty ? banners.length : 0;
   }
 
+  double _calculateBannerHeight(BuildContext context, double maxWidth) {
+    final mediaQuery = MediaQuery.of(context);
+    final orientation = mediaQuery.orientation;
+    final bool isTablet = mediaQuery.size.shortestSide >= 600;
+
+    double bannerHeight;
+    if (isTablet) {
+      bannerHeight = orientation == Orientation.landscape
+          ? mediaQuery.size.height * 0.5
+          : mediaQuery.size.height * 0.35;
+    } else {
+      bannerHeight = orientation == Orientation.landscape
+          ? mediaQuery.size.height * 0.55
+          : maxWidth * 0.5;
+    }
+
+    final double maxAllowedHeight = isTablet ? 360 : 280;
+    return bannerHeight.clamp(200.0, maxAllowedHeight).toDouble();
+  }
+
   void _onPageChanged(int index) {
     if (mounted) {
       setState(() {
@@ -249,69 +269,84 @@ class _CollegeScreenState extends State<CollegeScreen> {
 
     // Show empty state if no banners available
     if (banners.isEmpty) {
-      return _buildEmptyBannersState();
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          final bannerHeight =
+              _calculateBannerHeight(context, constraints.maxWidth);
+          return _buildEmptyBannersState(bannerHeight);
+        },
+      );
     }
 
-    return Column(
-      children: [
-        SizedBox(
-          height: 200,
-          child: PageView.builder(
-            controller: _pageController,
-            onPageChanged: _onPageChanged,
-            itemCount: banners.length,
-            allowImplicitScrolling: false,
-            itemBuilder: (context, index) {
-              final banner = banners[index];
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFd4af37).withOpacity(0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bannerHeight =
+            _calculateBannerHeight(context, constraints.maxWidth);
+
+        return Column(
+          children: [
+            SizedBox(
+              height: bannerHeight,
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: _onPageChanged,
+                itemCount: banners.length,
+                allowImplicitScrolling: false,
+                itemBuilder: (context, index) {
+                  final banner = banners[index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFd4af37).withOpacity(0.3),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: banner.imageUrl != null && banner.imageUrl!.isNotEmpty
-                      ? Image.network(
-                          banner.imageUrl!,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return _buildLoadingBanner();
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return _buildFallbackBanner(index, banner);
-                          },
-                        )
-                      : _buildFallbackBanner(index, banner),
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 12),
-        // Page Indicators
-        if (banners.isNotEmpty)
-          SmoothPageIndicator(
-            controller: _pageController,
-            count: banners.length,
-            effect: WormEffect(
-              activeDotColor: const Color(0xFFd4af37),
-              dotColor: const Color(0xFFd4af37).withOpacity(0.3),
-              dotHeight: 8,
-              dotWidth: 8,
-              spacing: 8,
-              type: WormType.thinUnderground,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child:
+                          banner.imageUrl != null && banner.imageUrl!.isNotEmpty
+                              ? Image.network(
+                                  banner.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return _buildLoadingBanner();
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return _buildFallbackBanner(index, banner);
+                                  },
+                                )
+                              : _buildFallbackBanner(index, banner),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-      ],
+            const SizedBox(height: 12),
+            // Page Indicators
+            if (banners.isNotEmpty)
+              SmoothPageIndicator(
+                controller: _pageController,
+                count: banners.length,
+                effect: WormEffect(
+                  activeDotColor: const Color(0xFFd4af37),
+                  dotColor: const Color(0xFFd4af37).withOpacity(0.3),
+                  dotHeight: 8,
+                  dotWidth: 8,
+                  spacing: 8,
+                  type: WormType.thinUnderground,
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 
@@ -372,9 +407,9 @@ class _CollegeScreenState extends State<CollegeScreen> {
     );
   }
 
-  Widget _buildEmptyBannersState() {
+  Widget _buildEmptyBannersState(double bannerHeight) {
     return Container(
-      height: 200,
+      height: bannerHeight,
       margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: const Color(0xFF2a2a2a),
