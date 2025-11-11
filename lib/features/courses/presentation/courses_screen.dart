@@ -572,7 +572,7 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
                                   banner.imageUrl!.isNotEmpty
                               ? CachedNetworkImage(
                                   imageUrl: banner.imageUrl!,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                   width: double.infinity,
                                   placeholder: (context, url) => Container(
                                     decoration: BoxDecoration(

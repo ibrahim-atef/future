@@ -312,7 +312,7 @@ class _CollegeScreenState extends State<CollegeScreen> {
                           banner.imageUrl != null && banner.imageUrl!.isNotEmpty
                               ? Image.network(
                                   banner.imageUrl!,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                   width: double.infinity,
                                   loadingBuilder:
                                       (context, child, loadingProgress) {

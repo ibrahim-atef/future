@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,7 +70,12 @@ void main() async {
   MyBlocObserver();
   await checkIfLoggedInUser();
 
-  runApp(const FutureApp());
+  runApp(
+    DevicePreview(
+      enabled: false,
+      builder: (context) => const FutureApp(),
+    ),
+  );
 }
 
 /// Initialize screen protection on Android/iOS
