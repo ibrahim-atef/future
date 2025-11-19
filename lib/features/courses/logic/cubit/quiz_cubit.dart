@@ -22,9 +22,16 @@ class QuizCubit extends Cubit<QuizState> {
 
   StartQuizResponseModel? get quizData => _quizData;
 
+  // Helper method to safely emit states
+  void _safeEmit(QuizState state) {
+    if (!isClosed) {
+      emit(state);
+    }
+  }
+
   // Start quiz
   Future<void> startQuiz(String quizId) async {
-    emit(const QuizState.startQuizLoading());
+    _safeEmit(const QuizState.startQuizLoading());
     final response = await _quizRepo.startQuiz(quizId);
     response.when(
       success: (data) {
@@ -32,10 +39,10 @@ class QuizCubit extends Cubit<QuizState> {
         _remainingSeconds =
             data.data.timeLimit * 60; // Convert minutes to seconds
         _startTimer();
-        emit(QuizState.startQuizSuccess(data));
+        _safeEmit(QuizState.startQuizSuccess(data));
       },
       failure: (apiErrorModel) {
-        emit(QuizState.startQuizError(apiErrorModel));
+        _safeEmit(QuizState.startQuizError(apiErrorModel));
       },
     );
   }
@@ -43,16 +50,17 @@ class QuizCubit extends Cubit<QuizState> {
   // Send quiz result
   Future<void> sendQuizResult(
       String quizId, Map<String, String> answers) async {
-    emit(const QuizState.sendQuizResultLoading());
+    if (isClosed) return;
+    _safeEmit(const QuizState.sendQuizResultLoading());
     final request = QuizResultRequestModel(answers: answers);
     final response = await _quizRepo.sendQuizResult(quizId, request);
     response.when(
       success: (data) {
         _stopTimer();
-        emit(QuizState.sendQuizResultSuccess(data));
+        _safeEmit(QuizState.sendQuizResultSuccess(data));
       },
       failure: (apiErrorModel) {
-        emit(QuizState.sendQuizResultError(apiErrorModel));
+        _safeEmit(QuizState.sendQuizResultError(apiErrorModel));
       },
     );
   }
@@ -61,12 +69,16 @@ class QuizCubit extends Cubit<QuizState> {
   void _startTimer() {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (isClosed) {
+        timer.cancel();
+        return;
+      }
       if (_remainingSeconds > 0) {
         _remainingSeconds--;
-        emit(QuizState.quizTimerTick(_remainingSeconds));
+        _safeEmit(QuizState.quizTimerTick(_remainingSeconds));
       } else {
         _stopTimer();
-        emit(const QuizState.quizTimeUp());
+        _safeEmit(const QuizState.quizTimeUp());
       }
     });
   }
@@ -76,7 +88,7 @@ class QuizCubit extends Cubit<QuizState> {
     _quizData = null;
     _remainingSeconds = 0;
     _stopTimer();
-    emit(const QuizState.initial());
+    _safeEmit(const QuizState.initial());
   }
 
   // Stop timer
