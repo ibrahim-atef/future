@@ -24,6 +24,12 @@ subprojects {
 }
 subprojects {
     project.afterEvaluate {
+        // Disable treating warnings as errors to fix Java 8 obsolete warnings
+        tasks.withType(JavaCompile) {
+            options.compilerArgs.removeAll { it == '-Werror' }
+            options.compilerArgs.add('-Xlint:-options')
+        }
+        
         // Fix for flutter_inappwebview R8 compilation issues
         if (project.name == 'flutter_inappwebview' || project.path.contains('flutter_inappwebview')) {
             if (project.plugins.hasPlugin('com.android.library')) {

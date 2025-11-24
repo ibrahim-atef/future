@@ -26,7 +26,7 @@ class CourseVideoPlayer extends StatefulWidget {
 }
 
 class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
-  late VideoPlayerController controller;
+  VideoPlayerController? controller;
   bool isShowPlayButton = false;
   bool isPlaying = true;
 
@@ -34,6 +34,8 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
   Duration videoPosition = const Duration(seconds: 0);
 
   bool isShowVideoPlayer = false;
+  bool hasError = false;
+  String? errorMessage;
 
   // متغيرات لتحديد مكان النص
   double _watermarkPositionX = 0.0;
@@ -61,7 +63,14 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
 
   @override
   void dispose() {
-    controller.dispose();
+    // Safely dispose controller if it was initialized
+    try {
+      if (controller != null) {
+        controller!.dispose();
+      }
+    } catch (e) {
+      log('Error disposing controller: $e');
+    }
 
     // إيقاف الـ timer
     _timer.cancel();
@@ -80,36 +89,114 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
   }
 
   initVideo() async {
-    if (widget.isLoadNetwork) {
-      controller = VideoPlayerController.networkUrl(
-        Uri.parse(widget.url),
-      )..initialize().then((_) {
-          isShowVideoPlayer = true;
+    try {
+      if (widget.isLoadNetwork) {
+        // Validate URL before creating controller
+        if (widget.url.isEmpty) {
+          setState(() {
+            hasError = true;
+            errorMessage = 'رابط الفيديو غير صحيح';
+          });
+          return;
+        }
 
-          controllerListener();
-          setState(() {});
-          controller.play();
+        try {
+          final uri = Uri.parse(widget.url);
+          if (!uri.hasScheme || (!uri.scheme.startsWith('http'))) {
+            setState(() {
+              hasError = true;
+              errorMessage = 'رابط الفيديو غير صحيح';
+            });
+            return;
+          }
+        } catch (e) {
+          setState(() {
+            hasError = true;
+            errorMessage = 'رابط الفيديو غير صحيح';
+          });
+          return;
+        }
+
+        controller = VideoPlayerController.networkUrl(
+          Uri.parse(widget.url),
+        );
+        
+        final currentController = controller;
+        if (currentController != null) {
+          await currentController.initialize().then((_) {
+            if (mounted && controller != null) {
+              isShowVideoPlayer = true;
+              controllerListener();
+              setState(() {});
+              controller!.play();
+            }
+          }).catchError((error) {
+            log('Error initializing video: $error');
+            if (mounted) {
+              setState(() {
+                hasError = true;
+                errorMessage = 'فشل تحميل الفيديو. تأكد من اتصال الإنترنت أو أن الرابط صحيح';
+              });
+            }
+          });
+        }
+      } else {
+        String directory = (await getApplicationSupportDirectory()).path;
+        print('${directory.toString()}/${widget.localFileName}');
+
+        controller = VideoPlayerController.file(
+          File('${directory.toString()}/${widget.localFileName}'),
+        );
+        
+        final currentController = controller;
+        if (currentController != null) {
+          await currentController.initialize().then((_) {
+            if (mounted && controller != null) {
+              isShowVideoPlayer = true;
+              controllerListener();
+              setState(() {});
+              controller!.play();
+            }
+          }).catchError((error) {
+            log('Error initializing video: $error');
+            if (mounted) {
+              setState(() {
+                hasError = true;
+                errorMessage = 'فشل تحميل الفيديو من الملف المحلي';
+              });
+            }
+          });
+        }
+      }
+    } catch (e) {
+      log('Error in initVideo: $e');
+      if (mounted) {
+        setState(() {
+          hasError = true;
+          errorMessage = 'حدث خطأ أثناء تحميل الفيديو';
         });
-    } else {
-      String directory = (await getApplicationSupportDirectory()).path;
-      print('${directory.toString()}/${widget.localFileName}');
-
-      controller = VideoPlayerController.file(
-        File('${directory.toString()}/${widget.localFileName}'),
-      )..initialize().then((_) {
-          isShowVideoPlayer = true;
-
-          controllerListener();
-          setState(() {});
-          controller.play();
-        });
+      }
     }
   }
 
   controllerListener() {
-    controller.addListener(() {
-      if (mounted) {
-        if (controller.value.isPlaying) {
+    if (controller == null) return;
+    
+    controller!.addListener(() {
+      if (mounted && controller != null) {
+        // Check for errors in controller
+        if (controller!.value.hasError) {
+          log('Video player error: ${controller!.value.errorDescription}');
+          if (!hasError) {
+            setState(() {
+              hasError = true;
+              errorMessage = controller!.value.errorDescription ?? 'حدث خطأ أثناء تشغيل الفيديو';
+            });
+          }
+          return;
+        }
+
+        if (controller!.value.isPlaying) {
           if (!isPlaying) {
             setState(() {
               isPlaying = true;
@@ -117,9 +204,11 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
             });
 
             Future.delayed(const Duration(milliseconds: 1500)).then((value) {
-              setState(() {
-                isShowPlayButton = false;
-              });
+              if (mounted) {
+                setState(() {
+                  isShowPlayButton = false;
+                });
+              }
             });
           }
         } else {
@@ -130,26 +219,28 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
             });
 
             Future.delayed(const Duration(milliseconds: 1500)).then((value) {
-              setState(() {
-                isShowPlayButton = false;
-              });
+              if (mounted) {
+                setState(() {
+                  isShowPlayButton = false;
+                });
+              }
             });
           }
         }
 
-        if (videoPosition.inSeconds != controller.value.position.inSeconds) {
-          log("duration: ${controller.value.duration.inSeconds.toString()}  position: ${controller.value.position.inSeconds.toString()}");
+        if (videoPosition.inSeconds != controller!.value.position.inSeconds) {
+          log("duration: ${controller!.value.duration.inSeconds.toString()}  position: ${controller!.value.position.inSeconds.toString()}");
 
           setState(() {
             videoPosition =
-                Duration(seconds: controller.value.position.inSeconds);
+                Duration(seconds: controller!.value.position.inSeconds);
           });
         }
 
-        if (videoDuration.inSeconds != controller.value.duration.inSeconds) {
+        if (videoDuration.inSeconds != controller!.value.duration.inSeconds) {
           setState(() {
             videoDuration =
-                Duration(seconds: controller.value.duration.inSeconds);
+                Duration(seconds: controller!.value.duration.inSeconds);
           });
         }
       }
@@ -171,18 +262,96 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     final double videoHeight = MediaQuery.of(context).size.width * 9 / 16;
+    
+    // Show error widget if there's an error
+    if (hasError) {
+      return Container(
+        height: videoHeight,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.red.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              size: 60,
+              color: Colors.red,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'خطأ في تحميل الفيديو',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                errorMessage ?? 'تأكد من اتصال الإنترنت',
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  hasError = false;
+                  errorMessage = null;
+                });
+                initVideo();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFd4af37),
+                foregroundColor: Colors.black,
+              ),
+              child: const Text('إعادة المحاولة'),
+            ),
+          ],
+        ),
+      );
+    }
+    
+    // Show loading indicator while video is initializing
+    if (!isShowVideoPlayer) {
+      return Container(
+        height: videoHeight,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFd4af37)),
+          ),
+        ),
+      );
+    }
+    
     return Column(
       children: [
         // video
-        if (isShowVideoPlayer) ...{
+        if (isShowVideoPlayer && controller != null) ...{
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: controller.value.isInitialized
+            child: controller!.value.isInitialized
                 ? Stack(
                     children: [
                       AspectRatio(
                         aspectRatio: 16 / 9,
-                        child: VideoPlayer(controller),
+                        child: VideoPlayer(controller!),
                       ),
 
                       AnimatedPositioned(
@@ -212,10 +381,12 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
                       Positioned.fill(
                         child: GestureDetector(
                           onTap: () {
-                            if (isPlaying) {
-                              controller.pause();
-                            } else {
-                              controller.play();
+                            if (controller != null) {
+                              if (isPlaying) {
+                                controller!.pause();
+                              } else {
+                                controller!.play();
+                              }
                             }
                           },
                           behavior: HitTestBehavior.opaque,
@@ -280,10 +451,12 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (isPlaying) {
-                              controller.pause();
-                            } else {
-                              controller.play();
+                            if (controller != null) {
+                              if (isPlaying) {
+                                controller!.pause();
+                              } else {
+                                controller!.play();
+                              }
                             }
                           },
                           behavior: HitTestBehavior.opaque,
@@ -300,6 +473,7 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
                                   ? Icons.play_arrow_rounded
                                   : Icons.pause,
                               size: 17,
+                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -317,17 +491,18 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
                         // sound
                         GestureDetector(
                           onTap: () {
-                            if (controller.value.volume == 0.0) {
-                              controller.setVolume(1.0);
-                            } else {
-                              controller.setVolume(0.0);
+                            if (controller != null) {
+                              if (controller!.value.volume == 0.0) {
+                                controller!.setVolume(1.0);
+                              } else {
+                                controller!.setVolume(0.0);
+                              }
+                              setState(() {});
                             }
-
-                            setState(() {});
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Icon(
-                            controller.value.volume == 0.0
+                            controller != null && controller!.value.volume == 0.0
                                 ? Icons.volume_off
                                 : Icons.volume_up,
                             color: const Color(0xFFd4af37),
@@ -339,22 +514,24 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
                         // full screen
                         GestureDetector(
                           onTap: () async {
-                            controller.pause();
+                            if (controller != null) {
+                              controller!.pause();
 
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    FullScreenVideoPlayerWidget(
-                                  controller,
-                                  name: widget.name,
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      FullScreenVideoPlayerWidget(
+                                    controller!,
+                                    name: widget.name,
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
 
-                            SystemChrome.setPreferredOrientations([
-                              DeviceOrientation.portraitUp,
-                            ]);
+                              SystemChrome.setPreferredOrientations([
+                                DeviceOrientation.portraitUp,
+                              ]);
+                            }
                           },
                           behavior: HitTestBehavior.opaque,
                           child: const Icon(
@@ -368,7 +545,7 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
                 ),
               ),
               secondChild: SizedBox(width: MediaQuery.of(context).size.width),
-              crossFadeState: controller.value.isInitialized
+              crossFadeState: controller != null && controller!.value.isInitialized
                   ? CrossFadeState.showFirst
                   : CrossFadeState.showSecond,
               duration: const Duration(milliseconds: 300))

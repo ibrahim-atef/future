@@ -29,33 +29,42 @@ class _QuizScreenState extends State<QuizScreen> {
     return BlocProvider(
       create: (context) {
         final cubit = getIt<QuizCubit>();
-        // Only start quiz if not already started or if different quiz
-        if (cubit.quizData == null ||
-            cubit.quizData!.data.id != widget.quizId) {
-          cubit.startQuiz(widget.quizId);
-        }
+        // Check if quiz was already started before starting
+        cubit.isQuizStarted(widget.quizId).then((wasStarted) {
+          if (!wasStarted) {
+            // Only start quiz if not already started or if different quiz
+            if (cubit.quizData == null ||
+                cubit.quizData!.data.id != widget.quizId) {
+              cubit.startQuiz(widget.quizId);
+            }
+          } else {
+            // Quiz was already started, show error
+            cubit.startQuiz(widget.quizId); // This will emit error state
+          }
+        });
         return cubit;
       },
-      child: Scaffold(
-        backgroundColor: const Color(0xFF1a1a1a),
-        appBar: AppBar(
+      child: Builder(
+        builder: (builderContext) => Scaffold(
           backgroundColor: const Color(0xFF1a1a1a),
-          elevation: 0,
-          title: Text(
-            widget.quizTitle,
-            style: const TextStyle(
-              color: Color(0xFFd4af37),
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          appBar: AppBar(
+            backgroundColor: const Color(0xFF1a1a1a),
+            elevation: 0,
+            title: Text(
+              widget.quizTitle,
+              style: const TextStyle(
+                color: Color(0xFFd4af37),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            centerTitle: true,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
+              onPressed: () => _handleBackButton(builderContext),
             ),
           ),
-          centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-        body: BlocConsumer<QuizCubit, QuizState>(
+          body: BlocConsumer<QuizCubit, QuizState>(
           listener: (context, state) {
             if (!mounted) return;
             state.whenOrNull(
@@ -146,6 +155,7 @@ class _QuizScreenState extends State<QuizScreen> {
               ),
             );
           },
+        ),
         ),
       ),
     );
@@ -597,7 +607,9 @@ class _QuizScreenState extends State<QuizScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      // Mark quiz as completed to allow restart
+                      await context.read<QuizCubit>().markQuizAsCompleted(widget.quizId);
                       setState(() {
                         _currentQuestionIndex = 0;
                         _answers.clear();
@@ -805,5 +817,64 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void _showQuizResult(BuildContext context, QuizResultResponseModel data) {
     // The result is already handled in the BlocConsumer listener
+  }
+
+  void _handleBackButton(BuildContext context) {
+    // Use BlocBuilder to access the cubit safely
+    final cubit = context.read<QuizCubit>();
+    final quizData = cubit.quizData;
+    
+    // If quiz is in progress, show confirmation dialog
+    if (quizData != null) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            backgroundColor: const Color(0xFF2a2a2a),
+            title: const Text(
+              'تأكيد الخروج',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: const Text(
+              'إذا خرجت من الاختبار الآن، لن تتمكن من العودة إليه مرة أخرى. هل أنت متأكد؟',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 16,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text(
+                  'إلغاء',
+                  style: TextStyle(
+                    color: Colors.white70,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Mark quiz as started (prevent restart)
+                  // The quiz is already marked as started, so just navigate back
+                  Navigator.pop(dialogContext);
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('خروج'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      Navigator.pop(context);
+    }
   }
 }

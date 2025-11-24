@@ -190,9 +190,8 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
     return BlocBuilder<CoursesCubit, CoursesState>(
       builder: (context, state) {
         final cubit = context.read<CoursesCubit>();
-        // Filter to show only paid courses (not free)
-        final courses =
-            cubit.allCourses.where((course) => !course.isFree).toList();
+        // Show all enrolled courses (both free and paid)
+        final courses = cubit.allCourses;
         final isLoading = state is GetCoursesLoading;
 
         if (isLoading) {
@@ -205,7 +204,7 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
             child: Padding(
               padding: EdgeInsets.all(32.0),
               child: Text(
-                'لا توجد كورسات مدفوعة متاحة',
+                'لا توجد كورسات مسجلة',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,
@@ -361,27 +360,27 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
                           color: Color(0xFFd4af37),
                         ),
                       ),
-                    if (isPremium)
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFd4af37),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            course.priceText,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
+                    // if (isPremium)
+                    //   Positioned(
+                    //     top: 8,
+                    //     right: 8,
+                    //     child: Container(
+                    //       padding: const EdgeInsets.symmetric(
+                    //           horizontal: 8, vertical: 4),
+                    //       decoration: BoxDecoration(
+                    //         color: const Color(0xFFd4af37),
+                    //         borderRadius: BorderRadius.circular(12),
+                    //       ),
+                    //       child: Text(
+                    //         course.priceText,
+                    //         style: const TextStyle(
+                    //           color: Colors.black,
+                    //           fontSize: 10,
+                    //           fontWeight: FontWeight.bold,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
                   ],
                 ),
               ),

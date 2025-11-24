@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/features/courses/data/models/quiz_models.dart';
 import 'package:future_app/features/courses/data/repos/quiz_repo.dart';
 import 'package:future_app/features/courses/logic/cubit/quiz_state.dart';
+import 'package:future_app/core/network/api_error_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QuizCubit extends Cubit<QuizState> {
   QuizCubit(this._quizRepo) : super(const QuizState.initial());
@@ -11,6 +13,7 @@ class QuizCubit extends Cubit<QuizState> {
   Timer? _timer;
   int _remainingSeconds = 0;
   StartQuizResponseModel? _quizData;
+  bool _isQuizStarted = false;
 
   // Getters
   int get remainingSeconds => _remainingSeconds;
@@ -29,15 +32,54 @@ class QuizCubit extends Cubit<QuizState> {
     }
   }
 
+  // Check if quiz was already started
+  Future<bool> isQuizStarted(String quizId) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('quiz_started_$quizId') ?? false;
+  }
+
+  // Mark quiz as started
+  Future<void> _markQuizAsStarted(String quizId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('quiz_started_$quizId', true);
+    _isQuizStarted = true;
+  }
+
+  // Mark quiz as completed (allows restart)
+  Future<void> markQuizAsCompleted(String quizId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('quiz_started_$quizId');
+    _isQuizStarted = false;
+  }
+
   // Start quiz
   Future<void> startQuiz(String quizId) async {
+    // Check if quiz was already started
+    final wasStarted = await isQuizStarted(quizId);
+    if (wasStarted) {
+      _safeEmit(QuizState.startQuizError(
+        ApiErrorModel(message: 'لا يمكن إعادة بدء الاختبار بعد الخروج منه'),
+      ));
+      return;
+    }
+
     _safeEmit(const QuizState.startQuizLoading());
     final response = await _quizRepo.startQuiz(quizId);
     response.when(
       success: (data) {
         _quizData = data; // Save quiz data
-        _remainingSeconds =
-            data.data.timeLimit * 60; // Convert minutes to seconds
+        
+        // Calculate time limit
+        if (data.data.timeLimit == 0) {
+          // If time_limit is 0, set 10 seconds per question
+          final questionCount = data.data.questions.length;
+          _remainingSeconds = questionCount * 10;
+        } else {
+          // Convert minutes to seconds
+          _remainingSeconds = data.data.timeLimit * 60;
+        }
+        
+        _markQuizAsStarted(quizId);
         _startTimer();
         _safeEmit(QuizState.startQuizSuccess(data));
       },
@@ -57,6 +99,8 @@ class QuizCubit extends Cubit<QuizState> {
     response.when(
       success: (data) {
         _stopTimer();
+        // Mark quiz as completed so it can be restarted
+        markQuizAsCompleted(quizId);
         _safeEmit(QuizState.sendQuizResultSuccess(data));
       },
       failure: (apiErrorModel) {
@@ -88,6 +132,7 @@ class QuizCubit extends Cubit<QuizState> {
     _quizData = null;
     _remainingSeconds = 0;
     _stopTimer();
+    _isQuizStarted = false;
     _safeEmit(const QuizState.initial());
   }
 

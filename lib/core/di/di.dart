@@ -20,6 +20,8 @@ import 'package:future_app/features/courses/logic/cubit/quiz_cubit.dart';
 import 'package:future_app/features/downloads/data/repository/download_repository.dart';
 import 'package:future_app/features/downloads/data/service/download_service.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
+import 'package:future_app/features/chat/data/repos/chat_repo.dart';
+import 'package:future_app/features/chat/logic/cubit/chat_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -67,4 +69,8 @@ void setupGetIt() {
   getIt.registerLazySingleton(() => DownloadService());
   getIt.registerFactory(
       () => DownloadCubit(getIt<DownloadRepository>(), getIt()));
+
+  // chat
+  getIt.registerLazySingleton<ChatRepo>(() => ChatRepo());
+  getIt.registerFactory<ChatCubit>(() => ChatCubit(getIt<ChatRepo>()));
 }

@@ -5,6 +5,7 @@ import 'package:future_app/features/blog/logic/cubit/blog_cubit.dart';
 import 'package:future_app/features/blog/logic/cubit/blog_state.dart';
 import 'package:future_app/features/blog/presentation/blog_detail_screen.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class BlogScreen extends StatefulWidget {
   const BlogScreen({super.key, required this.isBackButton});
@@ -243,7 +244,8 @@ class _BlogScreenState extends State<BlogScreen> {
                                   post.title,
                                   post.excerpt,
                                   post.publishedAt,
-                                  post.author);
+                                  post.author,
+                                  post.imageUrl);
                             },
                           ),
                           // Loading indicator for pagination
@@ -390,7 +392,11 @@ class _BlogScreenState extends State<BlogScreen> {
   }
 
   Widget _buildBlogPost(BuildContext context, String postId, String title,
-      String excerpt, String publishedAt, String author) {
+      String excerpt, String publishedAt, String author, dynamic imageUrl) {
+    final String? imageUrlString = imageUrl is String && imageUrl.isNotEmpty
+        ? imageUrl
+        : null;
+    
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
@@ -416,85 +422,125 @@ class _BlogScreenState extends State<BlogScreen> {
               ),
             );
           },
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFd4af37),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        author,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Post Image (if available)
+              if (imageUrlString != null)
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: imageUrlString,
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      height: 200,
+                      color: const Color(0xFF1a1a1a),
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFFd4af37),
                         ),
                       ),
                     ),
-                    const Spacer(),
-                    Text(
-                      _formatDate(publishedAt),
-                      style: const TextStyle(
+                    errorWidget: (context, url, error) => Container(
+                      height: 200,
+                      color: const Color(0xFF1a1a1a),
+                      child: const Icon(
+                        Icons.image_not_supported,
                         color: Colors.white54,
-                        fontSize: 12,
+                        size: 48,
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  _stripHtmlTags(excerpt),
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                    height: 1.4,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 12),
-                const Row(
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.visibility,
-                      size: 16,
-                      color: Color(0xFFd4af37),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFd4af37),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              author,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          _formatDate(publishedAt),
+                          style: const TextStyle(
+                            color: Colors.white54,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(height: 12),
                     Text(
-                      'اقرأ المزيد',
-                      style: TextStyle(
-                        color: Color(0xFFd4af37),
-                        fontSize: 12,
+                      title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Spacer(),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: Color(0xFFd4af37),
+                    const SizedBox(height: 8),
+                    Text(
+                      _stripHtmlTags(excerpt),
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                        height: 1.4,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 12),
+                    const Row(
+                      children: [
+                        Icon(
+                          Icons.visibility,
+                          size: 16,
+                          color: Color(0xFFd4af37),
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          'اقرأ المزيد',
+                          style: TextStyle(
+                            color: Color(0xFFd4af37),
+                            fontSize: 12,
+                          ),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Color(0xFFd4af37),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

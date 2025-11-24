@@ -11,6 +11,8 @@ import 'package:future_app/features/courses/presentation/widgets/pod_video_playe
 import 'package:future_app/features/courses/presentation/widgets/pdf_viewer_widget.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_state.dart';
+import 'package:future_app/features/chat/presentation/course_chat_screen.dart';
+import 'package:future_app/features/chat/logic/cubit/chat_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LecturePlayerScreen extends StatefulWidget {
@@ -650,6 +652,27 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: const Color(0xFF1a1a1a),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => getIt<ChatCubit>(),
+                      child: CourseChatScreen(
+                        courseId: widget.courseId,
+                        courseTitle: widget.courseTitle,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              backgroundColor: const Color(0xFFd4af37),
+              child: const Icon(
+                Icons.chat,
+                color: Colors.black,
+              ),
+            ),
             appBar: AppBar(
               backgroundColor: const Color(0xFF1a1a1a),
               elevation: 0,
@@ -1061,15 +1084,15 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            lecture.durationTextFromApi?.isNotEmpty == true
-                                ? lecture.durationTextFromApi!
-                                : lecture.durationText,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12,
-                            ),
-                          ),
+                          // Text(
+                          //   lecture.durationTextFromApi?.isNotEmpty == true
+                          //       ? lecture.durationTextFromApi!
+                          //       : lecture.durationText,
+                          //   style: const TextStyle(
+                          //     color: Colors.white70,
+                          //     fontSize: 12,
+                          //   ),
+                          // ),
                           if (lecture.week?.isNotEmpty == true)
                             Text(
                               lecture.week!,
@@ -1141,6 +1164,31 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                             );
                           }
                         } else if (lecture.videoUrl?.isNotEmpty == true) {
+                          // Validate URL before loading
+                          final videoUrl = lecture.videoUrl!;
+                          
+                          // Check if URL is valid
+                          try {
+                            final uri = Uri.parse(videoUrl);
+                            if (!uri.hasScheme || (!uri.scheme.startsWith('http'))) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('رابط الفيديو غير صحيح'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('رابط الفيديو غير صحيح'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            return;
+                          }
+
                           // Determine video type based on lecture data
                           String videoType = 'video';
                           if (lecture.videoSource == 'youtube') {
@@ -1150,7 +1198,7 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                           }
 
                           // Load the video with lecture ID
-                          _loadVideo(lecture.videoUrl!, videoType,
+                          _loadVideo(videoUrl, videoType,
                               lectureId: lecture.id);
 
                           // // Show success message

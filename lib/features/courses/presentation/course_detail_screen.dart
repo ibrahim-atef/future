@@ -5,6 +5,8 @@ import 'package:future_app/core/routes/app_routes.dart';
 import 'package:future_app/features/courses/data/models/courses_model.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_cubit.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_state.dart';
+import 'package:future_app/features/chat/presentation/course_chat_screen.dart';
+import 'package:future_app/features/chat/logic/cubit/chat_cubit.dart';
 
 class CourseDetailScreen extends StatelessWidget {
   final String courseId;
@@ -22,6 +24,27 @@ class CourseDetailScreen extends StatelessWidget {
       create: (context) => getIt<CoursesCubit>()..getSingleCourse(courseId),
       child: Scaffold(
         backgroundColor: const Color(0xFF1a1a1a),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => getIt<ChatCubit>(),
+                  child: CourseChatScreen(
+                    courseId: courseId,
+                    courseTitle: courseTitle,
+                  ),
+                ),
+              ),
+            );
+          },
+          backgroundColor: const Color(0xFFd4af37),
+          child: const Icon(
+            Icons.chat,
+            color: Colors.black,
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: const Color(0xFF1a1a1a),
           elevation: 0,
