@@ -6,6 +6,13 @@ class DownloadInitial extends DownloadState {}
 
 class DownloadLoading extends DownloadState {}
 
+class DownloadInProgress extends DownloadState {
+  final int progress; // 0-100
+  final String? message;
+
+  DownloadInProgress(this.progress, {this.message});
+}
+
 class DownloadSuccess extends DownloadState {
   final DownloadResponseModel response;
 

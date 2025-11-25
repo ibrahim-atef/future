@@ -47,8 +47,8 @@ class LectureModel {
 
   factory LectureModel.fromJson(Map<String, dynamic> json) {
     return LectureModel(
-      id: json['id'] ?? '',
-      courseId: json['courseId'] ?? '',
+      id: json['id']?.toString() ?? '',
+      courseId: json['courseId']?.toString() ?? '',
       title: json['title'] ?? '',
       description: json['description'],
       excerpt: json['excerpt'],

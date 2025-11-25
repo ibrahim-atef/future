@@ -3,25 +3,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:future_app/features/chat/data/models/chat_model.dart';
 import 'package:future_app/features/chat/data/repos/chat_repo_base.dart';
 
-class ChatRepo implements ChatRepoBase {
+class CommunityChatRepo implements ChatRepoBase {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Get chat collection reference for a course
-  CollectionReference _getChatCollection(String courseId) {
-    return _firestore.collection('courses').doc(courseId).collection('chat');
+  // Get chat collection reference for a grade (community)
+  CollectionReference _getChatCollection(String gradeId) {
+    return _firestore.collection('community').doc(gradeId).collection('chat');
   }
 
   // Send a message
   Future<void> sendMessage({
-    required String courseId,
+    required String courseId, // gradeId in this context
     required String userId,
     required String userName,
     required String message,
   }) async {
     try {
-      log('📤 ChatRepo: Attempting to send message');
-      log('📤 ChatRepo: courseId=$courseId, userId=$userId, userName=$userName');
-      log('📤 ChatRepo: message length=${message.length}');
+      log('📤 CommunityChatRepo: Attempting to send message');
+      log('📤 CommunityChatRepo: gradeId=$courseId, userId=$userId, userName=$userName');
+      log('📤 CommunityChatRepo: message length=${message.length}');
       
       final chatMessage = ChatMessage(
         id: '', // Will be set by Firestore
@@ -33,38 +33,38 @@ class ChatRepo implements ChatRepoBase {
       );
 
       final messageData = chatMessage.toFirestore();
-      log('📤 ChatRepo: Message data: $messageData');
+      log('📤 CommunityChatRepo: Message data: $messageData');
       
       final collectionRef = _getChatCollection(courseId);
-      log('📤 ChatRepo: Collection path: ${collectionRef.path}');
+      log('📤 CommunityChatRepo: Collection path: ${collectionRef.path}');
       
       final docRef = await collectionRef.add(messageData);
-      log('✅ ChatRepo: Message sent successfully with ID: ${docRef.id}');
+      log('✅ CommunityChatRepo: Message sent successfully with ID: ${docRef.id}');
     } catch (e, stackTrace) {
-      log('❌ ChatRepo: Error sending message: $e');
-      log('❌ ChatRepo: Stack trace: $stackTrace');
+      log('❌ CommunityChatRepo: Error sending message: $e');
+      log('❌ CommunityChatRepo: Stack trace: $stackTrace');
       throw Exception('Failed to send message: $e');
     }
   }
 
-  // Stream messages for a course (real-time updates)
+  // Stream messages for a grade (real-time updates)
   Stream<List<ChatMessage>> getMessagesStream(String courseId) {
     try {
-      log('📥 ChatRepo: Setting up message stream for courseId: $courseId');
+      log('📥 CommunityChatRepo: Setting up message stream for gradeId: $courseId');
       final collectionRef = _getChatCollection(courseId);
-      log('📥 ChatRepo: Collection path: ${collectionRef.path}');
+      log('📥 CommunityChatRepo: Collection path: ${collectionRef.path}');
       
       return collectionRef
           .orderBy('timestamp', descending: false)
           .snapshots()
           .map((snapshot) {
-        log('📥 ChatRepo: Received ${snapshot.docs.length} messages');
+        log('📥 CommunityChatRepo: Received ${snapshot.docs.length} messages');
         final messages = snapshot.docs
             .map((doc) {
               try {
                 return ChatMessage.fromFirestore(doc);
               } catch (e) {
-                log('❌ ChatRepo: Error parsing message ${doc.id}: $e');
+                log('❌ CommunityChatRepo: Error parsing message ${doc.id}: $e');
                 return null;
               }
             })
@@ -72,12 +72,12 @@ class ChatRepo implements ChatRepoBase {
             .toList();
         return messages;
       }).handleError((error) {
-        log('❌ ChatRepo: Stream error: $error');
+        log('❌ CommunityChatRepo: Stream error: $error');
         throw error;
       });
     } catch (e, stackTrace) {
-      log('❌ ChatRepo: Error setting up stream: $e');
-      log('❌ ChatRepo: Stack trace: $stackTrace');
+      log('❌ CommunityChatRepo: Error setting up stream: $e');
+      log('❌ CommunityChatRepo: Stack trace: $stackTrace');
       rethrow;
     }
   }
@@ -106,5 +106,4 @@ class ChatRepo implements ChatRepoBase {
     }
   }
 }
-
 

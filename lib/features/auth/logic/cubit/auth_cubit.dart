@@ -1,5 +1,6 @@
 import 'package:future_app/core/helper/shared_pref_helper.dart';
 import 'package:future_app/core/helper/shared_pref_keys.dart';
+import 'package:future_app/core/network/api_error_model.dart';
 import 'package:future_app/core/network/dio_factory.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/data/models/register_request_model.dart';
@@ -21,9 +22,17 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthState.loadingLogin());
     final response = await _authRepo.login(request);
     response.when(success: (data) {
-      saveUserToken(
-          data.data.token, data.data.user.id, data.data.user.fullName);
-      emit(AuthState.successLogin(data));
+      // Only proceed if data is not null (successful login)
+      if (data.data != null) {
+        saveUserToken(
+            data.data!.token, data.data!.user.id, data.data!.user.fullName);
+        emit(AuthState.successLogin(data));
+      } else {
+        // This shouldn't happen, but handle it just in case
+        emit(AuthState.errorLogin(
+          ApiErrorModel(message: 'حدث خطأ غير متوقع في تسجيل الدخول'),
+        ));
+      }
     }, failure: (apiErrorModel) {
       emit(AuthState.errorLogin(apiErrorModel));
     });

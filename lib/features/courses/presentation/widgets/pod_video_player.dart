@@ -18,11 +18,56 @@ class PodVideoPlayerDev extends StatefulWidget {
     required this.name,
   });
 
+  /// Extract YouTube video ID (static helper method)
+  static String? _extractVideoIdStatic(String url) {
+    if (url.isEmpty) return null;
+    
+    url = url.trim();
+    
+    // First try the built-in converter
+    String? videoId = YoutubePlayer.convertUrlToId(url);
+    if (videoId != null && videoId.isNotEmpty) {
+      return videoId;
+    }
+    
+    // Handle youtu.be short URLs
+    final youtuBeRegExp = RegExp(
+      r'youtu\.be\/([a-zA-Z0-9_-]{11})',
+      caseSensitive: false,
+    );
+    var match = youtuBeRegExp.firstMatch(url);
+    if (match != null && match.groupCount >= 1) {
+      return match.group(1);
+    }
+    
+    // Handle youtube.com/watch?v= format
+    final watchRegExp = RegExp(
+      r'(?:youtube\.com\/watch\?v=|youtube\.com\/v\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})',
+      caseSensitive: false,
+    );
+    match = watchRegExp.firstMatch(url);
+    if (match != null && match.groupCount >= 1) {
+      return match.group(1);
+    }
+    
+    // Fallback
+    final fallbackRegExp = RegExp(
+      r'(?:youtube\.com\/|youtu\.be\/).*?([a-zA-Z0-9_-]{11})',
+      caseSensitive: false,
+    );
+    match = fallbackRegExp.firstMatch(url);
+    if (match != null && match.groupCount >= 1) {
+      return match.group(1);
+    }
+    
+    return null;
+  }
+
   /// Clear saved position for a specific video
   static Future<void> clearSavedPosition(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final String? videoId = YoutubePlayer.convertUrlToId(url);
+      final String? videoId = _extractVideoIdStatic(url);
       if (videoId != null) {
         await prefs.remove('video_position_$videoId');
         log('Cleared saved position for video: $videoId');
@@ -54,7 +99,7 @@ class PodVideoPlayerDev extends StatefulWidget {
   static Future<Duration?> getSavedPosition(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final String? videoId = YoutubePlayer.convertUrlToId(url);
+      final String? videoId = _extractVideoIdStatic(url);
       if (videoId != null) {
         final int? savedSeconds = prefs.getInt('video_position_$videoId');
         if (savedSeconds != null) {
@@ -85,6 +130,53 @@ class _PodVideoPlayerDevState extends State<PodVideoPlayerDev> {
   Duration _savedPosition = Duration.zero;
   Timer? _positionSaveTimer;
 
+  /// Extract YouTube video ID from various URL formats
+  /// Supports: youtube.com/watch?v=, youtube.com/embed/, youtu.be/, etc.
+  String? _extractYouTubeVideoId(String url) {
+    if (url.isEmpty) return null;
+    
+    // Remove any leading/trailing whitespace
+    url = url.trim();
+    
+    // First try the built-in converter
+    String? videoId = YoutubePlayer.convertUrlToId(url);
+    if (videoId != null && videoId.isNotEmpty) {
+      return videoId;
+    }
+    
+    // Handle youtu.be short URLs (e.g., https://youtu.be/KHsWKJZlxGE?si=...)
+    final youtuBeRegExp = RegExp(
+      r'youtu\.be\/([a-zA-Z0-9_-]{11})',
+      caseSensitive: false,
+    );
+    var match = youtuBeRegExp.firstMatch(url);
+    if (match != null && match.groupCount >= 1) {
+      return match.group(1);
+    }
+    
+    // Handle youtube.com/watch?v= format
+    final watchRegExp = RegExp(
+      r'(?:youtube\.com\/watch\?v=|youtube\.com\/v\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})',
+      caseSensitive: false,
+    );
+    match = watchRegExp.firstMatch(url);
+    if (match != null && match.groupCount >= 1) {
+      return match.group(1);
+    }
+    
+    // Fallback: try to extract any 11-character alphanumeric string after youtu.be or youtube.com
+    final fallbackRegExp = RegExp(
+      r'(?:youtube\.com\/|youtu\.be\/).*?([a-zA-Z0-9_-]{11})',
+      caseSensitive: false,
+    );
+    match = fallbackRegExp.firstMatch(url);
+    if (match != null && match.groupCount >= 1) {
+      return match.group(1);
+    }
+    
+    return null;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -102,7 +194,7 @@ class _PodVideoPlayerDevState extends State<PodVideoPlayerDev> {
   Future<void> _loadSavedPosition() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final String? videoId = YoutubePlayer.convertUrlToId(widget.url);
+      final String? videoId = _extractYouTubeVideoId(widget.url);
       if (videoId != null) {
         final int? savedSeconds = prefs.getInt('video_position_$videoId');
         if (savedSeconds != null) {
@@ -121,7 +213,7 @@ class _PodVideoPlayerDevState extends State<PodVideoPlayerDev> {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final String? videoId = YoutubePlayer.convertUrlToId(widget.url);
+      final String? videoId = _extractYouTubeVideoId(widget.url);
       if (videoId != null) {
         final int currentSeconds = _controller!.value.position.inSeconds;
         await prefs.setInt('video_position_$videoId', currentSeconds);
@@ -134,16 +226,20 @@ class _PodVideoPlayerDevState extends State<PodVideoPlayerDev> {
 
   /// Initialize video player with proper error handling
   void _initializeVideoPlayer() {
-    // Safely extract the YouTube video ID
-    final String? videoId = YoutubePlayer.convertUrlToId(widget.url);
+    log('🎬 Initializing video player with URL: ${widget.url}');
+    
+    // Safely extract the YouTube video ID using improved extraction
+    final String? videoId = _extractYouTubeVideoId(widget.url);
     if (videoId == null || videoId.isEmpty) {
-      log("Warning: Invalid or no video ID found in URL: ${widget.url}");
+      log("❌ Warning: Invalid or no video ID found in URL: ${widget.url}");
       setState(() {
         _isLoading = false;
         _isInitialized = false;
       });
       return;
     }
+    
+    log('✅ Extracted video ID: $videoId from URL: ${widget.url}');
 
     try {
       // Initialize controllers

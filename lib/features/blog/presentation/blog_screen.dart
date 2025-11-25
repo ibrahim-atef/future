@@ -393,10 +393,9 @@ class _BlogScreenState extends State<BlogScreen> {
 
   Widget _buildBlogPost(BuildContext context, String postId, String title,
       String excerpt, String publishedAt, String author, dynamic imageUrl) {
-    final String? imageUrlString = imageUrl is String && imageUrl.isNotEmpty
-        ? imageUrl
-        : null;
-    
+    final String? imageUrlString =
+        imageUrl is String && imageUrl.isNotEmpty ? imageUrl : null;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(

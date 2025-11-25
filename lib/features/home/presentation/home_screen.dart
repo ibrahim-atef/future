@@ -403,6 +403,19 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                       height: 40,
                     ),
                   ),
+                  _buildFeatureCard(
+                    context,
+                    'كميونيتي',
+                    () => Navigator.pushNamed(
+                      context,
+                      AppRoutes.community,
+                    ),
+                    const Icon(
+                      Icons.people,
+                      size: 40,
+                      color: Color(0xFFd4af37),
+                    ),
+                  ),
                 ],
               ),
 

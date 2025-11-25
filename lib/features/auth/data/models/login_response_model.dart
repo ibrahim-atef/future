@@ -10,17 +10,24 @@ class LoginResponseModel {
   @JsonKey(name: 'message')
   final String message;
 
-  @JsonKey(name: 'data')
-  final LoginResponseData data;
+  @JsonKey(name: 'data', includeIfNull: false)
+  final LoginResponseData? data;
 
   LoginResponseModel({
     required this.success,
     required this.message,
-    required this.data,
+    this.data,
   });
 
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$LoginResponseModelFromJson(json);
+  factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
+    return LoginResponseModel(
+      success: json['success'] as bool,
+      message: json['message'] as String,
+      data: json['data'] != null
+          ? LoginResponseData.fromJson(json['data'] as Map<String, dynamic>)
+          : null,
+    );
+  }
 }
 
 @JsonSerializable()

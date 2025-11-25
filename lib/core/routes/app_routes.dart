@@ -28,6 +28,8 @@ import '../../screens/quiz/quiz_result_screen.dart';
 import '../../features/downloads/presentation/offline_list_course_page.dart';
 import '../../features/downloads/presentation/offline_single_course_page.dart';
 import '../../features/downloads/presentation/offline_single_content_page.dart';
+import '../../features/community/presentation/community_screen.dart';
+import '../../features/community/presentation/community_chat_screen.dart';
 
 class AppRoutes {
   // Route names
@@ -59,6 +61,8 @@ class AppRoutes {
   static const String offlineSingleCourse = '/offline-single-course';
   static const String offlineSingleContent = '/offline-single-content';
   static const String emtyazScreen = '/emtyaz-screen';
+  static const String community = '/community';
+  static const String communityChat = '/community-chat';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -282,6 +286,22 @@ class AppRoutes {
           builder: (_) => OfflineSingleContentPage(
             courseId: args?['courseId'] ?? 0,
             content: args?['content'] ?? {},
+          ),
+          settings: settings,
+        );
+
+      case community:
+        return MaterialPageRoute(
+          builder: (_) => const CommunityScreen(),
+          settings: settings,
+        );
+
+      case communityChat:
+        final args = settings.arguments as Map<String, dynamic>?;
+        return MaterialPageRoute(
+          builder: (_) => CommunityChatScreen(
+            gradeId: args?['gradeId'] ?? '',
+            gradeName: args?['gradeName'] ?? '',
           ),
           settings: settings,
         );

@@ -2,14 +2,15 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:future_app/features/chat/data/models/chat_model.dart';
-import 'package:future_app/features/chat/data/repos/chat_repo.dart';
+import 'package:future_app/features/chat/data/repos/chat_repo_base.dart';
 import 'package:future_app/features/chat/logic/cubit/chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   ChatCubit(this._chatRepo) : super(const ChatState.initial());
 
-  final ChatRepo _chatRepo;
+  final ChatRepoBase _chatRepo;
   StreamSubscription<List<ChatMessage>>? _messagesSubscription;
+  List<ChatMessage> _lastMessages = []; // حفظ آخر قائمة رسائل
 
   // Load messages for a course
   void loadMessages(String courseId) {
@@ -23,6 +24,7 @@ class ChatCubit extends Cubit<ChatState> {
     _messagesSubscription = _chatRepo.getMessagesStream(courseId).listen(
       (messages) {
         log('✅ ChatCubit: Received ${messages.length} messages');
+        _lastMessages = messages; // حفظ آخر قائمة رسائل
         emit(ChatState.loaded(messages));
       },
       onError: (error, stackTrace) {
@@ -49,7 +51,12 @@ class ChatCubit extends Cubit<ChatState> {
     log('📤 ChatCubit: courseId=$courseId, userId=$userId, userName=$userName');
     log('📤 ChatCubit: message="${message.trim()}"');
     
-    emit(const ChatState.sending());
+    // عرض الرسائل الحالية أثناء الإرسال
+    if (_lastMessages.isNotEmpty) {
+      emit(ChatState.loaded(_lastMessages));
+    } else {
+      emit(const ChatState.sending());
+    }
     
     try {
       await _chatRepo.sendMessage(
@@ -59,16 +66,20 @@ class ChatCubit extends Cubit<ChatState> {
         message: message.trim(),
       );
       log('✅ ChatCubit: Message sent successfully');
-      emit(const ChatState.sent());
-      // Reset to loaded state after a short delay
-      Future.delayed(const Duration(milliseconds: 500), () {
-        if (!isClosed) {
-          // State will be updated by stream listener
-        }
-      });
+      // لا نغير الحالة إلى sent - الـ stream سيقوم بتحديث الحالة تلقائياً
+      // نعرض الرسائل الحالية حتى يتم تحديثها من الـ stream
+      if (_lastMessages.isNotEmpty) {
+        emit(ChatState.loaded(_lastMessages));
+      } else {
+        emit(const ChatState.sent());
+      }
     } catch (e, stackTrace) {
       log('❌ ChatCubit: Error sending message: $e');
       log('❌ ChatCubit: Stack trace: $stackTrace');
+      // عرض الرسائل الحالية حتى في حالة الخطأ
+      if (_lastMessages.isNotEmpty) {
+        emit(ChatState.loaded(_lastMessages));
+      }
       emit(ChatState.sendError(e.toString()));
     }
   }

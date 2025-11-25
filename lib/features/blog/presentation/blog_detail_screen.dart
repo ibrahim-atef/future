@@ -8,6 +8,23 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+// Helper class to store link position information
+class _LinkPosition {
+  final int start;
+  final int end;
+  final String url;
+  final String text;
+  final bool isFromTag;
+
+  _LinkPosition({
+    required this.start,
+    required this.end,
+    required this.url,
+    required this.text,
+    required this.isFromTag,
+  });
+}
+
 class BlogDetailScreen extends StatelessWidget {
   final String postId;
   final String postTitle;
@@ -363,51 +380,52 @@ class BlogDetailScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Display text content with clickable links
-        if (textWithLinks != null)
-          textWithLinks,
+        if (textWithLinks != null) textWithLinks,
 
         // Display images
         ...images.map((match) {
           final imageUrl = match.group(1);
-          if (imageUrl == null || imageUrl.isEmpty) return const SizedBox.shrink();
-          
-            return Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  placeholder: (context, url) => Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1a1a1a),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xFFd4af37),
-                      ),
+          if (imageUrl == null || imageUrl.isEmpty) {
+            return const SizedBox.shrink();
+          }
+
+          return Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                placeholder: (context, url) => Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1a1a1a),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFFd4af37),
                     ),
                   ),
-                  errorWidget: (context, url, error) => Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1a1a1a),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.broken_image,
-                        color: Colors.white54,
-                        size: 48,
-                      ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1a1a1a),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.broken_image,
+                      color: Colors.white54,
+                      size: 48,
                     ),
                   ),
                 ),
               ),
-            );
+            ),
+          );
         }),
 
         // Display links
@@ -425,7 +443,7 @@ class BlogDetailScreen extends StatelessWidget {
           ...links.map((match) {
             final linkUrl = match.group(1);
             final linkText = match.group(2) ?? linkUrl ?? '';
-            
+
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: InkWell(
@@ -434,7 +452,8 @@ class BlogDetailScreen extends StatelessWidget {
                   if (linkUrl != null && linkUrl.isNotEmpty) {
                     final Uri url = Uri.parse(linkUrl);
                     if (await canLaunchUrl(url)) {
-                      await launchUrl(url, mode: LaunchMode.externalApplication);
+                      await launchUrl(url,
+                          mode: LaunchMode.externalApplication);
                     }
                   }
                 },
@@ -498,47 +517,33 @@ class BlogDetailScreen extends StatelessWidget {
   }
 
   Widget? _buildTextWithClickableLinks(String htmlContent) {
-    // Extract all links with their positions
-    final linkRegExp = RegExp(
+    // Extract links from <a> tags
+    final linkTagRegExp = RegExp(
       '<a[^>]+href=["\']([^"\']+)["\'][^>]*>([^<]+)</a>',
       caseSensitive: false,
     );
-    final linkMatches = linkRegExp.allMatches(htmlContent);
+    final linkTagMatches = linkTagRegExp.allMatches(htmlContent);
 
-    if (linkMatches.isEmpty) {
-      // No links, just return plain text
-      final cleanText = _stripHtmlTags(htmlContent);
-      if (cleanText.trim().isEmpty) return null;
-      
-      return Text(
-        cleanText
+    // Replace <a> tags with their text content to get clean text
+    String textWithoutLinkTags = htmlContent;
+    final linkTagMap = <String, String>{}; // Map to store link text -> URL
+
+    for (final match in linkTagMatches) {
+      final linkUrl = match.group(1) ?? '';
+      final linkText = match.group(2) ?? '';
+      if (linkUrl.isNotEmpty && linkText.isNotEmpty) {
+        final cleanLinkText = _stripHtmlTags(linkText)
             .replaceAll('&hellip;', '...')
             .replaceAll('&nbsp;', ' ')
-            .replaceAll('&amp;', '&')
-            .replaceAll('&lt;', '<')
-            .replaceAll('&gt;', '>')
-            .replaceAll('&quot;', '"')
-            .trim(),
-        style: const TextStyle(
-          color: Colors.white70,
-          fontSize: 16,
-          height: 1.6,
-        ),
-      );
+            .replaceAll('&amp;', '&');
+        linkTagMap[cleanLinkText] = linkUrl;
+        textWithoutLinkTags =
+            textWithoutLinkTags.replaceFirst(match.group(0) ?? '', linkText);
+      }
     }
 
-    // Build RichText with clickable links
-    final textSpans = <TextSpan>[];
-    int lastIndex = 0;
-    
-    // Remove link tags from HTML to get plain text positions
-    String textWithoutLinks = htmlContent;
-    for (final match in linkMatches) {
-      final linkText = match.group(2) ?? '';
-      textWithoutLinks = textWithoutLinks.replaceFirst(match.group(0) ?? '', linkText);
-    }
-    
-    final cleanText = _stripHtmlTags(textWithoutLinks)
+    // Get clean text without HTML tags
+    final cleanText = _stripHtmlTags(textWithoutLinkTags)
         .replaceAll('&hellip;', '...')
         .replaceAll('&nbsp;', ' ')
         .replaceAll('&amp;', '&')
@@ -549,58 +554,148 @@ class BlogDetailScreen extends StatelessWidget {
 
     if (cleanText.isEmpty) return null;
 
-    // Find link positions in clean text
-    for (final match in linkMatches) {
-      final linkUrl = match.group(1);
-      final linkText = match.group(2) ?? '';
-      
-      if (linkUrl == null || linkText.isEmpty) continue;
-      
-      final linkTextClean = _stripHtmlTags(linkText)
-          .replaceAll('&hellip;', '...')
-          .replaceAll('&nbsp;', ' ')
-          .replaceAll('&amp;', '&');
-      
-      final linkIndex = cleanText.indexOf(linkTextClean, lastIndex);
-      
-      if (linkIndex != -1) {
-        // Add text before link
-        if (linkIndex > lastIndex) {
-          textSpans.add(TextSpan(
-            text: cleanText.substring(lastIndex, linkIndex),
-            style: const TextStyle(
-              color: Colors.white70,
-              fontSize: 16,
-            ),
-          ));
-        }
-        
-        // Add clickable link
-        textSpans.add(TextSpan(
-          text: linkTextClean,
-          style: const TextStyle(
-            color: Color(0xFFd4af37),
-            fontSize: 16,
-            decoration: TextDecoration.underline,
-            decorationColor: Color(0xFFd4af37),
-          ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () async {
-              try {
-                final Uri url = Uri.parse(linkUrl);
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.externalApplication);
-                }
-              } catch (e) {
-                // Handle error silently
-              }
-            },
+    // Regex to detect plain URLs (http, https, telegram, etc.)
+    // Also handles URLs inside brackets like [https://...]
+    final urlRegExp = RegExp(
+      r'\[?(https?://[^\s<>"\[\]]+|t\.me/[^\s<>"\[\]]+|www\.[^\s<>"\[\]]+)\]?',
+      caseSensitive: false,
+    );
+
+    // Collect all link positions (from <a> tags and plain URLs)
+    final linkPositions = <_LinkPosition>[];
+
+    // Add links from <a> tags
+    for (final entry in linkTagMap.entries) {
+      final linkText = entry.key;
+      final linkUrl = entry.value;
+      if (linkText.isEmpty || linkUrl.isEmpty) continue;
+
+      int searchStart = 0;
+      while (true) {
+        final index = cleanText.indexOf(linkText, searchStart);
+        if (index == -1) break;
+        linkPositions.add(_LinkPosition(
+          start: index,
+          end: index + linkText.length,
+          url: linkUrl,
+          text: linkText,
+          isFromTag: true,
         ));
-        
-        lastIndex = linkIndex + linkTextClean.length;
+        searchStart = index + 1;
       }
     }
-    
+
+    // Add plain URLs
+    for (final match in urlRegExp.allMatches(cleanText)) {
+      String url = match.group(0) ?? '';
+      if (url.isEmpty) continue;
+
+      // Remove brackets if present
+      int actualStart = match.start;
+      int actualEnd = match.end;
+      if (url.startsWith('[') && url.endsWith(']')) {
+        url = url.substring(1, url.length - 1);
+        actualStart = match.start + 1;
+        actualEnd = match.end - 1;
+      }
+
+      // Check if this URL is already covered by an <a> tag
+      bool alreadyCovered = false;
+      for (final linkPos in linkPositions) {
+        if (actualStart >= linkPos.start && actualEnd <= linkPos.end) {
+          alreadyCovered = true;
+          break;
+        }
+      }
+
+      if (!alreadyCovered) {
+        String fullUrl = url;
+        if (url.startsWith('www.')) {
+          fullUrl = 'https://$url';
+        } else if (url.startsWith('t.me/')) {
+          fullUrl = 'https://$url';
+        }
+
+        linkPositions.add(_LinkPosition(
+          start: actualStart,
+          end: actualEnd,
+          url: fullUrl,
+          text: url,
+          isFromTag: false,
+        ));
+      }
+    }
+
+    // Sort by start position
+    linkPositions.sort((a, b) => a.start.compareTo(b.start));
+
+    // Remove overlapping links (prefer <a> tag links over plain URLs)
+    final filteredPositions = <_LinkPosition>[];
+    for (final pos in linkPositions) {
+      bool overlaps = false;
+      for (final existing in filteredPositions) {
+        if ((pos.start < existing.end && pos.end > existing.start)) {
+          // If both are from tags or both are plain, skip the new one
+          // If one is from tag and one is plain, prefer the tag one
+          if (pos.isFromTag && !existing.isFromTag) {
+            filteredPositions.remove(existing);
+            overlaps = false;
+            break;
+          } else {
+            overlaps = true;
+            break;
+          }
+        }
+      }
+      if (!overlaps) {
+        filteredPositions.add(pos);
+      }
+    }
+
+    // Re-sort after filtering
+    filteredPositions.sort((a, b) => a.start.compareTo(b.start));
+
+    // Build RichText with clickable links
+    final textSpans = <TextSpan>[];
+    int lastIndex = 0;
+
+    for (final linkPos in filteredPositions) {
+      // Add text before link
+      if (linkPos.start > lastIndex) {
+        textSpans.add(TextSpan(
+          text: cleanText.substring(lastIndex, linkPos.start),
+          style: const TextStyle(
+            color: Colors.white70,
+            fontSize: 16,
+          ),
+        ));
+      }
+
+      // Add clickable link
+      textSpans.add(TextSpan(
+        text: linkPos.text,
+        style: const TextStyle(
+          color: Color(0xFFd4af37),
+          fontSize: 16,
+          decoration: TextDecoration.underline,
+          decorationColor: Color(0xFFd4af37),
+        ),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () async {
+            try {
+              final Uri uri = Uri.parse(linkPos.url);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            } catch (e) {
+              // Handle error silently
+            }
+          },
+      ));
+
+      lastIndex = linkPos.end;
+    }
+
     // Add remaining text
     if (lastIndex < cleanText.length) {
       textSpans.add(TextSpan(
@@ -610,6 +705,19 @@ class BlogDetailScreen extends StatelessWidget {
           fontSize: 16,
         ),
       ));
+    }
+
+    // If no links found, return plain text
+    if (textSpans.isEmpty ||
+        (textSpans.length == 1 && textSpans.first.recognizer == null)) {
+      return Text(
+        cleanText,
+        style: const TextStyle(
+          color: Colors.white70,
+          fontSize: 16,
+          height: 1.6,
+        ),
+      );
     }
 
     return RichText(

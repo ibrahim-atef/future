@@ -8,11 +8,13 @@ import 'package:future_app/features/courses/logic/cubit/quiz_state.dart';
 class QuizScreen extends StatefulWidget {
   final String quizId;
   final String quizTitle;
+  final DateTime? quizCreatedAt;
 
   const QuizScreen({
     super.key,
     required this.quizId,
     required this.quizTitle,
+    this.quizCreatedAt,
   });
 
   @override
@@ -23,25 +25,79 @@ class _QuizScreenState extends State<QuizScreen> {
   int _currentQuestionIndex = 0;
   final Map<String, String> _answers = {};
   final Map<String, TextEditingController> _textControllers = {};
+  String? _lastQuizId;
+
+  @override
+  void initState() {
+    super.initState();
+    _lastQuizId = widget.quizId;
+    // Reset local state if needed
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _resetLocalState();
+      }
+    });
+  }
+
+  void _resetLocalState() {
+    if (!mounted) return;
+    setState(() {
+      _currentQuestionIndex = 0;
+      _answers.clear();
+      // Dispose old controllers
+      for (var controller in _textControllers.values) {
+        controller.dispose();
+      }
+      _textControllers.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
         final cubit = getIt<QuizCubit>();
-        // Check if quiz was already started before starting
-        cubit.isQuizStarted(widget.quizId).then((wasStarted) {
-          if (!wasStarted) {
-            // Only start quiz if not already started or if different quiz
-            if (cubit.quizData == null ||
-                cubit.quizData!.data.id != widget.quizId) {
-              cubit.startQuiz(widget.quizId);
-            }
-          } else {
-            // Quiz was already started, show error
-            cubit.startQuiz(widget.quizId); // This will emit error state
+
+        // Reset state if this is a different quiz or if state is showing result
+        final currentQuizData = cubit.quizData;
+        final currentQuizId = cubit.currentQuizId;
+
+        // If different quiz or showing result, reset everything
+        if ((currentQuizData != null &&
+                currentQuizData.data.id != widget.quizId) ||
+            (currentQuizId != null && currentQuizId != widget.quizId)) {
+          // Different quiz, reset everything completely
+          cubit.resetQuiz();
+        }
+
+        // Wait a bit to ensure reset is complete, then check and start quiz
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          // Reset local state if needed
+          if (_lastQuizId != null && _lastQuizId != widget.quizId) {
+            _resetLocalState();
           }
+          _lastQuizId = widget.quizId;
+
+          // Check and start quiz
+          cubit.isQuizStarted(widget.quizId).then((wasStarted) {
+            if (!mounted) return;
+            if (!wasStarted) {
+              // Only start quiz if not already started or if different quiz
+              if (cubit.quizData == null ||
+                  cubit.quizData!.data.id != widget.quizId ||
+                  cubit.currentQuizId != widget.quizId) {
+                cubit.startQuiz(widget.quizId,
+                    quizCreatedAt: widget.quizCreatedAt);
+              }
+            } else {
+              // Quiz was already started, try to start with force restart
+              cubit.startQuiz(widget.quizId,
+                  forceRestart: true, quizCreatedAt: widget.quizCreatedAt);
+            }
+          });
         });
+
         return cubit;
       },
       child: Builder(
@@ -65,97 +121,164 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
           ),
           body: BlocConsumer<QuizCubit, QuizState>(
-          listener: (context, state) {
-            if (!mounted) return;
-            state.whenOrNull(
-              quizTimeUp: () {
-                _submitQuiz(context);
-              },
-              sendQuizResultSuccess: (data) {
-                _showQuizResult(context, data);
-              },
-            );
-          },
-          builder: (context, state) {
-            return state.when(
-              initial: () => const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFFd4af37),
+            listener: (context, state) {
+              if (!mounted) return;
+              state.whenOrNull(
+                quizTimeUp: () {
+                  _submitQuiz(context);
+                },
+                sendQuizResultSuccess: (data) {
+                  _showQuizResult(context, data);
+                },
+              );
+            },
+            builder: (context, state) {
+              // Check if state is showing result from a different quiz
+              final cubit = context.read<QuizCubit>();
+              final currentQuizData = cubit.quizData;
+              final isDifferentQuiz = currentQuizData != null &&
+                  currentQuizData.data.id != widget.quizId;
+
+              // If showing result from different quiz, reset and start new quiz
+              if (isDifferentQuiz &&
+                  state.maybeWhen(
+                    sendQuizResultSuccess: (_) => true,
+                    orElse: () => false,
+                  )) {
+                // Reset and start new quiz
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  cubit.resetQuiz();
+                  cubit.startQuiz(widget.quizId,
+                      quizCreatedAt: widget.quizCreatedAt);
+                });
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFFd4af37),
+                  ),
+                );
+              }
+
+              return state.when(
+                initial: () => const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFFd4af37),
+                  ),
                 ),
-              ),
-              startQuizLoading: () => const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFFd4af37),
+                startQuizLoading: () => const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFFd4af37),
+                  ),
                 ),
-              ),
-              startQuizSuccess: (data) => _buildQuizContent(context, data),
-              startQuizError: (error) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 64,
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'حدث خطأ في تحميل الاختبار',
-                      style: TextStyle(
+                startQuizSuccess: (data) {
+                  // Double check this is the correct quiz
+                  if (data.data.id != widget.quizId) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      cubit.resetQuiz();
+                      cubit.startQuiz(widget.quizId,
+                          quizCreatedAt: widget.quizCreatedAt);
+                    });
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFFd4af37),
+                      ),
+                    );
+                  }
+                  return _buildQuizContent(context, data);
+                },
+                startQuizError: (error) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
                         color: Colors.red,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        size: 64,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      error.getAllErrorsAsString(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 14,
+                      const SizedBox(height: 16),
+                      const Text(
+                        'حدث خطأ في تحميل الاختبار',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<QuizCubit>().resetQuiz();
-                        context.read<QuizCubit>().startQuiz(widget.quizId);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFd4af37),
-                        foregroundColor: Colors.black,
+                      const SizedBox(height: 8),
+                      Text(
+                        error.getAllErrorsAsString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: 14,
+                        ),
                       ),
-                      child: const Text('إعادة المحاولة'),
-                    ),
-                  ],
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final cubit = context.read<QuizCubit>();
+                          // Clear quiz flag and reset
+                          await cubit.markQuizAsCompleted(widget.quizId);
+                          cubit.resetQuiz();
+                          _resetLocalState();
+                          // Wait a bit then retry
+                          await Future.delayed(
+                              const Duration(milliseconds: 100));
+                          if (mounted) {
+                            cubit.startQuiz(widget.quizId,
+                                forceRestart: true,
+                                quizCreatedAt: widget.quizCreatedAt);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFd4af37),
+                          foregroundColor: Colors.black,
+                        ),
+                        child: const Text('إعادة المحاولة'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              sendQuizResultLoading: () => const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFFd4af37),
+                sendQuizResultLoading: () => const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFFd4af37),
+                  ),
                 ),
-              ),
-              sendQuizResultSuccess: (data) => _buildQuizResult(context, data),
-              sendQuizResultError: (error) => Center(
-                child: Text(
-                  'خطأ في إرسال النتيجة: ${error.getAllErrorsAsString()}',
-                  style: const TextStyle(color: Colors.red),
+                sendQuizResultSuccess: (data) {
+                  // Verify this result is for the current quiz
+                  if (cubit.currentQuizId != widget.quizId) {
+                    // Wrong quiz result, reset and start current quiz
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      cubit.resetQuiz();
+                      cubit.startQuiz(widget.quizId,
+                          quizCreatedAt: widget.quizCreatedAt);
+                    });
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFFd4af37),
+                      ),
+                    );
+                  }
+                  return _buildQuizResult(context, data);
+                },
+                sendQuizResultError: (error) => Center(
+                  child: Text(
+                    'خطأ في إرسال النتيجة: ${error.getAllErrorsAsString()}',
+                    style: const TextStyle(color: Colors.red),
+                  ),
                 ),
-              ),
-              quizTimerTick: (remainingSeconds) {
-                final cubit = context.read<QuizCubit>();
-                return _buildQuizContent(context, cubit.quizData);
-              },
-              quizTimeUp: () => const Center(
-                child: Text(
-                  'انتهى الوقت!',
-                  style: TextStyle(color: Colors.red, fontSize: 24),
+                quizTimerTick: (remainingSeconds) {
+                  final cubit = context.read<QuizCubit>();
+                  return _buildQuizContent(context, cubit.quizData);
+                },
+                quizTimeUp: () => const Center(
+                  child: Text(
+                    'انتهى الوقت!',
+                    style: TextStyle(color: Colors.red, fontSize: 24),
+                  ),
                 ),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -608,14 +731,35 @@ class _QuizScreenState extends State<QuizScreen> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () async {
-                      // Mark quiz as completed to allow restart
-                      await context.read<QuizCubit>().markQuizAsCompleted(widget.quizId);
-                      setState(() {
-                        _currentQuestionIndex = 0;
-                        _answers.clear();
-                      });
-                      context.read<QuizCubit>().resetQuiz();
-                      context.read<QuizCubit>().startQuiz(widget.quizId);
+                      if (!mounted) return;
+                      final cubit = context.read<QuizCubit>();
+                      try {
+                        // Reset local state first
+                        if (mounted) {
+                          _resetLocalState();
+                        }
+                        // Reset cubit state
+                        if (mounted) {
+                          cubit.resetQuiz();
+                        }
+                        // Wait a bit to ensure state is reset
+                        await Future.delayed(const Duration(milliseconds: 50));
+                        // Start quiz again with force restart flag
+                        if (mounted) {
+                          await cubit.startQuiz(widget.quizId,
+                              forceRestart: true,
+                              quizCreatedAt: widget.quizCreatedAt);
+                        }
+                      } catch (e) {
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('حدث خطأ: ${e.toString()}'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFd4af37),
@@ -795,6 +939,8 @@ class _QuizScreenState extends State<QuizScreen> {
     for (var controller in _textControllers.values) {
       controller.dispose();
     }
+    _textControllers.clear();
+    _answers.clear();
     super.dispose();
   }
 
@@ -823,7 +969,7 @@ class _QuizScreenState extends State<QuizScreen> {
     // Use BlocBuilder to access the cubit safely
     final cubit = context.read<QuizCubit>();
     final quizData = cubit.quizData;
-    
+
     // If quiz is in progress, show confirmation dialog
     if (quizData != null) {
       showDialog(

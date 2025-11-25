@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:future_app/core/network/api_constants.dart';
 import 'package:future_app/core/network/api_error_handel.dart';
+import 'package:future_app/core/network/api_error_model.dart';
 import 'package:future_app/core/network/api_result.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
 import 'package:future_app/features/auth/data/models/login_response_model.dart';
@@ -23,9 +25,63 @@ class AuthRepo {
         ApiConstants.apiKey,
         ApiConstants.appSource,
       );
+      
+      // Check if login was unsuccessful
+      if (!response.success) {
+        // Create error model from the response with the Arabic message
+        return ApiResult.failure(
+          ApiErrorModel(
+            success: response.success,
+            message: response.message,
+            errors: null,
+          ),
+        );
+      }
+      
       return ApiResult.success(response);
-    } catch (e) {
+    } on DioException catch (e) {
+      // Handle DioException - might be a parsing error or network error
       log(e.toString());
+      
+      // If it's a bad response, try to extract error message from response data
+      if (e.type == DioExceptionType.badResponse && e.response?.data != null) {
+        final responseData = e.response!.data;
+        if (responseData is Map<String, dynamic>) {
+          // Check if this is a success: false response
+          if (responseData['success'] == false) {
+            final message = responseData['message'] ?? 'حدث خطأ غير متوقع';
+            return ApiResult.failure(
+              ApiErrorModel(
+                success: false,
+                message: message.toString(),
+                errors: null,
+              ),
+            );
+          }
+        }
+      }
+      
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    } catch (e) {
+      // Handle other exceptions (like parsing errors)
+      log(e.toString());
+      
+      // If it's a parsing error, the original response might be in the exception
+      // Try to extract it if possible
+      if (e is DioException && e.response?.data != null) {
+        final responseData = e.response!.data;
+        if (responseData is Map<String, dynamic> && responseData['success'] == false) {
+          final message = responseData['message'] ?? 'حدث خطأ غير متوقع';
+          return ApiResult.failure(
+            ApiErrorModel(
+              success: false,
+              message: message.toString(),
+              errors: null,
+            ),
+          );
+        }
+      }
+      
       return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }

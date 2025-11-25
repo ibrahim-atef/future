@@ -24,27 +24,84 @@ class CourseDetailScreen extends StatelessWidget {
       create: (context) => getIt<CoursesCubit>()..getSingleCourse(courseId),
       child: Scaffold(
         backgroundColor: const Color(0xFF1a1a1a),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => getIt<ChatCubit>(),
-                  child: CourseChatScreen(
-                    courseId: courseId,
-                    courseTitle: courseTitle,
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SizedBox(
+            width: double.infinity,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFd4af37), Color(0xFFf4d03f)],
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFd4af37).withOpacity(0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Navigate to lecture player screen
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.lecturePlayer,
+                    arguments: {
+                      'courseId': courseId,
+                      'courseTitle': courseTitle,
+                    },
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: const Color(0xFF1a1a1a),
+                  shadowColor: Colors.transparent,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "ابدأ الآن",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_forward, size: 20),
+                  ],
+                ),
               ),
-            );
-          },
-          backgroundColor: const Color(0xFFd4af37),
-          child: const Icon(
-            Icons.chat,
-            color: Colors.black,
+            ),
           ),
         ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => BlocProvider(
+        //           create: (context) => getIt<ChatCubit>(),
+        //           child: CourseChatScreen(
+        //             courseId: courseId,
+        //             courseTitle: courseTitle,
+        //           ),
+        //         ),
+        //       ),
+        //     );
+        //   },
+        //   backgroundColor: const Color(0xFFd4af37),
+        //   child: const Icon(
+        //     Icons.chat,
+        //     color: Colors.black,
+        //   ),
+        // ),
         appBar: AppBar(
           backgroundColor: const Color(0xFF1a1a1a),
           elevation: 0,
@@ -414,63 +471,6 @@ class CourseDetailScreen extends StatelessWidget {
             ),
           ),
           // const SizedBox(height: 24),
-          const SizedBox(height: 200),
-
-          // Enroll Button
-          SizedBox(
-            width: double.infinity,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFd4af37), Color(0xFFf4d03f)],
-                ),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFFd4af37).withOpacity(0.3),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigate to lecture player screen
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutes.lecturePlayer,
-                    arguments: {
-                      'courseId': courseId,
-                      'courseTitle': courseTitle,
-                    },
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  foregroundColor: const Color(0xFF1a1a1a),
-                  shadowColor: Colors.transparent,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "ابدأ الآن",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_forward, size: 20),
-                  ],
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

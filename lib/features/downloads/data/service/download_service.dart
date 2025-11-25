@@ -807,6 +807,7 @@ class DownloadService {
     double? fileSizeMb,
     String? durationText,
     String? videoSource,
+    Function(int progress)? onProgress,
   }) async {
     try {
       print('🎬 Starting video download with DownloadManager');
@@ -823,6 +824,10 @@ class DownloadService {
         name: fileName,
         onDownload: (progress) {
           print('Download progress: $progress%');
+          // استدعاء callback التقدم إذا كان موجوداً
+          if (onProgress != null) {
+            onProgress(progress);
+          }
         },
         isOpen: false,
       );
@@ -869,7 +874,9 @@ class DownloadService {
 
   /// تحميل فيديو من API response باستخدام DownloadManager
   Future<String?> downloadVideoFromApiResponseWithManager(
-      DownloadData downloadData) async {
+      DownloadData downloadData, {
+    Function(int progress)? onProgress,
+  }) async {
     return await downloadVideoWithManager(
       videoUrl: downloadData.videoUrl,
       lessonId: downloadData.lessonId,
@@ -879,6 +886,7 @@ class DownloadService {
       fileSizeMb: downloadData.fileSizeMb,
       durationText: downloadData.durationText,
       videoSource: downloadData.videoSource,
+      onProgress: onProgress,
     );
   }
 

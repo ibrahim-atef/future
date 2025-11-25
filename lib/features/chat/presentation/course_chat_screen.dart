@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:future_app/core/di/di.dart';
 import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/features/chat/data/models/chat_model.dart';
 import 'package:future_app/features/chat/logic/cubit/chat_cubit.dart';
@@ -25,6 +24,7 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
   final ScrollController _scrollController = ScrollController();
   String? _userId;
   String? _userName;
+  List<ChatMessage> _lastMessages = []; // حفظ آخر قائمة رسائل
 
   @override
   void initState() {
@@ -192,6 +192,7 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
                     ),
                   ),
                   loaded: (messages) {
+                    _lastMessages = messages; // حفظ آخر قائمة رسائل
                     // Scroll to bottom when messages are loaded
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       _scrollToBottom();
@@ -279,13 +280,61 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
                       ],
                     ),
                   ),
-                  sending: () => const Center(
-                    child: CircularProgressIndicator(
-                      color: Color(0xFFd4af37),
-                    ),
-                  ),
-                  sent: () => const SizedBox.shrink(),
-                  sendError: (error) => const SizedBox.shrink(),
+                  sending: () {
+                    // عرض آخر قائمة رسائل أثناء الإرسال
+                    if (_lastMessages.isNotEmpty) {
+                      return ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.all(16),
+                        itemCount: _lastMessages.length,
+                        itemBuilder: (context, index) {
+                          final message = _lastMessages[index];
+                          final isCurrentUser = message.userId == _userId;
+                          return _buildMessageBubble(message, isCurrentUser);
+                        },
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFFd4af37),
+                      ),
+                    );
+                  },
+                  sent: () {
+                    // عرض آخر قائمة رسائل بعد الإرسال
+                    if (_lastMessages.isNotEmpty) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _scrollToBottom();
+                      });
+                      return ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.all(16),
+                        itemCount: _lastMessages.length,
+                        itemBuilder: (context, index) {
+                          final message = _lastMessages[index];
+                          final isCurrentUser = message.userId == _userId;
+                          return _buildMessageBubble(message, isCurrentUser);
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                  sendError: (error) {
+                    // عرض آخر قائمة رسائل حتى في حالة الخطأ
+                    if (_lastMessages.isNotEmpty) {
+                      return ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.all(16),
+                        itemCount: _lastMessages.length,
+                        itemBuilder: (context, index) {
+                          final message = _lastMessages[index];
+                          final isCurrentUser = message.userId == _userId;
+                          return _buildMessageBubble(message, isCurrentUser);
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
                 );
               },
             ),

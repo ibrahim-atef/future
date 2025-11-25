@@ -10,7 +10,9 @@ LoginResponseModel _$LoginResponseModelFromJson(Map<String, dynamic> json) =>
     LoginResponseModel(
       success: json['success'] as bool,
       message: json['message'] as String,
-      data: LoginResponseData.fromJson(json['data'] as Map<String, dynamic>),
+      data: json['data'] == null
+          ? null
+          : LoginResponseData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LoginResponseModelToJson(LoginResponseModel instance) =>
