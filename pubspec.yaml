@@ -62,6 +62,9 @@ dependencies:
   video_player: ^2.8.1
   youtube_player_flutter: ^8.1.2
   pod_player: ^0.2.2
+  webview_flutter: ^4.4.2
+  webview_flutter_android: ^3.16.8
+  webview_flutter_wkwebview: ^3.14.0
   flutter_svg: ^2.0.10+1
   device_info_plus: ^9.0.0
   flutter_secure_storage: ^8.0.0

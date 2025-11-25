@@ -7,12 +7,16 @@ import 'package:future_app/features/courses/logic/cubit/courses_cubit.dart';
 import 'package:future_app/features/courses/logic/cubit/courses_state.dart';
 import 'package:future_app/features/courses/presentation/quiz_screen.dart';
 import 'package:future_app/features/courses/presentation/widgets/course_video_player.dart';
-import 'package:future_app/features/courses/presentation/widgets/pod_video_player.dart';
 import 'package:future_app/features/courses/presentation/widgets/pdf_viewer_widget.dart';
 import 'package:future_app/features/courses/presentation/assignment_screen.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_cubit.dart';
 import 'package:future_app/features/downloads/logic/cubit/download_state.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pod_player/pod_player.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:flutter/foundation.dart';
 
 class LecturePlayerScreen extends StatefulWidget {
   final String courseId;
@@ -37,6 +41,8 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   String? _currentVideoUrl;
   String? _currentVideoType;
   String? _currentLectureId;
+  PodPlayerController? _podPlayerController;
+  WebViewController? _webViewController;
 
   @override
   void initState() {
@@ -47,8 +53,6 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   void _initializeVideo() {
     // Initialize with widget data if available
     if (widget.videoType != null && widget.videoUrl != null) {
-      _currentVideoUrl = widget.videoUrl;
-      _currentVideoType = widget.videoType;
       _loadVideo(widget.videoUrl!, widget.videoType!);
     } else {
       setState(() {
@@ -60,14 +64,114 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   void _loadVideo(String videoUrl, String videoType, {String? lectureId}) {
     print(
         '🎥 Loading video: url=$videoUrl, type=$videoType, lectureId=$lectureId');
+
+    // Dispose previous controllers if exist
+    _podPlayerController?.dispose();
+    _podPlayerController = null;
+    _webViewController = null;
+
     setState(() {
-      _isLoading = false; // New widgets handle their own loading
+      _isLoading = videoType == 'youtube' ||
+          videoType ==
+              'embed'; // Show loading for YouTube and embed while initializing
       _currentVideoUrl = videoUrl;
       _currentVideoType = videoType;
       _currentLectureId = lectureId;
     });
+
+    // Initialize player based on video type
+    if (videoType == 'youtube') {
+      _initializePodPlayer(videoUrl);
+    } else if (videoType == 'embed') {
+      _initializeWebView(videoUrl);
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
     print(
         '🎥 Video loaded: _currentVideoUrl=$_currentVideoUrl, _currentVideoType=$_currentVideoType');
+  }
+
+  void _initializeWebView(String videoUrl) {
+    try {
+      // Initialize WebViewPlatform if not already initialized
+      if (WebViewPlatform.instance == null) {
+        if (defaultTargetPlatform == TargetPlatform.android) {
+          WebViewPlatform.instance = AndroidWebViewPlatform();
+        } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+          WebViewPlatform.instance = WebKitWebViewPlatform();
+        }
+      }
+
+      _webViewController = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(Colors.black)
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onPageStarted: (String url) {
+              print('🌐 WebView page started: $url');
+            },
+            onPageFinished: (String url) {
+              print('🌐 WebView page finished: $url');
+              if (mounted) {
+                setState(() {
+                  _isLoading = false;
+                });
+              }
+            },
+            onWebResourceError: (WebResourceError error) {
+              print('❌ WebView error: ${error.description}');
+              if (mounted) {
+                setState(() {
+                  _isLoading = false;
+                });
+              }
+            },
+          ),
+        )
+        ..loadRequest(Uri.parse(videoUrl));
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('❌ Error initializing WebView: $e');
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _initializePodPlayer(String videoUrl) async {
+    try {
+      _podPlayerController = PodPlayerController(
+        playVideoFrom: PlayVideoFrom.youtube(videoUrl),
+        podPlayerConfig: const PodPlayerConfig(
+          autoPlay: false,
+          isLooping: false,
+          videoQualityPriority: [720, 480, 360],
+        ),
+      );
+
+      await _podPlayerController!.initialise();
+
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('❌ Error initializing pod player: $e');
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   /// Extract YouTube video ID from various URL formats
@@ -163,6 +267,8 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
 
   @override
   void dispose() {
+    _podPlayerController?.dispose();
+    _webViewController = null;
     super.dispose();
   }
 
@@ -856,10 +962,13 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                               Icon(
                                 _currentVideoType == 'youtube'
                                     ? Icons.play_circle
-                                    : _currentVideoType == 'pdf' ||
-                                            _currentVideoType == 'assignment'
-                                        ? Icons.picture_as_pdf
-                                        : Icons.video_library,
+                                    : _currentVideoType == 'embed'
+                                        ? Icons.video_library
+                                        : _currentVideoType == 'pdf' ||
+                                                _currentVideoType ==
+                                                    'assignment'
+                                            ? Icons.picture_as_pdf
+                                            : Icons.video_library,
                                 color: const Color(0xFFd4af37),
                                 size: 20,
                               ),
@@ -867,10 +976,13 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                               Text(
                                 _currentVideoType == 'youtube'
                                     ? 'فيديو من يوتيوب'
-                                    : _currentVideoType == 'pdf' ||
-                                            _currentVideoType == 'assignment'
-                                        ? 'ملف PDF'
-                                        : 'فيديو من الخادم',
+                                    : _currentVideoType == 'embed'
+                                        ? 'فيديو خارجي'
+                                        : _currentVideoType == 'pdf' ||
+                                                _currentVideoType ==
+                                                    'assignment'
+                                            ? 'ملف PDF'
+                                            : 'فيديو من الخادم',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -931,14 +1043,8 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
     }
 
     if (_currentVideoType == 'youtube' && _currentVideoUrl != null) {
-      // Clean YouTube URL to handle youtu.be and other formats
-      final cleanedUrl = _cleanYouTubeUrl(_currentVideoUrl!);
-      final videoId = _extractYouTubeVideoId(_currentVideoUrl!);
-      print(
-          '📺 YouTube video: originalUrl=$_currentVideoUrl, cleanedUrl=$cleanedUrl, videoId=$videoId');
-
-      if (videoId == null) {
-        print('❌ Failed to extract YouTube video ID from: $_currentVideoUrl');
+      // Use pod_player for YouTube videos
+      if (_isLoading || _podPlayerController == null) {
         return Container(
           height: 250,
           color: Colors.black,
@@ -946,10 +1052,12 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, color: Colors.red, size: 48),
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFd4af37)),
+                ),
                 SizedBox(height: 16),
                 Text(
-                  'خطأ في رابط يوتيوب',
+                  'جاري تحميل الفيديو...',
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ],
@@ -958,13 +1066,41 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
         );
       }
 
-      // Use PodVideoPlayerDev for YouTube videos
-      return PodVideoPlayerDev(
-        cleanedUrl ?? _currentVideoUrl!,
-        'youtube',
-        name: widget.courseTitle,
-        key: ValueKey(
-            cleanedUrl ?? _currentVideoUrl), // Add unique key to force rebuild
+      return Container(
+        height: 250,
+        color: Colors.black,
+        child: PodVideoPlayer(
+          controller: _podPlayerController!,
+        ),
+      );
+    } else if (_currentVideoType == 'embed' && _currentVideoUrl != null) {
+      // Use WebView for embed videos (like mediadelivery.net)
+      if (_isLoading || _webViewController == null) {
+        return Container(
+          height: 250,
+          color: Colors.black,
+          child: const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFd4af37)),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'جاري تحميل الفيديو...',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      return Container(
+        height: 250,
+        color: Colors.black,
+        child: WebViewWidget(controller: _webViewController!),
       );
     } else if ((_currentVideoType == 'server' ||
             _currentVideoType == 'video') &&
@@ -1372,7 +1508,15 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                             videoType = 'server';
                           } else if (lecture.videoSource == 'external_url') {
                             // Handle external video URLs (like mediadelivery.net)
-                            videoType = 'server';
+                            // Check if it's an embed URL that needs WebView
+                            if (videoUrl.contains('mediadelivery.net') ||
+                                videoUrl.contains('/embed/') ||
+                                videoUrl.contains('player.')) {
+                              videoType = 'embed';
+                              print('📺 Detected embed video: $videoUrl');
+                            } else {
+                              videoType = 'server';
+                            }
                           }
 
                           // Load the video with lecture ID
