@@ -162,11 +162,14 @@ jobs:
         env:
           ANDROID_HOME: ${{ env.ANDROID_HOME }}
           ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
-          PATH: ${{ env.ANDROID_HOME }}/build-tools/34.0.0:${{ env.PATH }}
         run: |
-          # Verify AAPT path
-          which aapt || echo "⚠️  AAPT not in PATH"
-          $ANDROID_HOME/build-tools/34.0.0/aapt version || echo "⚠️  Could not run AAPT from build-tools 34.0.0"
+          # Verify build-tools 34.0.0 exists
+          if [ -d "$ANDROID_HOME/build-tools/34.0.0" ]; then
+            echo "✅ build-tools 34.0.0 found"
+            ls -la "$ANDROID_HOME/build-tools/34.0.0/aapt*" || echo "⚠️  AAPT files not found"
+          else
+            echo "⚠️  build-tools 34.0.0 not found, but continuing..."
+          fi
           
           # Build APK
           flutter build apk --release
