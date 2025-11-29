@@ -40,8 +40,12 @@ jobs:
         run: flutter pub get
 
       - name: Setup signing (if secrets exist)
-        if: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
+          if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "⚠️  Keystore secrets not found. Building APK without signing (debug mode)."
+            exit 0
+          fi
+          
           echo "Setting up keystore signing..."
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
