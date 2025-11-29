@@ -90,6 +90,42 @@ jobs:
           ls -la $ANDROID_HOME/platforms/ | grep android- || true
           ls -la $ANDROID_HOME/build-tools/ | head -5 || true
 
+      - name: Force build tools 34.0.0 for lStar attribute
+        run: |
+          # Force Gradle to use build-tools 34.0.0 (contains AAPT with lStar support)
+          # This is a CI-only fix, your local code remains unchanged
+          
+          # Verify build-tools 34.0.0 exists
+          if [ -d "$ANDROID_HOME/build-tools/34.0.0" ]; then
+            echo "✅ build-tools 34.0.0 found at: $ANDROID_HOME/build-tools/34.0.0"
+            ls -la "$ANDROID_HOME/build-tools/34.0.0/aapt*" || echo "⚠️  AAPT not found in build-tools 34.0.0"
+          else
+            echo "❌ ERROR: build-tools 34.0.0 not found!"
+            echo "Available build-tools:"
+            ls -la $ANDROID_HOME/build-tools/ || true
+          fi
+          
+          # Force build tools version in gradle.properties
+          if [ -f android/gradle.properties ]; then
+            # Remove any existing buildToolsVersion
+            sed -i '/android.buildToolsVersion/d' android/gradle.properties
+            # Add build tools 34.0.0
+            echo "" >> android/gradle.properties
+            echo "# CI fix: Force build-tools 34.0.0 for lStar attribute support" >> android/gradle.properties
+            echo "android.buildToolsVersion=34.0.0" >> android/gradle.properties
+            echo "✅ Forced build-tools 34.0.0 in gradle.properties"
+          fi
+          
+          # Also set SDK directory in local.properties
+          if [ -f android/local.properties ]; then
+            # Update or add sdk.dir
+            if grep -q "sdk.dir" android/local.properties; then
+              sed -i "s|sdk.dir=.*|sdk.dir=$ANDROID_HOME|" android/local.properties
+            else
+              echo "sdk.dir=$ANDROID_HOME" >> android/local.properties
+            fi
+          fi
+
       - name: Fix Kotlin version compatibility
         run: |
           # Update Kotlin version in settings.gradle for CI compatibility
@@ -126,7 +162,14 @@ jobs:
         env:
           ANDROID_HOME: ${{ env.ANDROID_HOME }}
           ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
-        run: flutter build apk --release
+          PATH: ${{ env.ANDROID_HOME }}/build-tools/34.0.0:${{ env.PATH }}
+        run: |
+          # Verify AAPT path
+          which aapt || echo "⚠️  AAPT not in PATH"
+          $ANDROID_HOME/build-tools/34.0.0/aapt version || echo "⚠️  Could not run AAPT from build-tools 34.0.0"
+          
+          # Build APK
+          flutter build apk --release
 
       - name: Find APK
         id: find_apk
