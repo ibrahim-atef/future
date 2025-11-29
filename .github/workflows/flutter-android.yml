@@ -46,60 +46,49 @@ jobs:
           touch assets/icons/.gitkeep
           echo "✅ Created assets/icons directory"
 
-      - name: Setup Android SDK
+      - name: Setup Android SDK (34, 35, 36)
         uses: android-actions/setup-android@v3
         with:
-          api-level: 34
+          api-level: 36
           build-tools: 34.0.0
           arch: x64
 
-      - name: Verify Android SDK 34 installation
+      - name: Install additional Android SDK platforms
         run: |
           echo "ANDROID_HOME: $ANDROID_HOME"
           echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
-          ls -la $ANDROID_HOME/platforms/ || true
-          ls -la $ANDROID_HOME/build-tools/ || true
           
-          # Ensure Android SDK Platform 34 is installed
-          if [ ! -d "$ANDROID_HOME/platforms/android-34" ]; then
-            echo "⚠️  Android SDK 34 not found, installing..."
-            yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" || \
-            yes | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-34" || true
-          fi
+          # Install SDK 34, 35, 36 for compatibility
+          # SDK 34 is needed for lStar attribute in flutter_app_badger
+          # SDK 35 is needed for flutter_pdfview
+          # SDK 36 is needed for screen_protector and is the compileSdk
           
-          # Ensure build-tools 34.0.0 is installed
-          if [ ! -d "$ANDROID_HOME/build-tools/34.0.0" ]; then
-            echo "⚠️  Build tools 34.0.0 not found, installing..."
-            yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0" || \
-            yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;34.0.0" || true
-          fi
-          
-          echo "✅ Android SDK 34 setup verified"
-
-      - name: Fix Android SDK 34 for lStar attribute
-        run: |
-          # Temporarily update compileSdk to 34 in CI only for flutter_app_badger compatibility
-          # This fix is only applied in CI, your local code remains unchanged
-          if [ -f android/app/build.gradle ]; then
-            # Update compileSdk to 34 (lStar attribute requires SDK 34+)
-            # Try different patterns to match compileSdk
-            sed -i 's/compileSdk 36/compileSdk 34/g' android/app/build.gradle
-            sed -i 's/compileSdk 35/compileSdk 34/g' android/app/build.gradle
-            sed -i 's/compileSdk [0-9][0-9]/compileSdk 34/g' android/app/build.gradle
-            echo "✅ Updated compileSdk to 34 for CI (lStar attribute support)"
-            # Verify the change
-            grep "compileSdk" android/app/build.gradle || echo "Warning: compileSdk not found in build.gradle"
-          fi
-          
-          # Also ensure build tools version in gradle.properties
-          if [ -f android/gradle.properties ]; then
-            if ! grep -q "android.buildToolsVersion=34.0.0" android/gradle.properties; then
-              echo "" >> android/gradle.properties
-              echo "# CI fix for lStar attribute (flutter_app_badger)" >> android/gradle.properties
-              echo "android.buildToolsVersion=34.0.0" >> android/gradle.properties
-              echo "✅ Added buildToolsVersion to gradle.properties"
+          if [ -d "$ANDROID_HOME/cmdline-tools" ]; then
+            SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+            if [ ! -f "$SDKMANAGER" ]; then
+              SDKMANAGER="$ANDROID_HOME/cmdline-tools/bin/sdkmanager"
             fi
+          else
+            SDKMANAGER="$ANDROID_HOME/tools/bin/sdkmanager"
           fi
+          
+          # Install platforms if not already installed
+          for SDK_VERSION in 34 35 36; do
+            if [ ! -d "$ANDROID_HOME/platforms/android-$SDK_VERSION" ]; then
+              echo "Installing Android SDK Platform $SDK_VERSION..."
+              yes | $SDKMANAGER "platforms;android-$SDK_VERSION" 2>/dev/null || echo "⚠️  Could not install SDK $SDK_VERSION"
+            fi
+          done
+          
+          # Ensure build-tools 34.0.0 is installed (needed for lStar)
+          if [ ! -d "$ANDROID_HOME/build-tools/34.0.0" ]; then
+            echo "Installing build-tools 34.0.0..."
+            yes | $SDKMANAGER "build-tools;34.0.0" 2>/dev/null || echo "⚠️  Could not install build-tools 34.0.0"
+          fi
+          
+          echo "✅ Android SDK platforms verified"
+          ls -la $ANDROID_HOME/platforms/ | grep android- || true
+          ls -la $ANDROID_HOME/build-tools/ | head -5 || true
 
       - name: Fix Kotlin version compatibility
         run: |
