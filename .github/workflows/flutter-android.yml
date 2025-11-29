@@ -53,6 +53,39 @@ jobs:
           build-tools: 34.0.0
           arch: x64
 
+      - name: Verify Android SDK 34 installation
+        run: |
+          echo "ANDROID_HOME: $ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
+          ls -la $ANDROID_HOME/platforms/ || true
+          ls -la $ANDROID_HOME/build-tools/ || true
+          echo "✅ Android SDK setup verified"
+
+      - name: Fix Android SDK 34 for lStar attribute
+        run: |
+          # Temporarily update compileSdk to 34 in CI only for flutter_app_badger compatibility
+          # This fix is only applied in CI, your local code remains unchanged
+          if [ -f android/app/build.gradle ]; then
+            # Update compileSdk to 34 (lStar attribute requires SDK 34+)
+            # Try different patterns to match compileSdk
+            sed -i 's/compileSdk 36/compileSdk 34/g' android/app/build.gradle
+            sed -i 's/compileSdk 35/compileSdk 34/g' android/app/build.gradle
+            sed -i 's/compileSdk [0-9][0-9]/compileSdk 34/g' android/app/build.gradle
+            echo "✅ Updated compileSdk to 34 for CI (lStar attribute support)"
+            # Verify the change
+            grep "compileSdk" android/app/build.gradle || echo "Warning: compileSdk not found in build.gradle"
+          fi
+          
+          # Also ensure build tools version in gradle.properties
+          if [ -f android/gradle.properties ]; then
+            if ! grep -q "android.buildToolsVersion=34.0.0" android/gradle.properties; then
+              echo "" >> android/gradle.properties
+              echo "# CI fix for lStar attribute (flutter_app_badger)" >> android/gradle.properties
+              echo "android.buildToolsVersion=34.0.0" >> android/gradle.properties
+              echo "✅ Added buildToolsVersion to gradle.properties"
+            fi
+          fi
+
       - name: Fix Kotlin version compatibility
         run: |
           # Update Kotlin version in settings.gradle for CI compatibility
@@ -86,6 +119,9 @@ jobs:
           fi
 
       - name: Build APK (Release)
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
         run: flutter build apk --release
 
       - name: Find APK
