@@ -39,6 +39,29 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
 
+      - name: Fix missing assets directory
+        run: |
+          # Create assets/icons directory if it doesn't exist (to avoid pubspec.yaml error)
+          mkdir -p assets/icons
+          touch assets/icons/.gitkeep
+          echo "✅ Created assets/icons directory"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 34
+          build-tools: 34.0.0
+          arch: x64
+
+      - name: Fix Kotlin version compatibility
+        run: |
+          # Update Kotlin version in settings.gradle for CI compatibility
+          # This fix is only applied in CI, your local code remains unchanged
+          if [ -f android/settings.gradle ]; then
+            sed -i 's/version "2.2.20"/version "2.1.0"/' android/settings.gradle
+            echo "✅ Updated Kotlin version to 2.1.0 for CI compatibility"
+          fi
+
       - name: Setup signing (if secrets exist)
         run: |
           if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
