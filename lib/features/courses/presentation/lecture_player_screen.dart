@@ -754,9 +754,10 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
               // Start the actual download when the cubit is created
               if (state is DownloadInitial && _currentLectureId != null) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  context
-                      .read<DownloadCubit>()
-                      .downloadLessonWithManager(_currentLectureId!);
+                  context.read<DownloadCubit>().downloadLessonWithManager(
+                        _currentLectureId!,
+                        widget.courseTitle,
+                      );
                 });
               }
 

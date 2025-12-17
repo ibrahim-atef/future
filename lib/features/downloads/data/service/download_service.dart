@@ -186,7 +186,10 @@ class DownloadService {
   }
 
   // Download video
-  Future<String?> downloadVideo(DownloadData downloadData) async {
+  Future<String?> downloadVideo(
+    DownloadData downloadData, {
+    String? courseTitle,
+  }) async {
     try {
       print('=== Starting download process ===');
       print('Lesson ID: ${downloadData.lessonId}');
@@ -287,7 +290,8 @@ class DownloadService {
           id: taskId,
           lessonId: downloadData.lessonId,
           courseId: downloadData.courseId,
-          courseTitle: 'كورس ${downloadData.courseId}', // يمكن تحسين هذا لاحقاً
+          courseTitle:
+              courseTitle ?? 'كورس ${downloadData.courseId}', // عنوان الكورس
           title: downloadData.title,
           description: downloadData.description,
           videoUrl: downloadData.videoUrl,
@@ -553,7 +557,9 @@ class DownloadService {
 
   // Download video from API response data
   Future<String?> downloadVideoFromApiResponse(
-      DownloadData downloadData) async {
+    DownloadData downloadData, {
+    String? courseTitle,
+  }) async {
     print(
         'Starting download from API response for lesson: ${downloadData.lessonId}');
     print('Video URL from API: ${downloadData.videoUrl}');
@@ -577,7 +583,10 @@ class DownloadService {
       throw Exception('تم تحميل هذا الفيديو مسبقاً');
     }
 
-    return await downloadVideo(downloadData);
+    return await downloadVideo(
+      downloadData,
+      courseTitle: courseTitle,
+    );
   }
 
   // Direct download using the specific video URL from your API response
@@ -803,6 +812,7 @@ class DownloadService {
     required String lessonId,
     required String courseId,
     required String title,
+    String? courseTitle,
     String? description,
     double? fileSizeMb,
     String? durationText,
@@ -844,7 +854,8 @@ class DownloadService {
             'id': videoId,
             'lesson_id': lessonId,
             'course_id': courseId,
-            'course_title': 'كورس $courseId', // يمكن تحسين هذا لاحقاً
+            'course_title':
+                courseTitle ?? 'كورس $courseId', // تخزين عنوان الكورس الحقيقي
             'title': title,
             'description': description ?? '',
             'video_url': videoUrl,
@@ -875,6 +886,7 @@ class DownloadService {
   /// تحميل فيديو من API response باستخدام DownloadManager
   Future<String?> downloadVideoFromApiResponseWithManager(
     DownloadData downloadData, {
+    String? courseTitle,
     Function(int progress)? onProgress,
   }) async {
     return await downloadVideoWithManager(
@@ -882,6 +894,7 @@ class DownloadService {
       lessonId: downloadData.lessonId,
       courseId: downloadData.courseId,
       title: downloadData.title,
+      courseTitle: courseTitle,
       description: downloadData.description,
       fileSizeMb: downloadData.fileSizeMb,
       durationText: downloadData.durationText,

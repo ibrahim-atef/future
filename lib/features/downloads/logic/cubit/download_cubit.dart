@@ -230,7 +230,11 @@ class DownloadCubit extends Cubit<DownloadState> {
   }
 
   /// تحميل درس باستخدام DownloadManager (من Anmka-Creation)
-  Future<void> downloadLessonWithManager(String lessonId) async {
+  /// [courseTitle] هو عنوان الكورس (مثلاً "القانون الدولي (3)") ليتم حفظه في التحميلات
+  Future<void> downloadLessonWithManager(
+    String lessonId,
+    String courseTitle,
+  ) async {
     emit(DownloadLoading());
     try {
       // التحقق من الصلاحيات أولاً
@@ -265,6 +269,7 @@ class DownloadCubit extends Cubit<DownloadState> {
       final videoId =
           await _downloadService.downloadVideoFromApiResponseWithManager(
         response.data,
+        courseTitle: courseTitle,
         onProgress: (progress) {
           // إرسال تحديث التقدم
           emit(DownloadInProgress(progress, message: 'جاري التحميل...'));
