@@ -262,8 +262,8 @@ class DownloadCubit extends Cubit<DownloadState> {
       }
 
       // بدء التحميل باستخدام DownloadManager مع callback للتقدم
-      final videoId = await _downloadService
-          .downloadVideoFromApiResponseWithManager(
+      final videoId =
+          await _downloadService.downloadVideoFromApiResponseWithManager(
         response.data,
         onProgress: (progress) {
           // إرسال تحديث التقدم

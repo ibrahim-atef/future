@@ -1404,6 +1404,48 @@ class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
                               ),
                             ),
                           );
+                        } else if (lecture.type == 'pdf' &&
+                            (lecture.pdfUrl?.isNotEmpty == true ||
+                                lecture.description?.isNotEmpty == true)) {
+                          // Handle pure PDF lecture (type == pdf)
+                          String pdfUrl = '';
+
+                          // Prefer pdfUrl field from API
+                          if (lecture.pdfUrl?.isNotEmpty == true) {
+                            pdfUrl = lecture.pdfUrl!;
+                          } else if (lecture.description?.isNotEmpty == true) {
+                            // Try to extract PDF URL from HTML href attribute or plain text
+                            final extractedUrl =
+                                _extractPdfUrlFromHtml(lecture.description);
+                            if (extractedUrl != null &&
+                                extractedUrl.isNotEmpty) {
+                              pdfUrl = extractedUrl;
+                            } else {
+                              // Fallback to description if no href found
+                              pdfUrl = lecture.description!;
+                            }
+                          }
+
+                          if (pdfUrl.isNotEmpty) {
+                            // Open PDF viewer
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PDFViewerWidget(
+                                  pdfUrl: pdfUrl,
+                                  title: lecture.title,
+                                  isDownloadable: lecture.isDownloadable,
+                                ),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('لا يوجد رابط للملف'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
                         } else if (lecture.type == 'assignment' &&
                             (lecture.pdfUrl?.isNotEmpty == true ||
                                 lecture.description?.isNotEmpty != "")) {

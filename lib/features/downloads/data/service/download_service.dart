@@ -705,9 +705,9 @@ class DownloadService {
         }
 
         final storageStatus = await Permission.storage.status;
-        final hasStoragePermission =
-            storageStatus == PermissionStatus.granted;
-        print('Android 11-12: Storage permission granted: $hasStoragePermission');
+        final hasStoragePermission = storageStatus == PermissionStatus.granted;
+        print(
+            'Android 11-12: Storage permission granted: $hasStoragePermission');
         return hasStoragePermission;
       } else {
         // Android 10 and below - Check storage permission
@@ -874,7 +874,7 @@ class DownloadService {
 
   /// تحميل فيديو من API response باستخدام DownloadManager
   Future<String?> downloadVideoFromApiResponseWithManager(
-      DownloadData downloadData, {
+    DownloadData downloadData, {
     Function(int progress)? onProgress,
   }) async {
     return await downloadVideoWithManager(
