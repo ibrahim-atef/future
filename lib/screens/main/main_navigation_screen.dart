@@ -7,6 +7,7 @@ import '../../features/home/presentation/home_screen.dart';
 import '../../features/courses/presentation/courses_screen.dart';
 import '../../features/college/presentation/college_screen.dart';
 import '../../features/blog/presentation/blog_screen.dart';
+import '../../features/blog/logic/cubit/blog_cubit.dart';
 import '../../widgets/common/bottom_navigation.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -19,21 +20,28 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const CoursesScreen(
-      isBackButton: false,
-    ),
-    const CollegeScreen(
-      isBackButton: false,
-    ),
-    const BlogScreen(
-      isBackButton: false,
-    ),
-    const OfflineListCoursePage(
-      isBackButton: false,
-    )
-  ];
+  List<Widget> _buildScreens(BuildContext context) {
+    return [
+      const HomeScreen(),
+      const CoursesScreen(
+        isBackButton: false,
+      ),
+      const CollegeScreen(
+        isBackButton: false,
+      ),
+      BlocProvider(
+        create: (context) => getIt<BlogCubit>()
+          ..getPosts(page: 1, limit: 10)
+          ..getCategories(),
+        child: const BlogScreen(
+          isBackButton: false,
+        ),
+      ),
+      const OfflineListCoursePage(
+        isBackButton: false,
+      )
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +50,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         BlocProvider(create: (context) => getIt<DownloadCubit>()),
       ],
       child: Scaffold(
-        body: _screens[_currentIndex],
+        body: _buildScreens(context)[_currentIndex],
         bottomNavigationBar: BottomNavigation(
           currentIndex: _currentIndex,
           onTap: (index) {

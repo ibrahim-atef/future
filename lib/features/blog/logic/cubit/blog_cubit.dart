@@ -14,23 +14,30 @@ class BlogCubit extends Cubit<BlogState> {
   PaginationModel? _pagination;
   PostDetailsModel? _currentPostDetails;
   bool _isLoadingMore = false;
+  List<PostCategoryModel> _categories = [];
+  String? _selectedCategoryId;
 
   // Getters
   List<PostModel> get posts => _posts;
   PaginationModel? get pagination => _pagination;
   PostDetailsModel? get currentPostDetails => _currentPostDetails;
   bool get isLoadingMore => _isLoadingMore;
+  List<PostCategoryModel> get categories => _categories;
+  String? get selectedCategoryId => _selectedCategoryId;
 
   // Get posts with pagination
   Future<void> getPosts({
     int page = 1,
     int limit = 10,
+    String? categoryId,
   }) async {
-    log('🚀 BlogCubit: Starting getPosts - page: $page, limit: $limit');
+    log('🚀 BlogCubit: Starting getPosts - page: $page, limit: $limit, categoryId: $categoryId');
+    _selectedCategoryId = categoryId;
     emit(const BlogState.getPostsLoading());
     final response = await _blogRepo.getPosts(
       page: page,
       limit: limit,
+      categoryId: categoryId,
     );
     response.when(
       success: (data) {
@@ -79,6 +86,7 @@ class BlogCubit extends Cubit<BlogState> {
     final response = await _blogRepo.getPosts(
       page: currentPage + 1,
       limit: _pagination!.perPage,
+      categoryId: _selectedCategoryId,
     );
 
     response.when(
@@ -104,6 +112,31 @@ class BlogCubit extends Cubit<BlogState> {
 
   // Refresh posts
   Future<void> refresh() async {
-    await getPosts(page: 1, limit: 10);
+    await getPosts(page: 1, limit: 10, categoryId: _selectedCategoryId);
+  }
+
+  // Get post categories
+  Future<void> getCategories() async {
+    log('🚀 BlogCubit: Starting getCategories');
+    emit(const BlogState.getCategoriesLoading());
+    final response = await _blogRepo.getPostCategories();
+    response.when(
+      success: (data) {
+        log('✅ BlogCubit: Get categories success - ${data.data.length} categories');
+        _categories = data.data;
+        emit(BlogState.getCategoriesSuccess(data));
+      },
+      failure: (apiErrorModel) {
+        log('❌ BlogCubit: Get categories failed - ${apiErrorModel.message}');
+        emit(BlogState.getCategoriesError(apiErrorModel));
+      },
+    );
+  }
+
+  // Change selected category and reload posts
+  Future<void> changeCategory(String? categoryId) async {
+    log('🔄 BlogCubit: changeCategory to $categoryId');
+    _selectedCategoryId = categoryId;
+    await getPosts(page: 1, limit: 10, categoryId: categoryId);
   }
 }

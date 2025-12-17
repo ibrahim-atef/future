@@ -13,6 +13,7 @@ class BlogRepo {
   Future<ApiResult<GetPostsResponseModel>> getPosts({
     required int page,
     required int limit,
+    String? categoryId,
   }) async {
     try {
       log('🌐 BlogRepo: Calling getPosts API - page: $page, limit: $limit');
@@ -21,11 +22,28 @@ class BlogRepo {
         ApiConstants.appSource,
         page,
         limit,
+        categoryId,
       );
       log('✅ BlogRepo: Get posts API success - ${response.data.length} posts');
       return ApiResult.success(response);
     } catch (e) {
       log('❌ BlogRepo: Get posts API error: ${e.toString()}');
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
+
+  // Get post categories
+  Future<ApiResult<GetPostCategoriesResponseModel>> getPostCategories() async {
+    try {
+      log('🌐 BlogRepo: Calling getPostCategories API');
+      final response = await _apiService.getPostCategories(
+        ApiConstants.apiKey,
+        ApiConstants.appSource,
+      );
+      log('✅ BlogRepo: Get post categories API success - ${response.data.length} categories');
+      return ApiResult.success(response);
+    } catch (e) {
+      log('❌ BlogRepo: Get post categories API error: ${e.toString()}');
       return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
