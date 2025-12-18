@@ -190,8 +190,9 @@ class _CoursesScreenContentState extends State<_CoursesScreenContent> {
     return BlocBuilder<CoursesCubit, CoursesState>(
       builder: (context, state) {
         final cubit = context.read<CoursesCubit>();
-        // Show all enrolled courses (both free and paid)
-        final courses = cubit.allCourses;
+        // عرض الكورسات المدفوعة فقط (استبعاد الكورسات المجانية)
+        final courses =
+            cubit.allCourses.where((course) => course.isFree == false).toList();
         final isLoading = state is GetCoursesLoading;
 
         if (isLoading) {

@@ -18,6 +18,7 @@ import '../../features/courses/presentation/lecture_player_screen.dart';
 import '../../features/college/presentation/college_screen.dart';
 import '../../features/college/presentation/course_videos_screen.dart';
 import '../../features/blog/presentation/blog_screen.dart';
+import '../../features/blog/logic/cubit/blog_cubit.dart';
 import '../../features/blog/presentation/blog_detail_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
@@ -183,8 +184,13 @@ class AppRoutes {
 
       case blog:
         return MaterialPageRoute(
-          builder: (_) => BlogScreen(
-            isBackButton: settings.arguments as bool,
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<BlogCubit>()
+              ..getPosts(page: 1, limit: 10)
+              ..getCategories(),
+            child: BlogScreen(
+              isBackButton: settings.arguments as bool,
+            ),
           ),
           settings: settings,
         );

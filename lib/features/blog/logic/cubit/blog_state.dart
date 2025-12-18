@@ -15,6 +15,13 @@ class BlogState with _$BlogState {
   const factory BlogState.getPostsError(ApiErrorModel apiErrorModel) =
       GetPostsError;
 
+  // Get post categories
+  const factory BlogState.getCategoriesLoading() = GetCategoriesLoading;
+  const factory BlogState.getCategoriesSuccess(
+      GetPostCategoriesResponseModel data) = GetCategoriesSuccess;
+  const factory BlogState.getCategoriesError(ApiErrorModel apiErrorModel) =
+      GetCategoriesError;
+
   // Get post details
   const factory BlogState.getPostDetailsLoading() = GetPostDetailsLoading;
   const factory BlogState.getPostDetailsSuccess(
@@ -22,4 +29,3 @@ class BlogState with _$BlogState {
   const factory BlogState.getPostDetailsError(ApiErrorModel apiErrorModel) =
       GetPostDetailsError;
 }
-

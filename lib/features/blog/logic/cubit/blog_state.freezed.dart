@@ -22,6 +22,10 @@ mixin _$BlogState {
     required TResult Function() getPostsLoading,
     required TResult Function(GetPostsResponseModel data) getPostsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
     required TResult Function() getPostDetailsLoading,
     required TResult Function(GetPostDetailsResponseModel data)
         getPostDetailsSuccess,
@@ -34,6 +38,10 @@ mixin _$BlogState {
     TResult? Function()? getPostsLoading,
     TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult? Function()? getPostDetailsLoading,
     TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -45,6 +53,9 @@ mixin _$BlogState {
     TResult Function()? getPostsLoading,
     TResult Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult Function()? getPostDetailsLoading,
     TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -57,6 +68,9 @@ mixin _$BlogState {
     required TResult Function(GetPostsLoading value) getPostsLoading,
     required TResult Function(GetPostsSuccess value) getPostsSuccess,
     required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
     required TResult Function(GetPostDetailsLoading value)
         getPostDetailsLoading,
     required TResult Function(GetPostDetailsSuccess value)
@@ -70,6 +84,9 @@ mixin _$BlogState {
     TResult? Function(GetPostsLoading value)? getPostsLoading,
     TResult? Function(GetPostsSuccess value)? getPostsSuccess,
     TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
     TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult? Function(GetPostDetailsError value)? getPostDetailsError,
@@ -81,6 +98,9 @@ mixin _$BlogState {
     TResult Function(GetPostsLoading value)? getPostsLoading,
     TResult Function(GetPostsSuccess value)? getPostsSuccess,
     TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
     TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult Function(GetPostDetailsError value)? getPostDetailsError,
@@ -148,6 +168,10 @@ class _$InitialImpl implements _Initial {
     required TResult Function() getPostsLoading,
     required TResult Function(GetPostsResponseModel data) getPostsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
     required TResult Function() getPostDetailsLoading,
     required TResult Function(GetPostDetailsResponseModel data)
         getPostDetailsSuccess,
@@ -163,6 +187,10 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? getPostsLoading,
     TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult? Function()? getPostDetailsLoading,
     TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -177,6 +205,9 @@ class _$InitialImpl implements _Initial {
     TResult Function()? getPostsLoading,
     TResult Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult Function()? getPostDetailsLoading,
     TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -195,6 +226,9 @@ class _$InitialImpl implements _Initial {
     required TResult Function(GetPostsLoading value) getPostsLoading,
     required TResult Function(GetPostsSuccess value) getPostsSuccess,
     required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
     required TResult Function(GetPostDetailsLoading value)
         getPostDetailsLoading,
     required TResult Function(GetPostDetailsSuccess value)
@@ -211,6 +245,9 @@ class _$InitialImpl implements _Initial {
     TResult? Function(GetPostsLoading value)? getPostsLoading,
     TResult? Function(GetPostsSuccess value)? getPostsSuccess,
     TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
     TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult? Function(GetPostDetailsError value)? getPostDetailsError,
@@ -225,6 +262,9 @@ class _$InitialImpl implements _Initial {
     TResult Function(GetPostsLoading value)? getPostsLoading,
     TResult Function(GetPostsSuccess value)? getPostsSuccess,
     TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
     TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult Function(GetPostDetailsError value)? getPostDetailsError,
@@ -283,6 +323,10 @@ class _$GetPostsLoadingImpl implements GetPostsLoading {
     required TResult Function() getPostsLoading,
     required TResult Function(GetPostsResponseModel data) getPostsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
     required TResult Function() getPostDetailsLoading,
     required TResult Function(GetPostDetailsResponseModel data)
         getPostDetailsSuccess,
@@ -298,6 +342,10 @@ class _$GetPostsLoadingImpl implements GetPostsLoading {
     TResult? Function()? getPostsLoading,
     TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult? Function()? getPostDetailsLoading,
     TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -312,6 +360,9 @@ class _$GetPostsLoadingImpl implements GetPostsLoading {
     TResult Function()? getPostsLoading,
     TResult Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult Function()? getPostDetailsLoading,
     TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -330,6 +381,9 @@ class _$GetPostsLoadingImpl implements GetPostsLoading {
     required TResult Function(GetPostsLoading value) getPostsLoading,
     required TResult Function(GetPostsSuccess value) getPostsSuccess,
     required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
     required TResult Function(GetPostDetailsLoading value)
         getPostDetailsLoading,
     required TResult Function(GetPostDetailsSuccess value)
@@ -346,6 +400,9 @@ class _$GetPostsLoadingImpl implements GetPostsLoading {
     TResult? Function(GetPostsLoading value)? getPostsLoading,
     TResult? Function(GetPostsSuccess value)? getPostsSuccess,
     TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
     TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult? Function(GetPostDetailsError value)? getPostDetailsError,
@@ -360,6 +417,9 @@ class _$GetPostsLoadingImpl implements GetPostsLoading {
     TResult Function(GetPostsLoading value)? getPostsLoading,
     TResult Function(GetPostsSuccess value)? getPostsSuccess,
     TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
     TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult Function(GetPostDetailsError value)? getPostDetailsError,
@@ -455,6 +515,10 @@ class _$GetPostsSuccessImpl implements GetPostsSuccess {
     required TResult Function() getPostsLoading,
     required TResult Function(GetPostsResponseModel data) getPostsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
     required TResult Function() getPostDetailsLoading,
     required TResult Function(GetPostDetailsResponseModel data)
         getPostDetailsSuccess,
@@ -470,6 +534,10 @@ class _$GetPostsSuccessImpl implements GetPostsSuccess {
     TResult? Function()? getPostsLoading,
     TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult? Function()? getPostDetailsLoading,
     TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -484,6 +552,9 @@ class _$GetPostsSuccessImpl implements GetPostsSuccess {
     TResult Function()? getPostsLoading,
     TResult Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult Function()? getPostDetailsLoading,
     TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -502,6 +573,9 @@ class _$GetPostsSuccessImpl implements GetPostsSuccess {
     required TResult Function(GetPostsLoading value) getPostsLoading,
     required TResult Function(GetPostsSuccess value) getPostsSuccess,
     required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
     required TResult Function(GetPostDetailsLoading value)
         getPostDetailsLoading,
     required TResult Function(GetPostDetailsSuccess value)
@@ -518,6 +592,9 @@ class _$GetPostsSuccessImpl implements GetPostsSuccess {
     TResult? Function(GetPostsLoading value)? getPostsLoading,
     TResult? Function(GetPostsSuccess value)? getPostsSuccess,
     TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
     TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult? Function(GetPostDetailsError value)? getPostDetailsError,
@@ -532,6 +609,9 @@ class _$GetPostsSuccessImpl implements GetPostsSuccess {
     TResult Function(GetPostsLoading value)? getPostsLoading,
     TResult Function(GetPostsSuccess value)? getPostsSuccess,
     TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
     TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult Function(GetPostDetailsError value)? getPostDetailsError,
@@ -623,6 +703,10 @@ class _$GetPostsErrorImpl implements GetPostsError {
     required TResult Function() getPostsLoading,
     required TResult Function(GetPostsResponseModel data) getPostsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
     required TResult Function() getPostDetailsLoading,
     required TResult Function(GetPostDetailsResponseModel data)
         getPostDetailsSuccess,
@@ -638,6 +722,10 @@ class _$GetPostsErrorImpl implements GetPostsError {
     TResult? Function()? getPostsLoading,
     TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult? Function()? getPostDetailsLoading,
     TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -652,6 +740,9 @@ class _$GetPostsErrorImpl implements GetPostsError {
     TResult Function()? getPostsLoading,
     TResult Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult Function()? getPostDetailsLoading,
     TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -670,6 +761,9 @@ class _$GetPostsErrorImpl implements GetPostsError {
     required TResult Function(GetPostsLoading value) getPostsLoading,
     required TResult Function(GetPostsSuccess value) getPostsSuccess,
     required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
     required TResult Function(GetPostDetailsLoading value)
         getPostDetailsLoading,
     required TResult Function(GetPostDetailsSuccess value)
@@ -686,6 +780,9 @@ class _$GetPostsErrorImpl implements GetPostsError {
     TResult? Function(GetPostsLoading value)? getPostsLoading,
     TResult? Function(GetPostsSuccess value)? getPostsSuccess,
     TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
     TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult? Function(GetPostDetailsError value)? getPostDetailsError,
@@ -700,6 +797,9 @@ class _$GetPostsErrorImpl implements GetPostsError {
     TResult Function(GetPostsLoading value)? getPostsLoading,
     TResult Function(GetPostsSuccess value)? getPostsSuccess,
     TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
     TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult Function(GetPostDetailsError value)? getPostDetailsError,
@@ -719,6 +819,540 @@ abstract class GetPostsError implements BlogState {
   ApiErrorModel get apiErrorModel;
   @JsonKey(ignore: true)
   _$$GetPostsErrorImplCopyWith<_$GetPostsErrorImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$GetCategoriesLoadingImplCopyWith<$Res> {
+  factory _$$GetCategoriesLoadingImplCopyWith(_$GetCategoriesLoadingImpl value,
+          $Res Function(_$GetCategoriesLoadingImpl) then) =
+      __$$GetCategoriesLoadingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GetCategoriesLoadingImplCopyWithImpl<$Res>
+    extends _$BlogStateCopyWithImpl<$Res, _$GetCategoriesLoadingImpl>
+    implements _$$GetCategoriesLoadingImplCopyWith<$Res> {
+  __$$GetCategoriesLoadingImplCopyWithImpl(_$GetCategoriesLoadingImpl _value,
+      $Res Function(_$GetCategoriesLoadingImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$GetCategoriesLoadingImpl implements GetCategoriesLoading {
+  const _$GetCategoriesLoadingImpl();
+
+  @override
+  String toString() {
+    return 'BlogState.getCategoriesLoading()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetCategoriesLoadingImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() getPostsLoading,
+    required TResult Function(GetPostsResponseModel data) getPostsSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
+    required TResult Function() getPostDetailsLoading,
+    required TResult Function(GetPostDetailsResponseModel data)
+        getPostDetailsSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getPostDetailsError,
+  }) {
+    return getCategoriesLoading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? getPostsLoading,
+    TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
+    TResult? Function()? getPostDetailsLoading,
+    TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
+  }) {
+    return getCategoriesLoading?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? getPostsLoading,
+    TResult Function(GetPostsResponseModel data)? getPostsSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
+    TResult Function()? getPostDetailsLoading,
+    TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
+    required TResult orElse(),
+  }) {
+    if (getCategoriesLoading != null) {
+      return getCategoriesLoading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(GetPostsLoading value) getPostsLoading,
+    required TResult Function(GetPostsSuccess value) getPostsSuccess,
+    required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
+    required TResult Function(GetPostDetailsLoading value)
+        getPostDetailsLoading,
+    required TResult Function(GetPostDetailsSuccess value)
+        getPostDetailsSuccess,
+    required TResult Function(GetPostDetailsError value) getPostDetailsError,
+  }) {
+    return getCategoriesLoading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(GetPostsLoading value)? getPostsLoading,
+    TResult? Function(GetPostsSuccess value)? getPostsSuccess,
+    TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
+    TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
+    TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
+    TResult? Function(GetPostDetailsError value)? getPostDetailsError,
+  }) {
+    return getCategoriesLoading?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(GetPostsLoading value)? getPostsLoading,
+    TResult Function(GetPostsSuccess value)? getPostsSuccess,
+    TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
+    TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
+    TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
+    TResult Function(GetPostDetailsError value)? getPostDetailsError,
+    required TResult orElse(),
+  }) {
+    if (getCategoriesLoading != null) {
+      return getCategoriesLoading(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GetCategoriesLoading implements BlogState {
+  const factory GetCategoriesLoading() = _$GetCategoriesLoadingImpl;
+}
+
+/// @nodoc
+abstract class _$$GetCategoriesSuccessImplCopyWith<$Res> {
+  factory _$$GetCategoriesSuccessImplCopyWith(_$GetCategoriesSuccessImpl value,
+          $Res Function(_$GetCategoriesSuccessImpl) then) =
+      __$$GetCategoriesSuccessImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({GetPostCategoriesResponseModel data});
+}
+
+/// @nodoc
+class __$$GetCategoriesSuccessImplCopyWithImpl<$Res>
+    extends _$BlogStateCopyWithImpl<$Res, _$GetCategoriesSuccessImpl>
+    implements _$$GetCategoriesSuccessImplCopyWith<$Res> {
+  __$$GetCategoriesSuccessImplCopyWithImpl(_$GetCategoriesSuccessImpl _value,
+      $Res Function(_$GetCategoriesSuccessImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? data = null,
+  }) {
+    return _then(_$GetCategoriesSuccessImpl(
+      null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as GetPostCategoriesResponseModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$GetCategoriesSuccessImpl implements GetCategoriesSuccess {
+  const _$GetCategoriesSuccessImpl(this.data);
+
+  @override
+  final GetPostCategoriesResponseModel data;
+
+  @override
+  String toString() {
+    return 'BlogState.getCategoriesSuccess(data: $data)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetCategoriesSuccessImpl &&
+            (identical(other.data, data) || other.data == data));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, data);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetCategoriesSuccessImplCopyWith<_$GetCategoriesSuccessImpl>
+      get copyWith =>
+          __$$GetCategoriesSuccessImplCopyWithImpl<_$GetCategoriesSuccessImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() getPostsLoading,
+    required TResult Function(GetPostsResponseModel data) getPostsSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
+    required TResult Function() getPostDetailsLoading,
+    required TResult Function(GetPostDetailsResponseModel data)
+        getPostDetailsSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getPostDetailsError,
+  }) {
+    return getCategoriesSuccess(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? getPostsLoading,
+    TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
+    TResult? Function()? getPostDetailsLoading,
+    TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
+  }) {
+    return getCategoriesSuccess?.call(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? getPostsLoading,
+    TResult Function(GetPostsResponseModel data)? getPostsSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
+    TResult Function()? getPostDetailsLoading,
+    TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
+    required TResult orElse(),
+  }) {
+    if (getCategoriesSuccess != null) {
+      return getCategoriesSuccess(data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(GetPostsLoading value) getPostsLoading,
+    required TResult Function(GetPostsSuccess value) getPostsSuccess,
+    required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
+    required TResult Function(GetPostDetailsLoading value)
+        getPostDetailsLoading,
+    required TResult Function(GetPostDetailsSuccess value)
+        getPostDetailsSuccess,
+    required TResult Function(GetPostDetailsError value) getPostDetailsError,
+  }) {
+    return getCategoriesSuccess(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(GetPostsLoading value)? getPostsLoading,
+    TResult? Function(GetPostsSuccess value)? getPostsSuccess,
+    TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
+    TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
+    TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
+    TResult? Function(GetPostDetailsError value)? getPostDetailsError,
+  }) {
+    return getCategoriesSuccess?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(GetPostsLoading value)? getPostsLoading,
+    TResult Function(GetPostsSuccess value)? getPostsSuccess,
+    TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
+    TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
+    TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
+    TResult Function(GetPostDetailsError value)? getPostDetailsError,
+    required TResult orElse(),
+  }) {
+    if (getCategoriesSuccess != null) {
+      return getCategoriesSuccess(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GetCategoriesSuccess implements BlogState {
+  const factory GetCategoriesSuccess(
+      final GetPostCategoriesResponseModel data) = _$GetCategoriesSuccessImpl;
+
+  GetPostCategoriesResponseModel get data;
+  @JsonKey(ignore: true)
+  _$$GetCategoriesSuccessImplCopyWith<_$GetCategoriesSuccessImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$GetCategoriesErrorImplCopyWith<$Res> {
+  factory _$$GetCategoriesErrorImplCopyWith(_$GetCategoriesErrorImpl value,
+          $Res Function(_$GetCategoriesErrorImpl) then) =
+      __$$GetCategoriesErrorImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ApiErrorModel apiErrorModel});
+}
+
+/// @nodoc
+class __$$GetCategoriesErrorImplCopyWithImpl<$Res>
+    extends _$BlogStateCopyWithImpl<$Res, _$GetCategoriesErrorImpl>
+    implements _$$GetCategoriesErrorImplCopyWith<$Res> {
+  __$$GetCategoriesErrorImplCopyWithImpl(_$GetCategoriesErrorImpl _value,
+      $Res Function(_$GetCategoriesErrorImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? apiErrorModel = null,
+  }) {
+    return _then(_$GetCategoriesErrorImpl(
+      null == apiErrorModel
+          ? _value.apiErrorModel
+          : apiErrorModel // ignore: cast_nullable_to_non_nullable
+              as ApiErrorModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$GetCategoriesErrorImpl implements GetCategoriesError {
+  const _$GetCategoriesErrorImpl(this.apiErrorModel);
+
+  @override
+  final ApiErrorModel apiErrorModel;
+
+  @override
+  String toString() {
+    return 'BlogState.getCategoriesError(apiErrorModel: $apiErrorModel)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetCategoriesErrorImpl &&
+            (identical(other.apiErrorModel, apiErrorModel) ||
+                other.apiErrorModel == apiErrorModel));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, apiErrorModel);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetCategoriesErrorImplCopyWith<_$GetCategoriesErrorImpl> get copyWith =>
+      __$$GetCategoriesErrorImplCopyWithImpl<_$GetCategoriesErrorImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() getPostsLoading,
+    required TResult Function(GetPostsResponseModel data) getPostsSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
+    required TResult Function() getPostDetailsLoading,
+    required TResult Function(GetPostDetailsResponseModel data)
+        getPostDetailsSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getPostDetailsError,
+  }) {
+    return getCategoriesError(apiErrorModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? getPostsLoading,
+    TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
+    TResult? Function()? getPostDetailsLoading,
+    TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
+  }) {
+    return getCategoriesError?.call(apiErrorModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? getPostsLoading,
+    TResult Function(GetPostsResponseModel data)? getPostsSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
+    TResult Function()? getPostDetailsLoading,
+    TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
+    required TResult orElse(),
+  }) {
+    if (getCategoriesError != null) {
+      return getCategoriesError(apiErrorModel);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(GetPostsLoading value) getPostsLoading,
+    required TResult Function(GetPostsSuccess value) getPostsSuccess,
+    required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
+    required TResult Function(GetPostDetailsLoading value)
+        getPostDetailsLoading,
+    required TResult Function(GetPostDetailsSuccess value)
+        getPostDetailsSuccess,
+    required TResult Function(GetPostDetailsError value) getPostDetailsError,
+  }) {
+    return getCategoriesError(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(GetPostsLoading value)? getPostsLoading,
+    TResult? Function(GetPostsSuccess value)? getPostsSuccess,
+    TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
+    TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
+    TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
+    TResult? Function(GetPostDetailsError value)? getPostDetailsError,
+  }) {
+    return getCategoriesError?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(GetPostsLoading value)? getPostsLoading,
+    TResult Function(GetPostsSuccess value)? getPostsSuccess,
+    TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
+    TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
+    TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
+    TResult Function(GetPostDetailsError value)? getPostDetailsError,
+    required TResult orElse(),
+  }) {
+    if (getCategoriesError != null) {
+      return getCategoriesError(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GetCategoriesError implements BlogState {
+  const factory GetCategoriesError(final ApiErrorModel apiErrorModel) =
+      _$GetCategoriesErrorImpl;
+
+  ApiErrorModel get apiErrorModel;
+  @JsonKey(ignore: true)
+  _$$GetCategoriesErrorImplCopyWith<_$GetCategoriesErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -766,6 +1400,10 @@ class _$GetPostDetailsLoadingImpl implements GetPostDetailsLoading {
     required TResult Function() getPostsLoading,
     required TResult Function(GetPostsResponseModel data) getPostsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
     required TResult Function() getPostDetailsLoading,
     required TResult Function(GetPostDetailsResponseModel data)
         getPostDetailsSuccess,
@@ -781,6 +1419,10 @@ class _$GetPostDetailsLoadingImpl implements GetPostDetailsLoading {
     TResult? Function()? getPostsLoading,
     TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult? Function()? getPostDetailsLoading,
     TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -795,6 +1437,9 @@ class _$GetPostDetailsLoadingImpl implements GetPostDetailsLoading {
     TResult Function()? getPostsLoading,
     TResult Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult Function()? getPostDetailsLoading,
     TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -813,6 +1458,9 @@ class _$GetPostDetailsLoadingImpl implements GetPostDetailsLoading {
     required TResult Function(GetPostsLoading value) getPostsLoading,
     required TResult Function(GetPostsSuccess value) getPostsSuccess,
     required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
     required TResult Function(GetPostDetailsLoading value)
         getPostDetailsLoading,
     required TResult Function(GetPostDetailsSuccess value)
@@ -829,6 +1477,9 @@ class _$GetPostDetailsLoadingImpl implements GetPostDetailsLoading {
     TResult? Function(GetPostsLoading value)? getPostsLoading,
     TResult? Function(GetPostsSuccess value)? getPostsSuccess,
     TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
     TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult? Function(GetPostDetailsError value)? getPostDetailsError,
@@ -843,6 +1494,9 @@ class _$GetPostDetailsLoadingImpl implements GetPostDetailsLoading {
     TResult Function(GetPostsLoading value)? getPostsLoading,
     TResult Function(GetPostsSuccess value)? getPostsSuccess,
     TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
     TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult Function(GetPostDetailsError value)? getPostDetailsError,
@@ -939,6 +1593,10 @@ class _$GetPostDetailsSuccessImpl implements GetPostDetailsSuccess {
     required TResult Function() getPostsLoading,
     required TResult Function(GetPostsResponseModel data) getPostsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
     required TResult Function() getPostDetailsLoading,
     required TResult Function(GetPostDetailsResponseModel data)
         getPostDetailsSuccess,
@@ -954,6 +1612,10 @@ class _$GetPostDetailsSuccessImpl implements GetPostDetailsSuccess {
     TResult? Function()? getPostsLoading,
     TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult? Function()? getPostDetailsLoading,
     TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -968,6 +1630,9 @@ class _$GetPostDetailsSuccessImpl implements GetPostDetailsSuccess {
     TResult Function()? getPostsLoading,
     TResult Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult Function()? getPostDetailsLoading,
     TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -986,6 +1651,9 @@ class _$GetPostDetailsSuccessImpl implements GetPostDetailsSuccess {
     required TResult Function(GetPostsLoading value) getPostsLoading,
     required TResult Function(GetPostsSuccess value) getPostsSuccess,
     required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
     required TResult Function(GetPostDetailsLoading value)
         getPostDetailsLoading,
     required TResult Function(GetPostDetailsSuccess value)
@@ -1002,6 +1670,9 @@ class _$GetPostDetailsSuccessImpl implements GetPostDetailsSuccess {
     TResult? Function(GetPostsLoading value)? getPostsLoading,
     TResult? Function(GetPostsSuccess value)? getPostsSuccess,
     TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
     TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult? Function(GetPostDetailsError value)? getPostDetailsError,
@@ -1016,6 +1687,9 @@ class _$GetPostDetailsSuccessImpl implements GetPostDetailsSuccess {
     TResult Function(GetPostsLoading value)? getPostsLoading,
     TResult Function(GetPostsSuccess value)? getPostsSuccess,
     TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
     TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult Function(GetPostDetailsError value)? getPostDetailsError,
@@ -1108,6 +1782,10 @@ class _$GetPostDetailsErrorImpl implements GetPostDetailsError {
     required TResult Function() getPostsLoading,
     required TResult Function(GetPostsResponseModel data) getPostsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) getPostsError,
+    required TResult Function() getCategoriesLoading,
+    required TResult Function(GetPostCategoriesResponseModel data)
+        getCategoriesSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) getCategoriesError,
     required TResult Function() getPostDetailsLoading,
     required TResult Function(GetPostDetailsResponseModel data)
         getPostDetailsSuccess,
@@ -1123,6 +1801,10 @@ class _$GetPostDetailsErrorImpl implements GetPostDetailsError {
     TResult? Function()? getPostsLoading,
     TResult? Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult? Function()? getCategoriesLoading,
+    TResult? Function(GetPostCategoriesResponseModel data)?
+        getCategoriesSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult? Function()? getPostDetailsLoading,
     TResult? Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -1137,6 +1819,9 @@ class _$GetPostDetailsErrorImpl implements GetPostDetailsError {
     TResult Function()? getPostsLoading,
     TResult Function(GetPostsResponseModel data)? getPostsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostsError,
+    TResult Function()? getCategoriesLoading,
+    TResult Function(GetPostCategoriesResponseModel data)? getCategoriesSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? getCategoriesError,
     TResult Function()? getPostDetailsLoading,
     TResult Function(GetPostDetailsResponseModel data)? getPostDetailsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? getPostDetailsError,
@@ -1155,6 +1840,9 @@ class _$GetPostDetailsErrorImpl implements GetPostDetailsError {
     required TResult Function(GetPostsLoading value) getPostsLoading,
     required TResult Function(GetPostsSuccess value) getPostsSuccess,
     required TResult Function(GetPostsError value) getPostsError,
+    required TResult Function(GetCategoriesLoading value) getCategoriesLoading,
+    required TResult Function(GetCategoriesSuccess value) getCategoriesSuccess,
+    required TResult Function(GetCategoriesError value) getCategoriesError,
     required TResult Function(GetPostDetailsLoading value)
         getPostDetailsLoading,
     required TResult Function(GetPostDetailsSuccess value)
@@ -1171,6 +1859,9 @@ class _$GetPostDetailsErrorImpl implements GetPostDetailsError {
     TResult? Function(GetPostsLoading value)? getPostsLoading,
     TResult? Function(GetPostsSuccess value)? getPostsSuccess,
     TResult? Function(GetPostsError value)? getPostsError,
+    TResult? Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult? Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult? Function(GetCategoriesError value)? getCategoriesError,
     TResult? Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult? Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult? Function(GetPostDetailsError value)? getPostDetailsError,
@@ -1185,6 +1876,9 @@ class _$GetPostDetailsErrorImpl implements GetPostDetailsError {
     TResult Function(GetPostsLoading value)? getPostsLoading,
     TResult Function(GetPostsSuccess value)? getPostsSuccess,
     TResult Function(GetPostsError value)? getPostsError,
+    TResult Function(GetCategoriesLoading value)? getCategoriesLoading,
+    TResult Function(GetCategoriesSuccess value)? getCategoriesSuccess,
+    TResult Function(GetCategoriesError value)? getCategoriesError,
     TResult Function(GetPostDetailsLoading value)? getPostDetailsLoading,
     TResult Function(GetPostDetailsSuccess value)? getPostDetailsSuccess,
     TResult Function(GetPostDetailsError value)? getPostDetailsError,

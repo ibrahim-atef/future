@@ -19,6 +19,8 @@ class OfflineListCoursePage extends StatefulWidget {
 
 class _OfflineListCoursePageState extends State<OfflineListCoursePage>
     with WidgetsBindingObserver {
+  String? _selectedCourseTitle;
+
   @override
   void initState() {
     super.initState();
@@ -311,6 +313,33 @@ class _OfflineListCoursePageState extends State<OfflineListCoursePage>
   }
 
   Widget _buildVideosList(List<DownloadedVideoModel> videos) {
+    // استخراج عناوين الكورسات المتاحة من الفيديوهات المحملة
+    final courseTitles = videos
+        .map((v) => v.courseTitle)
+        .where((title) => title.isNotEmpty)
+        .toSet()
+        .toList()
+      ..sort();
+
+    // في حال تم حذف كورس كان محدد كفلتر، نرجع لعرض كل الكورسات
+    if (_selectedCourseTitle != null &&
+        !courseTitles.contains(_selectedCourseTitle)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _selectedCourseTitle = null;
+          });
+        }
+      });
+    }
+
+    // تطبيق الفلتر على الفيديوهات
+    final filteredVideos = _selectedCourseTitle == null
+        ? videos
+        : videos
+            .where((video) => video.courseTitle == _selectedCourseTitle)
+            .toList();
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       physics: const BouncingScrollPhysics(),
@@ -328,45 +357,125 @@ class _OfflineListCoursePageState extends State<OfflineListCoursePage>
                 color: const Color(0xFFd4af37).withOpacity(0.3),
               ),
             ),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.offline_bolt,
-                  color: Color(0xFFd4af37),
-                  size: 24,
-                ),
-                const SizedBox(width: 12),
-                const Expanded(
-                  child: Text(
-                    'الفيديوهات المحملة محلياً - تعمل بدون إنترنت',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.offline_bolt,
+                      color: Color(0xFFd4af37),
+                      size: 24,
                     ),
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFd4af37),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    '${videos.length}',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Text(
+                        'الفيديوهات المحملة محلياً - تعمل بدون إنترنت',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFd4af37),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${filteredVideos.length}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                if (courseTitles.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.school,
+                        color: Color(0xFFd4af37),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: DropdownButtonHideUnderline(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1a1a1a),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: const Color(0xFFd4af37).withOpacity(0.4),
+                              ),
+                            ),
+                            child: DropdownButton<String?>(
+                              dropdownColor: const Color(0xFF1a1a1a),
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Color(0xFFd4af37),
+                              ),
+                              value: _selectedCourseTitle,
+                              isExpanded: true,
+                              hint: const Text(
+                                'كل الكورسات',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              items: <DropdownMenuItem<String?>>[
+                                const DropdownMenuItem<String?>(
+                                  value: null,
+                                  child: Text(
+                                    'كل الكورسات',
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                                ...courseTitles.map(
+                                  (title) => DropdownMenuItem<String?>(
+                                    value: title,
+                                    child: Text(
+                                      title,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCourseTitle = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ],
             ),
           ),
           // Videos list
-          ...videos.map((video) => _buildVideoItem(video)),
+          const SizedBox(height: 8),
+          ...filteredVideos.map((video) => _buildVideoItem(video)),
         ],
       ),
     );

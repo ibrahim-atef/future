@@ -21,39 +21,41 @@ class DownloadManager {
     try {
       // التحقق من الصلاحيات أولاً (بدون طلب)
       bool hasPermission = false;
-      
+
       if (Platform.isAndroid) {
         // التحقق من الصلاحيات الموجودة
         final storageStatus = await Permission.storage.status;
         final photosStatus = await Permission.photos.status;
         final videosStatus = await Permission.videos.status;
-        
-        hasPermission = storageStatus.isGranted || 
-                       photosStatus.isGranted || 
-                       videosStatus.isGranted;
-        
+
+        hasPermission = storageStatus.isGranted ||
+            photosStatus.isGranted ||
+            videosStatus.isGranted;
+
         // إذا لم تكن الصلاحيات موجودة، نحاول طلبها
         if (!hasPermission) {
           debugPrint('📱 Checking storage permissions...');
-          
+
           // طلب صلاحيات التخزين
           final storageStatusAfter = await Permission.storage.request();
-          
+
           if (!storageStatusAfter.isGranted) {
             // محاولة طلب صلاحيات أخرى للأندرويد 13+
             final photosStatusAfter = await Permission.photos.request();
             final videosStatusAfter = await Permission.videos.request();
-            
-            hasPermission = photosStatusAfter.isGranted || videosStatusAfter.isGranted;
+
+            hasPermission =
+                photosStatusAfter.isGranted || videosStatusAfter.isGranted;
           } else {
             hasPermission = true;
           }
         }
-        
+
         // حتى لو لم تكن الصلاحيات موجودة، يمكننا استخدام مجلد التطبيق الخاص
         // الذي لا يحتاج صلاحيات على Android 13+
         if (!hasPermission) {
-          debugPrint('⚠️ No storage permissions, but will use app directory (no permission needed)');
+          debugPrint(
+              '⚠️ No storage permissions, but will use app directory (no permission needed)');
         } else {
           debugPrint('✅ Storage permissions granted');
         }
@@ -68,8 +70,9 @@ class DownloadManager {
       String fullPath = '$directory/$fileName';
 
       // التحقق من وجود الملف مسبقاً
-      bool fileExists = await findFile(directory, fileName, onLoadAtLocal: onLoadAtLocal, isOpen: false);
-      
+      bool fileExists = await findFile(directory, fileName,
+          onLoadAtLocal: onLoadAtLocal, isOpen: false);
+
       if (fileExists) {
         debugPrint('✅ File already exists: $fullPath');
         if (onLoadAtLocal != null) {
@@ -80,11 +83,11 @@ class DownloadManager {
 
       // تحميل الملف
       debugPrint('⬇️ Downloading file: $fileName...');
-      
+
       Map<String, String> headers = {
         "Accept": "application/json",
       };
-      
+
       if (authToken != null) {
         headers["Authorization"] = "Bearer $authToken";
       }
@@ -144,11 +147,11 @@ class DownloadManager {
       for (var i = 0; i < files.length; i++) {
         if (files[i].path.contains(name)) {
           debugPrint('✅ File found: ${files[i].path}');
-          
+
           if (onLoadAtLocal != null) {
             onLoadAtLocal(files[i].path);
           }
-          
+
           return true;
         }
       }
@@ -187,7 +190,7 @@ class DownloadManager {
     try {
       String directory = (await getApplicationSupportDirectory()).path;
       String fullPath = '$directory/$fileName';
-      
+
       File file = File(fullPath);
       if (await file.exists()) {
         await file.delete();
@@ -208,7 +211,7 @@ class DownloadManager {
     try {
       String directory = (await getApplicationSupportDirectory()).path;
       String fullPath = '$directory/$fileName';
-      
+
       File file = File(fullPath);
       if (await file.exists()) {
         int bytes = await file.length();
@@ -242,13 +245,13 @@ class DownloadManager {
     try {
       String directory = (await getApplicationSupportDirectory()).path;
       List<FileSystemEntity> files = Directory(directory).listSync();
-      
+
       for (var file in files) {
         if (file is File) {
           await file.delete();
         }
       }
-      
+
       debugPrint('✅ All files deleted');
       return true;
     } catch (e) {
@@ -267,8 +270,9 @@ class DownloadManager {
     CancelToken? cancelToken,
   }) async {
     // إنشاء اسم ملف فريد
-    String fileName = 'video_${videoId}_${DateTime.now().millisecondsSinceEpoch}.mp4';
-    
+    String fileName =
+        'video_${videoId}_${DateTime.now().millisecondsSinceEpoch}.mp4';
+
     return await download(
       url,
       name: fileName,
@@ -294,4 +298,3 @@ class DownloadManager {
     }
   }
 }
-
