@@ -39,8 +39,13 @@ void main() async {
   // Initialize services
   await StorageService.init();
 
-  // Initialize Firebase Notifications
-  await FirebaseNotification.initializeNotifications();
+  // Initialize Firebase Notifications - don't block if it fails
+  try {
+    await FirebaseNotification.initializeNotifications();
+  } catch (e) {
+    log('⚠️ Error initializing notifications, continuing anyway: $e');
+    // Don't block app startup if notifications fail
+  }
 
   // Initialize WorkManager for flutter_downloader
   await Workmanager().initialize(
