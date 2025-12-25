@@ -19,12 +19,20 @@ class RegisterRequestModel {
   @JsonKey(name: 'role')
   final String role;
 
+  @JsonKey(name: 'college')
+  final String college;
+
+  @JsonKey(name: 'level')
+  final String level;
+
   RegisterRequestModel({
     required this.fullName,
     required this.email,
     required this.mobile,
     required this.password,
     required this.role,
+    required this.college,
+    required this.level,
   });
 
   factory RegisterRequestModel.fromJson(Map<String, dynamic> json) =>
