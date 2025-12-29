@@ -30,20 +30,25 @@
 	<string>This app uses Bluetooth to connect to audio devices and accessories for an enhanced experience.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>This app uses Bluetooth to connect to audio devices and accessories for an enhanced experience.</string>
-	<key>NSUserNotificationsUsageDescription</key>
-	<string>This app needs notification permissions to send you important updates and alerts.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs camera access to take photos for your profile and content.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs photo library access to select and upload images.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This app needs permission to save images to your photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs photo library access to select and upload images.</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>This app needs notification permissions to send you important updates and alerts.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
+		<string>processing</string>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.anmka.f.workmanager</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

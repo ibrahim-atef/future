@@ -25,7 +25,10 @@ dependencies:
 
   # Downloads & File Management
   flutter_downloader: ^1.11.5
-  workmanager: ^0.5.2
+  workmanager:
+    git:
+      url: https://github.com/fluttercommunity/flutter_workmanager.git
+      ref: b783000
   flutter_localizations:
     sdk: flutter
 
