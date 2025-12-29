@@ -35,15 +35,15 @@ class AppTheme {
       ),
 
       // Card Theme
-      cardTheme: const CardTheme(
-        color: AppColors.cardBackground,
-        elevation: 4,
-        shadowColor: AppColors.shadowColor,
-        shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
-        ),
-      ),
+      // cardTheme: const CardTheme(
+      //   color: AppColors.cardBackground,
+      //   elevation: 4,
+      //   shadowColor: AppColors.shadowColor,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius:
+      //         BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
+      //   ),
+      // ),
 
       // Button Themes
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -129,15 +129,15 @@ class AppTheme {
       ),
 
       // Dialog Theme
-      dialogTheme: const DialogTheme(
-        backgroundColor: AppColors.cardBackground,
-        titleTextStyle: AppTypography.h2,
-        contentTextStyle: AppTypography.bodyMedium,
-        shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
-        ),
-      ),
+      // dialogTheme: DialogThemeData(
+      //   backgroundColor: AppColors.cardBackground,
+      //   titleTextStyle: AppTypography.h2,
+      //   contentTextStyle: AppTypography.bodyMedium,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius:
+      //         BorderRadius.all(Radius.circular(AppDimensions.radiusLg)),
+      //   ),
+      // ),
 
       // Divider Theme
       dividerTheme: const DividerThemeData(
