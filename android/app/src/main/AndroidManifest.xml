@@ -5,19 +5,13 @@
     <!-- Internet permission for API calls -->
     <uses-permission android:name="android.permission.INTERNET" />
     
-    <!-- Storage permissions -->
+    <!-- Storage permissions - Only for Android 12 and below -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="29" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-
-    <!-- Android 13+ (API 33+) media permissions -->
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+        android:maxSdkVersion="32" />
     
     <!-- Download manager permissions -->
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
@@ -31,7 +25,7 @@
     <!-- Camera permission -->
     <uses-permission android:name="android.permission.CAMERA" />
     
-    <!-- Additional gallery access permissions -->
+    <!-- Photo Picker for Android 13+ (user-selected media only) -->
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
     
     <!-- Notification permissions -->

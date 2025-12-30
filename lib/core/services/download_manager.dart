@@ -36,15 +36,12 @@ class DownloadManager {
         if (!hasPermission) {
           debugPrint('📱 Checking storage permissions...');
           
-          // طلب صلاحيات التخزين
+          // طلب صلاحيات التخزين للأندرويد 12 وأقل فقط
           final storageStatusAfter = await Permission.storage.request();
           
           if (!storageStatusAfter.isGranted) {
-            // محاولة طلب صلاحيات أخرى للأندرويد 13+
-            final photosStatusAfter = await Permission.photos.request();
-            final videosStatusAfter = await Permission.videos.request();
-            
-            hasPermission = photosStatusAfter.isGranted || videosStatusAfter.isGranted;
+            hasPermission = false;
+            debugPrint('⚠️ Storage permission denied');
           } else {
             hasPermission = true;
           }

@@ -55,17 +55,8 @@ class DownloadService {
         print('DownloadService: Error accessing external storage: $e');
       }
 
-      // If we can't access external storage, try to request permissions
-      // For Android 11+ (API 30+), try manage external storage
-      var manageStatus = await Permission.manageExternalStorage.status;
-      print('DownloadService: Manage external storage status: $manageStatus');
-
-      if (manageStatus.isGranted) {
-        print('DownloadService: Manage external storage already granted');
-        return true;
-      }
-
-      // Try storage permission for older Android versions
+      // If we can't access external storage, try to request basic storage permission
+      // Only for Android 12 and below
       var status = await Permission.storage.status;
       print('DownloadService: Storage permission status: $status');
 
@@ -82,14 +73,6 @@ class DownloadService {
         if (status.isGranted) {
           return true;
         }
-      }
-
-      // For Android 11+ (API 30+), try manage external storage
-      if (status.isPermanentlyDenied || status.isDenied) {
-        print('DownloadService: Trying manage external storage...');
-        manageStatus = await Permission.manageExternalStorage.request();
-        print('DownloadService: Manage external storage result: $manageStatus');
-        return manageStatus.isGranted;
       }
 
       print(

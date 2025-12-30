@@ -90,7 +90,7 @@ class DownloadService {
     );
   }
 
-  // Request storage permission
+  // Request storage permission - Only uses app-specific directory (no special permissions needed)
   Future<bool> requestPermission() async {
     try {
       if (Platform.isAndroid) {
@@ -98,71 +98,22 @@ class DownloadService {
         final sdkInt = androidInfo.version.sdkInt;
         print('Android SDK version: $sdkInt');
 
+        // For Android 13+ (API 33+), we use app-specific directory
+        // No special permissions needed for app's own external storage directory
         if (sdkInt >= 33) {
-          print('Checking Android 13+ media permissions status');
-          final videoStatus = await Permission.videos.status;
-          final audioStatus = await Permission.audio.status;
-          final photoStatus = await Permission.photos.status;
-
-          print('Video permission status: $videoStatus');
-          print('Audio permission status: $audioStatus');
-          print('Photo permission status: $photoStatus');
-
-          if (videoStatus == PermissionStatus.granted ||
-              audioStatus == PermissionStatus.granted ||
-              photoStatus == PermissionStatus.granted) {
-            print('Media permissions already granted');
+          print('Android 13+: Using app-specific directory (no permissions needed)');
+          // Test if we can access the external storage directory
+          final directory = await getExternalStorageDirectory();
+          if (directory != null) {
+            print('External storage directory accessible: ${directory.path}');
             return true;
           }
+          return false;
+        }
 
-          print('Requesting Android 13+ media permissions');
-          final videoStatusAfter = await Permission.videos.request();
-          final audioStatusAfter = await Permission.audio.request();
-          final photoStatusAfter = await Permission.photos.request();
-
-          print('Video permission after request: $videoStatusAfter');
-          print('Audio permission after request: $audioStatusAfter');
-          print('Photo permission after request: $photoStatusAfter');
-
-          final granted = videoStatusAfter == PermissionStatus.granted ||
-              audioStatusAfter == PermissionStatus.granted ||
-              photoStatusAfter == PermissionStatus.granted;
-
-          print('Media permissions granted: $granted');
-          return granted;
-        } else if (sdkInt >= 30) {
-          print('Checking manage external storage permission status');
-          final manageStorageStatus =
-              await Permission.manageExternalStorage.status;
-          print('Manage external storage status: $manageStorageStatus');
-
-          if (manageStorageStatus == PermissionStatus.granted) {
-            print('Manage external storage already granted');
-            return true;
-          }
-
-          final storageStatus = await Permission.storage.status;
-          if (storageStatus == PermissionStatus.granted) {
-            print('Storage permission already granted');
-            return true;
-          }
-
-          print('Requesting manage external storage permission');
-          final manageStorageStatusAfter =
-              await Permission.manageExternalStorage.request();
-          print(
-              'Manage external storage after request: $manageStorageStatusAfter');
-
-          if (manageStorageStatusAfter == PermissionStatus.granted) {
-            return true;
-          }
-
-          print('Requesting regular storage permission');
-          final storageStatusAfter = await Permission.storage.request();
-          print('Storage permission after request: $storageStatusAfter');
-          return storageStatusAfter == PermissionStatus.granted;
-        } else {
-          print('Checking Android 10- storage permission status');
+        // For Android 11-12 (API 30-32), check basic storage permission
+        if (sdkInt >= 30) {
+          print('Android 11-12: Checking storage permission');
           final storageStatus = await Permission.storage.status;
           print('Storage permission status: $storageStatus');
 
@@ -171,7 +122,26 @@ class DownloadService {
             return true;
           }
 
-          print('Requesting Android 10- storage permission');
+          print('Requesting storage permission');
+          final storageStatusAfter = await Permission.storage.request();
+          print('Storage permission after request: $storageStatusAfter');
+          
+          // Even if denied, we can still use app directory
+          if (storageStatusAfter != PermissionStatus.granted) {
+            print('Storage permission denied, but app directory is still accessible');
+          }
+          return true;
+        } else {
+          print('Android 10-: Checking storage permission');
+          final storageStatus = await Permission.storage.status;
+          print('Storage permission status: $storageStatus');
+
+          if (storageStatus == PermissionStatus.granted) {
+            print('Storage permission already granted');
+            return true;
+          }
+
+          print('Requesting storage permission');
           final storageStatusAfter = await Permission.storage.request();
           print('Storage permission after request: $storageStatusAfter');
           return storageStatusAfter == PermissionStatus.granted;
@@ -181,7 +151,8 @@ class DownloadService {
       return true;
     } catch (e) {
       print('Error requesting permission: $e');
-      return false;
+      // Even if permission request fails, we can still use app directory
+      return true;
     }
   }
 
@@ -678,44 +649,23 @@ class DownloadService {
     return result?.isNotEmpty ?? false;
   }
 
-  // Check current permission status
+  // Check current permission status - Only uses app-specific directory
   Future<bool> hasStoragePermission() async {
     if (Platform.isAndroid) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
 
+      // For Android 13+ (API 33+), we use app-specific directory
+      // No permissions needed
       if (androidInfo.version.sdkInt >= 33) {
-        // Android 13+ - Check media permissions first
-        final videoStatus = await Permission.videos.status;
-        final audioStatus = await Permission.audio.status;
-        final photoStatus = await Permission.photos.status;
-
-        final hasMediaPermission = videoStatus == PermissionStatus.granted ||
-            audioStatus == PermissionStatus.granted ||
-            photoStatus == PermissionStatus.granted;
-
-        print('Android 13+: Media permissions granted: $hasMediaPermission');
-        return hasMediaPermission;
-      } else if (androidInfo.version.sdkInt >= 30) {
-        // Android 11-12 - Check manage external storage
-        final manageStorageStatus =
-            await Permission.manageExternalStorage.status;
-        if (manageStorageStatus == PermissionStatus.granted) {
-          print('Android 11-12: Manage external storage granted');
-          return true;
-        }
-
-        final storageStatus = await Permission.storage.status;
-        final hasStoragePermission =
-            storageStatus == PermissionStatus.granted;
-        print('Android 11-12: Storage permission granted: $hasStoragePermission');
-        return hasStoragePermission;
-      } else {
-        // Android 10 and below - Check storage permission
-        final storageStatus = await Permission.storage.status;
-        final granted = storageStatus == PermissionStatus.granted;
-        print('Android 10-: Storage permission granted: $granted');
-        return granted;
+        print('Android 13+: Using app-specific directory (no permissions needed)');
+        return true;
       }
+
+      // For Android 11-12 (API 30-32) and below, check storage permission
+      final storageStatus = await Permission.storage.status;
+      final hasPermission = storageStatus == PermissionStatus.granted;
+      print('Android ${androidInfo.version.sdkInt}: Storage permission granted: $hasPermission');
+      return hasPermission;
     }
     return true; // iOS doesn't need explicit permission for app documents
   }

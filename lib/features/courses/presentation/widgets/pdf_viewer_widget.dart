@@ -64,8 +64,7 @@ class _PDFViewerWidgetState extends State<PDFViewerWidget> {
   Future<bool> _requestStoragePermission() async {
     print('Requesting storage permission...');
 
-    // For Android 13+ (API 33+), we don't need storage permissions for app's own directory
-    // The app can write to its own external storage directory without permissions
+    // For Android 13+ (API 33+), we use app-specific directory (no permissions needed)
     try {
       // Test if we can access the external storage directory
       final directory = await getExternalStorageDirectory();
@@ -85,16 +84,7 @@ class _PDFViewerWidgetState extends State<PDFViewerWidget> {
       print('Error accessing external storage: $e');
     }
 
-    // Check if we have manage external storage permission (Android 11+)
-    var manageStatus = await Permission.manageExternalStorage.status;
-    print('Manage external storage status: $manageStatus');
-
-    if (manageStatus.isGranted) {
-      print('Manage external storage already granted');
-      return true;
-    }
-
-    // Check storage permission
+    // Check storage permission for Android 12 and below
     var status = await Permission.storage.status;
     print('Storage permission status: $status');
 
@@ -114,15 +104,6 @@ class _PDFViewerWidgetState extends State<PDFViewerWidget> {
     }
 
     if (status.isPermanentlyDenied || status.isDenied) {
-      print('Trying manage external storage...');
-      // Try manage external storage for Android 11+
-      manageStatus = await Permission.manageExternalStorage.request();
-      print('Manage external storage result: $manageStatus');
-
-      if (manageStatus.isGranted) {
-        return true;
-      }
-
       // Show dialog to open app settings
       print('Showing permission dialog...');
       return await _showPermissionDialog();

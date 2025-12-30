@@ -156,23 +156,6 @@ jobs:
             echo "✅ Updated Kotlin version to 2.1.0 for CI compatibility"
           fi
 
-      - name: Fix flutter_app_badger lStar issue
-        run: |
-          # Add dependency resolution strategy in build.gradle to update androidx.core
-          # This is a CI-only fix, your local code remains unchanged
-          if [ -f android/app/build.gradle ]; then
-            # Check if configurations block exists
-            if ! grep -q "configurations {" android/app/build.gradle; then
-              # Add configurations block before dependencies
-              sed -i '/^dependencies {/i configurations.all {\n    resolutionStrategy {\n        force "androidx.core:core:1.15.0"\n        force "androidx.core:core-ktx:1.15.0"\n    }\n}\n' android/app/build.gradle
-            else
-              # Add resolutionStrategy to existing configurations block
-              if ! grep -q "resolutionStrategy" android/app/build.gradle; then
-                sed -i '/configurations.all {/a\    resolutionStrategy {\n        force "androidx.core:core:1.15.0"\n        force "androidx.core:core-ktx:1.15.0"\n    }' android/app/build.gradle
-              fi
-            fi
-            echo "✅ Added dependency resolution strategy for androidx.core (lStar fix)"
-          fi
 
       - name: Setup signing (if secrets exist)
         run: |

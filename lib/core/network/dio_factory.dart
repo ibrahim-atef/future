@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:future_app/core/helper/shared_pref_helper.dart';
 import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/core/network/api_constants.dart';
-
+import 'dart:convert';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioFactory {
@@ -49,6 +49,38 @@ class DioFactory {
         requestBody: true,
         requestHeader: true,
         responseHeader: true,
+        responseBody: true,
+        error: true,
+        compact: false,
+        maxWidth: 90,
+      ),
+    );
+
+    // Add custom response body logger
+    dio?.interceptors.add(
+      InterceptorsWrapper(
+        onResponse: (response, handler) {
+          print('\n╔══════════════════════════════════════════════════════════════════════════════════════════╗');
+          print('║ Response Body');
+          print('╚══════════════════════════════════════════════════════════════════════════════════════════╝');
+          try {
+            if (response.data != null) {
+              if (response.data is String) {
+                print(response.data);
+              } else {
+                final jsonString = const JsonEncoder.withIndent('  ').convert(response.data);
+                print(jsonString);
+              }
+            } else {
+              print('Response body is null');
+            }
+          } catch (e) {
+            print('Error printing response body: $e');
+            print('Raw response: ${response.data}');
+          }
+          print('\n');
+          handler.next(response);
+        },
       ),
     );
 
