@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:future_app/core/helper/device_info_helper.dart';
 import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/core/notification/notification_service.dart';
 import 'package:future_app/features/auth/data/models/login_request_model.dart';
@@ -249,10 +249,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: AppStrings.login,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        // Use device identifier for iOS, FCM token for Android
+                        final deviceId = Platform.isIOS 
+                            ? (UserConstant.deviceId ?? '')
+                            : (FirebaseNotification.fcmToken ?? '');
+                        
                         context.read<AuthCubit>().login(LoginRequestModel(
                             username: _emailController.text,
                             password: _passwordController.text,
-                            deviceId: FirebaseNotification.fcmToken!,
+                            deviceId: deviceId,
                             accessId: UserConstant.deviceId!));
                       }
                     },
