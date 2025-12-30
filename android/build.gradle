@@ -16,6 +16,16 @@ allprojects {
         google()
         mavenCentral()
     }
+    
+    // Fix for package_info_plus: provide flutter extension for all projects
+    // This allows plugins to access flutter.compileSdkVersion
+    if (!project.hasProperty('flutter')) {
+        project.ext.flutter = [
+            compileSdkVersion: 36,
+            minSdkVersion: 24,
+            targetSdkVersion: 35
+        ]
+    }
 }
 
 rootProject.buildDir = "../build"
@@ -23,6 +33,19 @@ subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 subprojects {
+    // Fix for package_info_plus: provide flutter extension before evaluation
+    // This must run before the plugin's build.gradle is evaluated
+    project.beforeEvaluate {
+        // Create flutter extension if it doesn't exist (for plugins that reference flutter.compileSdkVersion)
+        if (!project.hasProperty('flutter')) {
+            project.ext.flutter = [
+                compileSdkVersion: 36,
+                minSdkVersion: 24,
+                targetSdkVersion: 35
+            ]
+        }
+    }
+    
     project.afterEvaluate {
         // Disable treating warnings as errors to fix Java 8 obsolete warnings
         tasks.withType(JavaCompile) {
@@ -44,13 +67,38 @@ subprojects {
                 println "✅ Disabled minification for ${project.name} to fix R8 issues"
             }
         }
+        
+        // Fix for package_info_plus: ensure compileSdk is set if it references flutter.compileSdkVersion
+        if (project.plugins.hasPlugin('com.android.library')) {
+            project.android {
+                // If compileSdk is null or not set, set it to 36
+                if (hasProperty('compileSdk') && (compileSdk == null || compileSdk.toString().isEmpty())) {
+                    compileSdk = 36
+                    println "✅ Set compileSdk for ${project.name}: 36"
+                }
+                // Also ensure compileSdkVersion is set for compatibility
+                if (compileSdkVersion == null) {
+                    compileSdkVersion = 36
+                    println "✅ Set compileSdkVersion for ${project.name}: 36"
+                }
+            }
+        }
     }
     
-    // Fix for missing namespace in dependencies (e.g., flutter_inappwebview)
-    // This hook runs when the Android library plugin is applied
+    // Fix for missing namespace and compileSdkVersion in dependencies
+    // This hook runs when the Android library plugin is applied (before build.gradle evaluation)
     project.plugins.withId('com.android.library') {
-        // Configure the android block to set namespace
         project.android {
+            // Set compileSdkVersion early to fix package_info_plus and other plugins
+            if (compileSdkVersion == null) {
+                compileSdkVersion = 36
+                println "✅ Set compileSdkVersion for ${project.name}: 36"
+            }
+            // Also set compileSdk (newer API)
+            if (hasProperty('compileSdk') && compileSdk == null) {
+                compileSdk = 36
+            }
+            
             // Set namespace if not already set
             if (namespace == null || namespace.toString().trim().isEmpty()) {
                 // Try to extract namespace from AndroidManifest.xml

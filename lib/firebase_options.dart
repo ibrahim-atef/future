@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -60,13 +57,23 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB-YZkcLnx7FdC-RR-8WJLXvcwPZ92B85I',
-    appId: '1:836839374831:ios:90f130b397f4cec65ac01a',
+    appId: '1:836839374831:ios:43f1afe842b0345e5ac01a',
     messagingSenderId: '836839374831',
     projectId: 'sallah-d2a52',
     databaseURL: 'https://sallah-d2a52-default-rtdb.firebaseio.com',
     storageBucket: 'sallah-d2a52.firebasestorage.app',
     androidClientId: '836839374831-rq800586u9v087mukvfak02t51n1qh0o.apps.googleusercontent.com',
-    iosBundleId: 'com.anmka.future',
+    iosBundleId: 'com.anmka.f',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCVHqnvmv2U0-_wV5dW6sCMhLGBC9v9Z-U',
+    appId: '1:836839374831:web:1a4b59e222c9a4405ac01a',
+    messagingSenderId: '836839374831',
+    projectId: 'sallah-d2a52',
+    authDomain: 'sallah-d2a52.firebaseapp.com',
+    databaseURL: 'https://sallah-d2a52-default-rtdb.firebaseio.com',
+    storageBucket: 'sallah-d2a52.firebasestorage.app',
   );
 
 }

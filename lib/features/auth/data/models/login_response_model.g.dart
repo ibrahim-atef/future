@@ -15,12 +15,21 @@ LoginResponseModel _$LoginResponseModelFromJson(Map<String, dynamic> json) =>
           : LoginResponseData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$LoginResponseModelToJson(LoginResponseModel instance) =>
-    <String, dynamic>{
-      'success': instance.success,
-      'message': instance.message,
-      'data': instance.data,
-    };
+Map<String, dynamic> _$LoginResponseModelToJson(LoginResponseModel instance) {
+  final val = <String, dynamic>{
+    'success': instance.success,
+    'message': instance.message,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('data', instance.data);
+  return val;
+}
 
 LoginResponseData _$LoginResponseDataFromJson(Map<String, dynamic> json) =>
     LoginResponseData(

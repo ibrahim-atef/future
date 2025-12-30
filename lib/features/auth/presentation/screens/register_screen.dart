@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:future_app/core/helper/device_info_helper.dart';
-import 'package:future_app/core/helper/shared_pref_keys.dart';
 import 'package:future_app/features/auth/data/models/register_request_model.dart';
 import 'package:future_app/features/auth/data/models/register_response_model.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:future_app/features/auth/logic/cubit/auth_state.dart';
-import 'package:provider/provider.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/routes/app_routes.dart';
-import '../../../../providers/auth_provider.dart';
 import '../../../../widgets/common/custom_button.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -438,18 +434,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     text: AppStrings.signup,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        context.read<AuthCubit>().registerStep1(
-                            RegisterRequestModel(
-                                fullName: _fullNameController.text.trim(),
-                                email: _emailController.text.trim(),
-                                mobile: _mobileController.text.trim(),
-                                password: _passwordController.text.trim(),
-                                role: 'student'
-                                // passwordConfirmation:
-                                //     _confirmPasswordController.text.trim(),
-                                // deviceId: UserConstant.deviceId!,
-
-                                ));
+                        context
+                            .read<AuthCubit>()
+                            .registerStep1(RegisterRequestModel(
+                              fullName: _fullNameController.text.trim(),
+                              email: _emailController.text.trim(),
+                              mobile: _mobileController.text.trim(),
+                              password: _passwordController.text.trim(),
+                              role: 'student',
+                              college: _universityController.text.trim(),
+                              level: _selectedGrade ?? '',
+                            ));
                       }
                     },
                   ),

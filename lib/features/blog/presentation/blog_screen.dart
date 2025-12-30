@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:future_app/core/di/di.dart';
 import 'package:future_app/features/blog/logic/cubit/blog_cubit.dart';
 import 'package:future_app/features/blog/logic/cubit/blog_state.dart';
 import 'package:future_app/features/blog/presentation/blog_detail_screen.dart';
@@ -18,14 +17,6 @@ class BlogScreen extends StatefulWidget {
 class _BlogScreenState extends State<BlogScreen> {
   String selectedCategory = 'الكل';
   final ScrollController _scrollController = ScrollController();
-
-  final List<Map<String, String>> categories = [
-    {'name': 'الكل', 'icon': 'all'},
-    {'name': 'مقالات', 'icon': 'article'},
-    {'name': 'أخبار الكلية', 'icon': 'news'},
-    {'name': 'امتحانات', 'icon': 'exam'},
-    {'name': 'إيفنتات الكلية', 'icon': 'event'},
-  ];
 
   @override
   void initState() {
@@ -53,262 +44,297 @@ class _BlogScreenState extends State<BlogScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<BlogCubit>()..getPosts(page: 1, limit: 10),
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: const Color(0xFF1a1a1a),
+      appBar: AppBar(
         backgroundColor: const Color(0xFF1a1a1a),
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF1a1a1a),
-          elevation: 0,
-          title: const Text(
-            'المدونة - مقالات واخبار الكلية',
-            style: TextStyle(
-              color: Color(0xFFd4af37),
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+        elevation: 0,
+        title: const Text(
+          'المدونة - مقالات واخبار الكلية',
+          style: TextStyle(
+            color: Color(0xFFd4af37),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-          centerTitle: true,
-          leading: widget.isBackButton
-              ? IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
-                  onPressed: () => Navigator.pop(context),
-                )
-              : const SizedBox.shrink(),
         ),
-        body: BlocBuilder<BlogCubit, BlogState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Hero Section
-                  Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF2a2a2a), Color(0xFF1a1a1a)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      border: Border.all(
-                        color: const Color(0xFFd4af37).withOpacity(0.3),
-                        width: 1,
-                      ),
+        centerTitle: true,
+        leading: widget.isBackButton
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back, color: Color(0xFFd4af37)),
+                onPressed: () => Navigator.pop(context),
+              )
+            : const SizedBox.shrink(),
+      ),
+      body: BlocBuilder<BlogCubit, BlogState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            controller: _scrollController,
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Hero Section
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF2a2a2a), Color(0xFF1a1a1a)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          right: 20,
-                          top: 20,
-                          child: Icon(
-                            Icons.article,
-                            size: 60,
-                            color: const Color(0xFFd4af37).withOpacity(0.3),
-                          ),
+                    border: Border.all(
+                      color: const Color(0xFFd4af37).withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        right: 20,
+                        top: 20,
+                        child: Icon(
+                          Icons.article,
+                          size: 60,
+                          color: const Color(0xFFd4af37).withOpacity(0.3),
                         ),
-                        const Positioned(
-                          left: 20,
-                          bottom: 20,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'المدونة',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                      ),
+                      const Positioned(
+                        left: 20,
+                        bottom: 20,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'المدونة',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
-                              SizedBox(height: 8),
-                              Text(
-                                'مقالات وأخبار ومعلومات الكلية',
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'مقالات وأخبار ومعلومات الكلية',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Categories Horizontal List
+                SizedBox(
+                  height: 100,
+                  child: Builder(builder: (context) {
+                    final cubit = context.watch<BlogCubit>();
+                    final categoryList = cubit.categories;
+
+                    if (categoryList.isEmpty) {
+                      // Show a simple shimmer/skeleton-style placeholders
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: 120,
+                            margin: const EdgeInsets.only(left: 12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2a2a2a),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: const Color(0xFFd4af37).withOpacity(0.3),
+                                width: 1,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categoryList.length,
+                      itemBuilder: (context, index) {
+                        final category = categoryList[index];
+                        return _buildCategoryCard(
+                          category.name,
+                          'category',
+                          onTap: () {
+                            setState(() {
+                              selectedCategory = category.name;
+                            });
+                            context
+                                .read<BlogCubit>()
+                                .changeCategory(category.id);
+                          },
+                        );
+                      },
+                    );
+                  }),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Blog Posts Content
+                state.maybeWhen(
+                  getPostsLoading: () => Skeletonizer(
+                    enabled: true,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return _buildSkeletonPost();
+                      },
+                    ),
+                  ),
+                  getPostsSuccess: (data) {
+                    final posts = data.data;
+                    if (posts.isEmpty) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(32.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.inbox_outlined,
+                                size: 64,
+                                color: const Color(0xFFd4af37).withOpacity(0.5),
+                              ),
+                              const SizedBox(height: 16),
+                              const Text(
+                                'لا توجد منشورات',
                                 style: TextStyle(
-                                  color: Colors.white70,
+                                  color: Colors.white54,
                                   fontSize: 16,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
+                      );
+                    }
 
-                  const SizedBox(height: 24),
-
-                  // Categories Horizontal List
-                  SizedBox(
-                    height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: categories.length,
-                      itemBuilder: (context, index) {
-                        return _buildCategoryCard(categories[index]['name']!,
-                            categories[index]['icon']!);
-                      },
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // Blog Posts Content
-                  state.maybeWhen(
-                    getPostsLoading: () => Skeletonizer(
-                      enabled: true,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return _buildSkeletonPost();
-                        },
-                      ),
-                    ),
-                    getPostsSuccess: (data) {
-                      final posts = data.data;
-                      if (posts.isEmpty) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(32.0),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.inbox_outlined,
-                                  size: 64,
-                                  color:
-                                      const Color(0xFFd4af37).withOpacity(0.5),
-                                ),
-                                const SizedBox(height: 16),
-                                const Text(
-                                  'لا توجد منشورات',
-                                  style: TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            const Text(
+                              'جميع المنشورات',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        );
-                      }
-
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-                              const Text(
-                                'جميع المنشورات',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFd4af37),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                data.pagination.totalItems.toString(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(width: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFd4af37),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  data.pagination.totalItems.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: posts.length,
-                            itemBuilder: (context, index) {
-                              final post = posts[index];
-                              return _buildBlogPost(
-                                  context,
-                                  post.id,
-                                  post.title,
-                                  post.excerpt,
-                                  post.publishedAt,
-                                  post.author,
-                                  post.imageUrl);
-                            },
-                          ),
-                          // Loading indicator for pagination
-                          if (context.read<BlogCubit>().isLoadingMore)
-                            const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: Color(0xFFd4af37),
-                                ),
-                              ),
-                            ),
-                        ],
-                      );
-                    },
-                    getPostsError: (error) => Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.error_outline,
-                              size: 64,
-                              color: const Color(0xFFd4af37).withOpacity(0.5),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              error.getAllErrorsAsString().isNotEmpty
-                                  ? error.getAllErrorsAsString()
-                                  : 'حدث خطأ في تحميل المنشورات',
-                              style: const TextStyle(
-                                color: Colors.white54,
-                                fontSize: 16,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                context.read<BlogCubit>().refresh();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFd4af37),
-                                foregroundColor: Colors.black,
-                              ),
-                              child: const Text('إعادة المحاولة'),
                             ),
                           ],
                         ),
+                        const SizedBox(height: 16),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: posts.length,
+                          itemBuilder: (context, index) {
+                            final post = posts[index];
+                            return _buildBlogPost(
+                                context,
+                                post.id,
+                                post.title,
+                                post.excerpt,
+                                post.publishedAt,
+                                post.author,
+                                post.imageUrl);
+                          },
+                        ),
+                        // Loading indicator for pagination
+                        if (context.read<BlogCubit>().isLoadingMore)
+                          const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFd4af37),
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                  getPostsError: (error) => Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            size: 64,
+                            color: const Color(0xFFd4af37).withOpacity(0.5),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            error.getAllErrorsAsString().isNotEmpty
+                                ? error.getAllErrorsAsString()
+                                : 'حدث خطأ في تحميل المنشورات',
+                            style: const TextStyle(
+                              color: Colors.white54,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.read<BlogCubit>().refresh();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFd4af37),
+                              foregroundColor: Colors.black,
+                            ),
+                            child: const Text('إعادة المحاولة'),
+                          ),
+                        ],
                       ),
                     ),
-                    orElse: () => const SizedBox.shrink(),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+                  orElse: () => const SizedBox.shrink(),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildCategoryCard(String name, String iconType) {
+  Widget _buildCategoryCard(String name, String iconType,
+      {VoidCallback? onTap}) {
     final isSelected = selectedCategory == name;
     IconData icon;
 
@@ -333,11 +359,7 @@ class _BlogScreenState extends State<BlogScreen> {
     }
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedCategory = name;
-        });
-      },
+      onTap: onTap,
       child: Container(
         width: 120,
         margin: const EdgeInsets.only(left: 12),

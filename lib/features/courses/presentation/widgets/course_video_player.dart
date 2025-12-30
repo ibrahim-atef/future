@@ -101,14 +101,25 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
         }
 
         try {
-          final uri = Uri.parse(widget.url);
+          // ترميز الـ URL بشكل صحيح للأحرف العربية
+          final encodedUrl = _encodeUrl(widget.url);
+          log('🎬 Original URL: ${widget.url}');
+          log('🎬 Encoded URL: $encodedUrl');
+
+          final uri = Uri.parse(encodedUrl);
           if (!uri.hasScheme || (!uri.scheme.startsWith('http'))) {
+            log('❌ Invalid URL scheme: ${uri.scheme}');
             setState(() {
               hasError = true;
               errorMessage = 'رابط الفيديو غير صحيح';
             });
             return;
           }
+
+          log('✅ Creating VideoPlayerController with URI: ${uri.toString()}');
+          controller = VideoPlayerController.networkUrl(
+            uri,
+          );
         } catch (e) {
           setState(() {
             hasError = true;
@@ -117,10 +128,6 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
           return;
         }
 
-        controller = VideoPlayerController.networkUrl(
-          Uri.parse(widget.url),
-        );
-        
         final currentController = controller;
         if (currentController != null) {
           await currentController.initialize().then((_) {
@@ -135,7 +142,8 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
             if (mounted) {
               setState(() {
                 hasError = true;
-                errorMessage = 'فشل تحميل الفيديو. تأكد من اتصال الإنترنت أو أن الرابط صحيح';
+                errorMessage =
+                    'فشل تحميل الفيديو. تأكد من اتصال الإنترنت أو أن الرابط صحيح';
               });
             }
           });
@@ -147,7 +155,7 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
         controller = VideoPlayerController.file(
           File('${directory.toString()}/${widget.localFileName}'),
         );
-        
+
         final currentController = controller;
         if (currentController != null) {
           await currentController.initialize().then((_) {
@@ -181,7 +189,7 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
 
   controllerListener() {
     if (controller == null) return;
-    
+
     controller!.addListener(() {
       if (mounted && controller != null) {
         // Check for errors in controller
@@ -190,7 +198,8 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
           if (!hasError) {
             setState(() {
               hasError = true;
-              errorMessage = controller!.value.errorDescription ?? 'حدث خطأ أثناء تشغيل الفيديو';
+              errorMessage = controller!.value.errorDescription ??
+                  'حدث خطأ أثناء تشغيل الفيديو';
             });
           }
           return;
@@ -247,6 +256,70 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
     });
   }
 
+  /// ترميز الـ URL للأحرف العربية بشكل صحيح
+  String _encodeUrl(String url) {
+    try {
+      // تقسيم الـ URL يدوياً لتجنب مشاكل parsing مع الأحرف العربية
+      final schemeEnd = url.indexOf('://');
+      if (schemeEnd == -1) {
+        log('Invalid URL format: $url');
+        return url;
+      }
+
+      final scheme = url.substring(0, schemeEnd);
+      final rest = url.substring(schemeEnd + 3);
+
+      // تقسيم الـ host والمسار
+      final pathStart = rest.indexOf('/');
+      if (pathStart == -1) {
+        // لا يوجد مسار، إرجاع الـ URL كما هو
+        return url;
+      }
+
+      final host = rest.substring(0, pathStart);
+      final pathAndQuery = rest.substring(pathStart);
+
+      // تقسيم المسار والـ query
+      final queryStart = pathAndQuery.indexOf('?');
+      String path = queryStart != -1
+          ? pathAndQuery.substring(0, queryStart)
+          : pathAndQuery;
+      String query =
+          queryStart != -1 ? pathAndQuery.substring(queryStart + 1) : '';
+
+      // ترميز المسار - تقسيمه إلى أجزاء وترميز كل جزء
+      final pathSegments = path.split('/').where((s) => s.isNotEmpty).toList();
+      final encodedSegments = pathSegments.map((segment) {
+        return Uri.encodeComponent(segment);
+      }).toList();
+
+      // بناء المسار المرمز
+      final encodedPath = '/${encodedSegments.join('/')}';
+
+      // بناء الـ URL المرمز
+      final encodedUrl = query.isNotEmpty
+          ? '$scheme://$host$encodedPath?$query'
+          : '$scheme://$host$encodedPath';
+
+      log('Original URL: $url');
+      log('Encoded URL: $encodedUrl');
+
+      return encodedUrl;
+    } catch (e) {
+      log('Error encoding URL: $e, original URL: $url');
+      // في حالة الخطأ، محاولة ترميز بسيط للـ URL كاملاً
+      try {
+        // ترميز الـ URL كاملاً باستخدام encodeFull
+        final encoded = Uri.encodeFull(url);
+        log('Fallback encoded URL: $encoded');
+        return encoded;
+      } catch (e2) {
+        log('Error in fallback encoding: $e2');
+        return url; // إرجاع الـ URL الأصلي في حالة الفشل
+      }
+    }
+  }
+
   String secondDurationToString(int seconds) {
     int hours = seconds ~/ 3600;
     int minutes = (seconds % 3600) ~/ 60;
@@ -262,7 +335,7 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     final double videoHeight = MediaQuery.of(context).size.width * 9 / 16;
-    
+
     // Show error widget if there's an error
     if (hasError) {
       return Container(
@@ -323,7 +396,7 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
         ),
       );
     }
-    
+
     // Show loading indicator while video is initializing
     if (!isShowVideoPlayer) {
       return Container(
@@ -339,7 +412,7 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
         ),
       );
     }
-    
+
     return Column(
       children: [
         // video
@@ -502,7 +575,8 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Icon(
-                            controller != null && controller!.value.volume == 0.0
+                            controller != null &&
+                                    controller!.value.volume == 0.0
                                 ? Icons.volume_off
                                 : Icons.volume_up,
                             color: const Color(0xFFd4af37),
@@ -545,9 +619,10 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
                 ),
               ),
               secondChild: SizedBox(width: MediaQuery.of(context).size.width),
-              crossFadeState: controller != null && controller!.value.isInitialized
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
+              crossFadeState:
+                  controller != null && controller!.value.isInitialized
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
               duration: const Duration(milliseconds: 300))
         },
       ],

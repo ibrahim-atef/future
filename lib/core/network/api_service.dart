@@ -120,6 +120,14 @@ abstract class ApiService {
     @Header('X-App-Source') String appSource,
     @Query('page') int page,
     @Query('limit') int limit,
+    @Query('categories') String? categories,
+  );
+
+  // get post categories
+  @GET(ApiConstants.postCategories)
+  Future<GetPostCategoriesResponseModel> getPostCategories(
+    @Header('x-api-key') int apiKey,
+    @Header('X-App-Source') String appSource,
   );
 
   // get single post by ID

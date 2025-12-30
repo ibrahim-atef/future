@@ -10,6 +10,7 @@ class ApiConstants {
   static const String banners = "banners/{filter}";
   static const String courses = "courses";
   static const String posts = "posts";
+  static const String postCategories = "post-categories";
   static const String profileSetting = "panel/profile-setting";
   static const String updatePassword = "panel/profile-setting/password";
   static const String profileSettingImages = "panel/profile-setting/images";

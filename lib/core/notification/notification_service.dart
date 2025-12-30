@@ -1,5 +1,6 @@
 // Import necessary libraries
 import 'dart:developer'; // For logging and debugging
+import 'dart:io' show Platform; // For platform detection
 import 'dart:math'
     show Random; // For generating random numbers (show only Random class)
 import 'package:firebase_core/firebase_core.dart'; // Firebase core functionality
@@ -17,6 +18,9 @@ class FirebaseNotification {
 
   // Variable to store the FCM token (device registration token)
   static String? fcmToken;
+  
+  // Variable to store the APNS token (iOS only)
+  static String apnsToken = "";
 
   // Android notification channel configuration (required for Android 8.0+)
   static const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -29,18 +33,48 @@ class FirebaseNotification {
 
   // Main initialization method for notifications
   static Future<void> initializeNotifications() async {
-    await requestNotificationPermission(); // Request user permission
-    await getFcmToken(); // Get device FCM token
-    await initializeLocalNotifications(); // Initialize local notifications
+    try {
+      log('🔵 Starting notification service initialization...');
+      
+      await requestNotificationPermission(); // Request user permission
+      
+      // Get FCM token - handle errors gracefully to prevent app crash
+      // Use unawaited or catch to prevent blocking
+      getFcmToken().catchError((error, stackTrace) {
+        log('⚠️ Error in getFcmToken during initialization: $error');
+        log('⚠️ Stack trace: $stackTrace');
+        log('ℹ️ Continuing app initialization without FCM token...');
+        // Don't rethrow - allow app to continue
+      });
+      
+      // Don't await getFcmToken to prevent blocking - let it run in background
+      // This prevents the app from hanging if APNS token is not available
+      
+      await initializeLocalNotifications(); // Initialize local notifications
 
-    // Set up background message handler (when app is closed or in background)
-    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+      // Set up background message handler (when app is closed or in background)
+      try {
+        FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+      } catch (e) {
+        log('⚠️ Error setting up background message handler: $e');
+      }
 
-    // Set up foreground message listener (when app is open)
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      log('Received foreground message: ${message.messageId}'); // Log message receipt
-      showBasicNotification(message); // Show local notification
-    });
+      // Set up foreground message listener (when app is open)
+      try {
+        FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+          log('Received foreground message: ${message.messageId}'); // Log message receipt
+          showBasicNotification(message); // Show local notification
+        });
+      } catch (e) {
+        log('⚠️ Error setting up foreground message listener: $e');
+      }
+      
+      log('✅ Notification service initialized successfully');
+    } catch (e, stackTrace) {
+      log('❌ Error initializing notifications: $e');
+      log('❌ Stack trace: $stackTrace');
+      // Don't rethrow - allow app to continue even if notifications fail
+    }
   }
 
   // Initialize local notifications plugin
@@ -72,16 +106,75 @@ class FirebaseNotification {
   // Get and store the FCM token for this device
   static Future<void> getFcmToken() async {
     try {
-      fcmToken = await messaging.getToken(); // Retrieve FCM token
-      log('FCM Token: $fcmToken'); // Log the token for debugging
+      // On iOS, we need to get the APNS token first before getting the FCM token
+      if (Platform.isIOS) {
+        log('🔵 [iOS] Starting APNS token retrieval...');
+        
+        try {
+          // Request APNS token first - this is required for FCM on iOS
+          String? apnsTokenValue = await messaging.getAPNSToken();
+          log('🔵 [iOS] Initial APNS token request result: ${apnsTokenValue != null ? "Success" : "Null"}');
+          
+          // If APNS token is not immediately available, wait and retry
+          if (apnsTokenValue == null) {
+            log('🔵 [iOS] APNS token not immediately available, waiting 2 seconds...');
+            await Future.delayed(const Duration(seconds: 2));
+            
+            apnsTokenValue = await messaging.getAPNSToken();
+            log('🔵 [iOS] Retry APNS token request result: ${apnsTokenValue != null ? "Success" : "Null"}');
+          }
+          
+          if (apnsTokenValue != null && apnsTokenValue.isNotEmpty) {
+            apnsToken = apnsTokenValue;
+            log('✅ [iOS] APNS Token retrieved successfully: ${apnsToken.substring(0, apnsToken.length > 20 ? 20 : apnsToken.length)}...');
+          } else {
+            // APNS token is null or empty - user may have cancelled or not granted permission
+            apnsToken = "";
+            log('⚠️ [iOS] APNS token is null or empty - user may have cancelled permission or token not available yet');
+            log('⚠️ [iOS] Skipping FCM token request on iOS since APNS token is not available');
+            log('✅ FCM token initialization completed (skipped on iOS)');
+            return; // Exit early on iOS if APNS token is not available
+          }
+        } catch (apnsError) {
+          // Handle APNS token retrieval error gracefully
+          apnsToken = "";
+          log('❌ [iOS] Error getting APNS token: $apnsError');
+          log('⚠️ [iOS] Skipping FCM token request on iOS since APNS token failed');
+          log('✅ FCM token initialization completed (skipped on iOS)');
+          return; // Exit early on iOS if APNS token fails
+        }
+      }
 
-      // Listen for token refresh events (tokens can change)
-      messaging.onTokenRefresh.listen((String newToken) {
-        fcmToken = newToken; // Update stored token
-        log('FCM Token refreshed: $newToken'); // Log token refresh
-      });
-    } catch (e) {
-      log('Error getting FCM token: $e'); // Log any errors
+      // Now get the FCM token (only for Android or if iOS has APNS token)
+      log('🔵 Getting FCM token...');
+      try {
+        fcmToken = await messaging.getToken(); // Retrieve FCM token
+        if (fcmToken != null && fcmToken!.isNotEmpty) {
+          log('✅ FCM Token retrieved successfully: ${fcmToken!.substring(0, fcmToken!.length > 20 ? 20 : fcmToken!.length)}...');
+        } else {
+          log('⚠️ FCM Token is null or empty');
+        }
+      } catch (fcmError) {
+        log('❌ Error getting FCM token: $fcmError');
+        // Don't crash - just set to null and continue
+        fcmToken = null;
+      }
+
+      // Listen for token refresh events (tokens can change) - only if we have a token
+      if (fcmToken != null) {
+        messaging.onTokenRefresh.listen((String newToken) {
+          fcmToken = newToken; // Update stored token
+          log('🔄 FCM Token refreshed: ${newToken.substring(0, newToken.length > 20 ? 20 : newToken.length)}...');
+        });
+      }
+      
+      log('✅ FCM token initialization completed');
+    } catch (e, stackTrace) {
+      log('❌ Unexpected error in getFcmToken: $e');
+      log('❌ Stack trace: $stackTrace');
+      // Continue execution even if FCM token fails - don't crash the app
+      fcmToken = null;
+      apnsToken = "";
     }
   }
 
